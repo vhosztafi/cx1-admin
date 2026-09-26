@@ -7,14 +7,15 @@ namespace BackOffice.Infrastructure.Identity;
 public sealed record MfaEnrolment(Guid EnrolmentId,string Secret,string OtpauthUri,DateTimeOffset ExpiresAt);
 public sealed partial class AccountSecurityService
 {
-    public async Task<MfaEnrolment> EnrolAsync(AccountIdentity actor,string password,CancellationToken ct=default)
+    public async Task<MfaEnrolment> EnrolAsync(AccountIdentity actor,string password,CancellationToken ct=default,string? deviceName=null)
     {
         await using var db=await factory.CreateDbContextAsync(ct);await using var tx=await db.Database.BeginTransactionAsync(ct);var user=await Own(db,actor,ct);var credential=await Credential(db,user.Id,ct);
         if(credential.MfaSecretCiphertext!=null)throw new QuoteOperationException(409,"mfa-already-enabled");
         if(!await Proof(db,user,credential,new(password,null),false,ct)){await db.SaveChangesAsync(ct);await tx.CommitAsync(ct);throw Denied();}
+        var label=string.IsNullOrWhiteSpace(deviceName)?"Authenticator":Administration.AdminAccess.Text(deviceName,100);
         var secret=LocalTotp.NewSecret();var issue=await secrets.Issue(db,user,"mfa-enrolment",TimeSpan.FromMinutes(10),false,ct);issue.Action.SecretCiphertext=secrets.Protect(secret);
         Audit(db,user,"account.mfa-enrolment-started");await db.SaveChangesAsync(ct);await tx.CommitAsync(ct);
-        return new(issue.Action.Id,secret,$"otpauth://totp/{Uri.EscapeDataString("Cover MGA:"+user.Email)}?secret={secret}&issuer=Cover%20MGA&algorithm=SHA1&digits=6&period=30",issue.Action.ExpiresAt);
+        return new(issue.Action.Id,secret,$"otpauth://totp/{Uri.EscapeDataString("Cover MGA:"+user.Email+" ("+label+")")}?secret={secret}&issuer=Cover%20MGA&algorithm=SHA1&digits=6&period=30",issue.Action.ExpiresAt);
     }
     public async Task<string[]?> ConfirmAsync(AccountIdentity actor,Guid id,string code,CancellationToken ct=default)
     {
@@ -41,7 +42,8 @@ public sealed partial class AccountSecurityService
         await using var db=await factory.CreateDbContextAsync(ct);await using var tx=await db.Database.BeginTransactionAsync(ct);var user=await Own(db,actor,ct);var credential=await Credential(db,user.Id,ct);
         if(credential.MfaSecretCiphertext==null)throw Invalid();
         if(!await Proof(db,user,credential,proof,true,ct)){await db.SaveChangesAsync(ct);await tx.CommitAsync(ct);throw Denied();}
-        credential.MfaSecretCiphertext=null;credential.LastTotpStep=null;await IdentitySecrets.Invalidate(db,user,time.GetUtcNow(),ct);Audit(db,user,"account.mfa-disabled");await db.SaveChangesAsync(ct);await tx.CommitAsync(ct);
+        var reason=string.IsNullOrWhiteSpace(proof.Reason)?"Account owner disabled MFA":Administration.AdminAccess.Text(proof.Reason,1000);
+        credential.MfaSecretCiphertext=null;credential.LastTotpStep=null;await IdentitySecrets.Invalidate(db,user,time.GetUtcNow(),ct);Audit(db,user,"account.mfa-disabled",reason);await db.SaveChangesAsync(ct);await tx.CommitAsync(ct);
     }
     public async Task<string> ChallengeAsync(LocalIdentity identity,CancellationToken ct=default)
     {

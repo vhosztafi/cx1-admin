@@ -31,6 +31,7 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Administration.ProductAdmin
 builder.Services.AddScoped<BackOffice.Infrastructure.Administration.AuthorityAdministration>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Administration.ConfigurationAdministration>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Administration.UserAdministration>();
+builder.Services.AddScoped<BackOffice.Infrastructure.Administration.IntegrationAdministration>();
 builder.Services.AddSingleton<BackOffice.Infrastructure.Identity.IdentitySecrets>();
 builder.Services.AddSingleton<PartyPaging>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Operations.TaskService>();
@@ -301,6 +302,7 @@ app.MapAuthorityAdministration();
 app.MapConfigurationAdministration();
 app.MapUserAdministration();
 app.MapAccountSecurity();
+app.MapIntegrationAdministration();
 app.MapClients();
 app.MapAgencies();
 app.MapAgencyStateRequests();

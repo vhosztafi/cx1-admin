@@ -4536,9 +4536,9 @@
       "status": "reviewed",
       "disposition": "navigation-read",
       "operationIds": [
-        "listUsers"
+        "getAdministrationUsers"
       ],
-      "reason": "Literal pAdmin tab selection Users & roles; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+      "reason": "Literal pAdmin tab selection Users & roles; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-f43c26ffcd36",
@@ -4549,9 +4549,9 @@
       "status": "reviewed",
       "disposition": "navigation-read",
       "operationIds": [
-        "listMatchingRules"
+        "getAdministrationConfiguration"
       ],
-      "reason": "Literal pAdmin tab selection Client matching; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+      "reason": "Literal pAdmin tab selection Client matching; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-c1abeccbe48e",
@@ -4562,9 +4562,9 @@
       "status": "reviewed",
       "disposition": "navigation-read",
       "operationIds": [
-        "listProducts"
+        "getAdministrationCatalogue"
       ],
-      "reason": "Literal pAdmin tab selection Products & schemes; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+      "reason": "Literal pAdmin tab selection Products & schemes; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-7a70deae880e",
@@ -4575,9 +4575,9 @@
       "status": "reviewed",
       "disposition": "navigation-read",
       "operationIds": [
-        "listAuthorityVersions"
+        "getAdministrationAuthority"
       ],
-      "reason": "Literal pAdmin tab selection Delegated authority; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+      "reason": "Literal pAdmin tab selection Delegated authority; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-5e8758709f33",
@@ -4588,9 +4588,9 @@
       "status": "reviewed",
       "disposition": "navigation-read",
       "operationIds": [
-        "listWorkflowRules"
+        "getAdministrationConfiguration"
       ],
-      "reason": "Literal pAdmin tab selection Workflow; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+      "reason": "Literal pAdmin tab selection Workflow; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-062173aa3428",
@@ -4601,9 +4601,9 @@
       "status": "reviewed",
       "disposition": "navigation-read",
       "operationIds": [
-        "listTemplateVersions"
+        "getAdministrationConfiguration"
       ],
-      "reason": "Literal pAdmin tab selection Templates; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+      "reason": "Literal pAdmin tab selection Templates; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-f83ab9f84cce",
@@ -4614,9 +4614,9 @@
       "status": "reviewed",
       "disposition": "navigation-read",
       "operationIds": [
-        "listIntegrationSettings"
+        "getAdministrationIntegrationHealth"
       ],
-      "reason": "Literal pAdmin tab selection Integrations; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+      "reason": "Literal pAdmin tab selection Integrations; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-1f4136b08d57",
@@ -4627,9 +4627,9 @@
       "status": "reviewed",
       "disposition": "navigation-read",
       "operationIds": [
-        "listAuditEvents"
+        "getAdministrationAudit"
       ],
-      "reason": "Literal pAdmin tab selection Audit log; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+      "reason": "Literal pAdmin tab selection Audit log; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-f6daa870681c",
@@ -4640,9 +4640,9 @@
       "status": "reviewed",
       "disposition": "navigation-read",
       "operationIds": [
-        "getGeneralSettings"
+        "getAdministrationConfiguration"
       ],
-      "reason": "Literal pAdmin tab selection Settings; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+      "reason": "Literal pAdmin tab selection Settings; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-c1818cc49cbc",
@@ -4655,7 +4655,7 @@
       "operationIds": [
         "inviteInternalUser"
       ],
-      "reason": "Invite user opens the internal-user invitation form; only confirmation creates an invitation."
+      "reason": "Invite user opens the internal-user invitation form; only confirmation creates an invitation. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-7041753aef98",
@@ -4666,9 +4666,9 @@
       "status": "reviewed",
       "disposition": "opens-command-form",
       "operationIds": [
-        "requestIdentityChange"
+        "proposeInternalUserChange"
       ],
-      "reason": "Email-change form records a dual-control request, not a direct email edit."
+      "reason": "Email-change form records a dual-control request, not a direct email edit. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-2b90710f6a2a",
@@ -4679,10 +4679,10 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "requestIdentityChange",
-        "decideIdentityChange"
+        "proposeInternalUserChange",
+        "decideInternalUserChange"
       ],
-      "reason": "MFA reset must follow identity approval and session revocation; replace toast with tracked request/outcome."
+      "reason": "MFA reset must follow identity approval and session revocation; replace toast with tracked request/outcome. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-d05ecf452764",
@@ -4693,9 +4693,9 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "adminRequestPasswordReset"
+        "administrationUserforcereset"
       ],
-      "reason": "Queue a demo reset delivery to selected user; never display or log the reset token."
+      "reason": "Queue a demo reset delivery to selected user; never display or log the reset token. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-55e62661c427",
@@ -4706,15 +4706,15 @@
       "status": "reviewed",
       "disposition": "edit-then-command",
       "operationIds": [
-        "updateMatchingRule"
+        "publishAdministrationConfiguration"
       ],
       "apiFields": [
         {
-          "operationId": "updateMatchingRule",
-          "field": "duplicateQuotePolicy"
+          "operationId": "publishAdministrationConfiguration",
+          "field": "values.duplicateQuotePolicy"
         }
       ],
-      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-99ab620eb2d4",
@@ -4725,15 +4725,15 @@
       "status": "reviewed",
       "disposition": "edit-then-command",
       "operationIds": [
-        "updateMatchingRule"
+        "publishAdministrationConfiguration"
       ],
       "apiFields": [
         {
-          "operationId": "updateMatchingRule",
-          "field": "brokerOfRecordDays"
+          "operationId": "publishAdministrationConfiguration",
+          "field": "values.brokerOfRecordDays"
         }
       ],
-      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs. Phase 11 delivery: Broker protection days are saved in the versioned rule and captured for underwriting review; no automatic protection expiry is invented for historical intakes."
     },
     {
       "controlId": "CTL-a3d0b2052a2b",
@@ -4746,7 +4746,7 @@
       "operationIds": [
         "getMatchReview"
       ],
-      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-95c96867f896",
@@ -4760,7 +4760,7 @@
         "getPolicy",
         "getPolicyAsAt"
       ],
-      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-595fa55cdbb5",
@@ -4771,9 +4771,9 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "createProductVersion"
+        "cloneProductVersion"
       ],
-      "reason": "Create a draft copy of the selected product version without changing the published version."
+      "reason": "Create a draft copy of the selected product version without changing the published version. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-5f57ef7459cf",
@@ -4784,8 +4784,8 @@
       "status": "reviewed",
       "disposition": "query-filter",
       "operationIds": [
-        "listAuthorityVersions",
-        "listProductVersions"
+        "getAdministrationAuthority",
+        "getAdministrationCatalogue"
       ],
       "queryFields": [
         {
@@ -4793,7 +4793,7 @@
           "parameter": "productVersionId"
         }
       ],
-      "reason": "Authority-for selects a published product version and loads its authority matrix. Product selection alone does not grant authority or change a binder."
+      "reason": "Authority-for selects a published product version and loads its authority matrix. Product selection alone does not grant authority or change a binder. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-89449214fd17",
@@ -4804,15 +4804,16 @@
       "status": "reviewed",
       "disposition": "edit-then-command",
       "operationIds": [
-        "createAuthorityVersion"
+        "proposeAdministrationAuthority",
+        "decideAdministrationAuthority"
       ],
       "apiFields": [
         {
-          "operationId": "createAuthorityVersion",
+          "operationId": "proposeAdministrationAuthority",
           "field": "effectiveFrom"
         }
       ],
-      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-261936502b06",
@@ -4823,15 +4824,16 @@
       "status": "reviewed",
       "disposition": "edit-then-command",
       "operationIds": [
-        "createAuthorityVersion"
+        "proposeAdministrationAuthority",
+        "decideAdministrationAuthority"
       ],
       "apiFields": [
         {
-          "operationId": "createAuthorityVersion",
-          "field": "binderVersionId"
+          "operationId": "proposeAdministrationAuthority",
+          "field": "sourceAuthorityId"
         }
       ],
-      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs. Phase 11 delivery: The selected existing authority source pins its binder; the successor proposal retains and revalidates that binder."
     },
     {
       "controlId": "CTL-68b6e88e4b7b",
@@ -4842,9 +4844,10 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "createAuthorityVersion"
+        "proposeAdministrationAuthority",
+        "decideAdministrationAuthority"
       ],
-      "reason": "Create selected product/binder authority proposal; approval is separate and cannot exceed binder."
+      "reason": "Create selected product/binder authority proposal; approval is separate and cannot exceed binder. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-844267662a65",
@@ -4855,11 +4858,9 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "previewTemplate",
-        "getJob",
-        "downloadDocumentVersion"
+        "previewAdministrationTemplate"
       ],
-      "reason": "Produce an actual preview artifact from pinned source/template and safe audience."
+      "reason": "Produce an actual preview artifact from pinned source/template and safe audience. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-5ba47a39e42b",
@@ -4872,7 +4873,7 @@
       "operationIds": [
         "retryIntegrationBatch"
       ],
-      "reason": "Retry selected failed integration jobs with original operation identities and recorded reason."
+      "reason": "Retry selected failed integration jobs with original operation identities and recorded reason. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-f68f49a17b06",
@@ -4885,7 +4886,7 @@
       "operationIds": [
         "listBordereaux"
       ],
-      "reason": "Literal navigation to accounting / Bordereaux; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+      "reason": "Literal navigation to accounting / Bordereaux; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-b05c609fb19a",
@@ -5486,9 +5487,9 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "updateProfile"
+        "saveOwnProfile"
       ],
-      "reason": "Save editable self-profile fields with current ETag; identity/access fields excluded."
+      "reason": "Save editable self-profile fields with current ETag; identity/access fields excluded. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-0a807a86f240",
@@ -5501,7 +5502,7 @@
       "operationIds": [
         "getDashboard"
       ],
-      "reason": "Literal navigation to dashboard; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+      "reason": "Literal navigation to dashboard; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-0a0a12156da2",
@@ -5512,9 +5513,9 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "requestAccountAdminChange"
+        "requestAccountIdentityChange"
       ],
-      "reason": "Generic account-change request supports email, role/team or authority routing; submitting it does not grant requested access."
+      "reason": "Generic account-change request supports email, role/team or authority routing; submitting it does not grant requested access. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-e9ca9b8ddf5f",
@@ -5525,15 +5526,15 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "updateProfile"
+        "saveOwnProfile"
       ],
       "apiFields": [
         {
-          "operationId": "updateProfile",
-          "field": "fullName"
+          "operationId": "saveOwnProfile",
+          "field": "preferences.fullName"
         }
       ],
-      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-fb7fd0380a0e",
@@ -5544,15 +5545,15 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "updateProfile"
+        "saveOwnProfile"
       ],
       "apiFields": [
         {
-          "operationId": "updateProfile",
+          "operationId": "saveOwnProfile",
           "field": "displayName"
         }
       ],
-      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-ae3dc91658bf",
@@ -5563,15 +5564,15 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "updateProfile"
+        "saveOwnProfile"
       ],
       "apiFields": [
         {
-          "operationId": "updateProfile",
-          "field": "telephone"
+          "operationId": "saveOwnProfile",
+          "field": "preferences.telephone"
         }
       ],
-      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-6fa068333beb",
@@ -5582,15 +5583,15 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "updateProfile"
+        "saveOwnProfile"
       ],
       "apiFields": [
         {
-          "operationId": "updateProfile",
-          "field": "jobTitle"
+          "operationId": "saveOwnProfile",
+          "field": "preferences.jobTitle"
         }
       ],
-      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-a6317a500517",
@@ -5601,15 +5602,15 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "updateProfile"
+        "saveOwnProfile"
       ],
       "apiFields": [
         {
-          "operationId": "updateProfile",
-          "field": "outOfOffice"
+          "operationId": "saveOwnProfile",
+          "field": "preferences.outOfOffice"
         }
       ],
-      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only. Phase 11 delivery: Saved profile presence preference; does not bypass workflow assignment authorization."
     },
     {
       "controlId": "CTL-10bc9f0e6f7c",
@@ -5620,15 +5621,15 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "updateProfile"
+        "saveOwnProfile"
       ],
       "apiFields": [
         {
-          "operationId": "updateProfile",
-          "field": "taskDigest"
+          "operationId": "saveOwnProfile",
+          "field": "preferences.taskDigest"
         }
       ],
-      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only. Phase 11 delivery: Preference controls an in-app count of the owner’s assigned open tasks, not an email schedule."
     },
     {
       "controlId": "CTL-04e58a7717f8",
@@ -5641,7 +5642,7 @@
       "operationIds": [
         "getDashboard"
       ],
-      "reason": "Literal navigation to dashboard; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+      "reason": "Literal navigation to dashboard; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-5c6d766be16f",
@@ -5652,9 +5653,9 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "revokeSession"
+        "revokeOwnSession"
       ],
-      "reason": "Revoke selected own session server-side, keeping other sessions intact."
+      "reason": "Revoke selected own session server-side, keeping other sessions intact. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-2bc7a5b6b24d",
@@ -5665,9 +5666,9 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "revokeSession"
+        "revokeOwnSession"
       ],
-      "reason": "Second rendered device row uses its own session identity."
+      "reason": "Second rendered device row uses its own session identity. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-d163470a6c1c",
@@ -5678,9 +5679,9 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "revokeOtherSessions"
+        "revokeOtherAccountSessions"
       ],
-      "reason": "Atomically revoke all own sessions except current after recent authentication."
+      "reason": "Atomically revoke all own sessions except current after recent authentication. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-51186f5e4460",
@@ -5691,9 +5692,9 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "reportUnrecognisedActivity"
+        "saveAccountSecurityReport"
       ],
-      "reason": "Persist a restricted security task and administrator notification linked to the reported session."
+      "reason": "Persist a restricted security task and administrator notification linked to the reported session. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-664235c9a920",
@@ -5704,15 +5705,15 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "changePassword"
+        "changeAccountPassword"
       ],
       "apiFields": [
         {
-          "operationId": "changePassword",
-          "field": "currentPassword"
+          "operationId": "changeAccountPassword",
+          "field": "password"
         }
       ],
-      "reason": "Password input remains transient; explicit command uses framework verification/history and never caches secrets."
+      "reason": "Password input remains transient; explicit command uses framework verification/history and never caches secrets. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-1ca7dc6c8e73",
@@ -5723,15 +5724,15 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "changePassword"
+        "changeAccountPassword"
       ],
       "apiFields": [
         {
-          "operationId": "changePassword",
+          "operationId": "changeAccountPassword",
           "field": "newPassword"
         }
       ],
-      "reason": "Password input remains transient; explicit command uses framework verification/history and never caches secrets."
+      "reason": "Password input remains transient; explicit command uses framework verification/history and never caches secrets. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-84a03cc130a7",
@@ -5742,7 +5743,7 @@
       "status": "reviewed",
       "disposition": "client-only",
       "operationIds": [],
-      "reason": "New-password confirmation is a transient equality check; only the actual password is submitted and server policy remains authoritative."
+      "reason": "New-password confirmation is a transient equality check; only the actual password is submitted and server policy remains authoritative. Phase 11 delivery: New password confirmation must match before submission."
     },
     {
       "controlId": "CTL-8bb02d6fe5ae",
@@ -5753,9 +5754,10 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "requestPasswordReset"
+        "requestLocalPasswordReset",
+        "completeLocalPasswordReset"
       ],
-      "reason": "Queue a demo reset with non-enumerating response and single-use token."
+      "reason": "Queue a demo reset with non-enumerating response and single-use token. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-3759ca87f276",
@@ -5766,9 +5768,9 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "revokeOtherSessions"
+        "revokeAllAccountSessions"
       ],
-      "reason": "Prototype handler explicitly signs out other sessions; current session retained and UI label clarifies that behaviour."
+      "reason": "Prototype handler explicitly signs out other sessions; current session retained and UI label clarifies that behaviour. Phase 11 delivery: Explicit revoke-all action ends the current session too."
     },
     {
       "controlId": "CTL-f615857e583e",
@@ -5779,10 +5781,10 @@
       "status": "reviewed",
       "disposition": "opens-command-form",
       "operationIds": [
-        "startMfaEnrolment",
-        "confirmMfaEnrolment"
+        "beginLocalMfaEnrolment",
+        "confirmLocalMfaEnrolment"
       ],
-      "reason": "Enter enrolment flow; enabled state changes only after a valid code."
+      "reason": "Enter enrolment flow; enabled state changes only after a valid code. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-2283b1209a4e",
@@ -5793,10 +5795,10 @@
       "status": "reviewed",
       "disposition": "opens-command-form",
       "operationIds": [
-        "startMfaEnrolment",
-        "confirmMfaEnrolment"
+        "beginLocalMfaEnrolment",
+        "confirmLocalMfaEnrolment"
       ],
-      "reason": "Equivalent authenticator setup entry point."
+      "reason": "Equivalent authenticator setup entry point. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-5d467d2a008f",
@@ -5807,7 +5809,7 @@
       "status": "reviewed",
       "disposition": "client-only",
       "operationIds": [],
-      "reason": "Static explanation of MFA purpose; no read or domain mutation needed."
+      "reason": "Static explanation of MFA purpose; no read or domain mutation needed. Phase 11 delivery: Expandable two-factor explanation."
     },
     {
       "controlId": "CTL-881262a1851b",
@@ -5818,9 +5820,9 @@
       "status": "reviewed",
       "disposition": "opens-command-form",
       "operationIds": [
-        "replaceRecoveryCodes"
+        "replaceLocalRecoveryCodes"
       ],
-      "reason": "Security correction: previously issued plaintext codes cannot be retrieved from hashes. Show remaining count and offer recently authenticated replacement; reveal new codes once."
+      "reason": "Security correction: previously issued plaintext codes cannot be retrieved from hashes. Show remaining count and offer recently authenticated replacement; reveal new codes once. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-481542e5fafd",
@@ -5831,9 +5833,9 @@
       "status": "reviewed",
       "disposition": "opens-command-form",
       "operationIds": [
-        "replaceRecoveryCodes"
+        "replaceLocalRecoveryCodes"
       ],
-      "reason": "Same recovery-code security correction; never add plaintext code storage to reproduce mock display."
+      "reason": "Same recovery-code security correction; never add plaintext code storage to reproduce mock display. Phase 11 delivery: Existing recovery secrets are never retrieved. Verified replacement reveals a new one-time set."
     },
     {
       "controlId": "CTL-e16137244926",
@@ -5844,9 +5846,9 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "replaceRecoveryCodes"
+        "replaceLocalRecoveryCodes"
       ],
-      "reason": "Generate new single-use codes and atomically invalidate old codes after recent authentication."
+      "reason": "Generate new single-use codes and atomically invalidate old codes after recent authentication. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-684745645736",
@@ -5857,10 +5859,10 @@
       "status": "reviewed",
       "disposition": "opens-command-form",
       "operationIds": [
-        "startMfaEnrolment",
-        "confirmMfaEnrolment"
+        "beginLocalMfaEnrolment",
+        "confirmLocalMfaEnrolment"
       ],
-      "reason": "Replacement leaves current authenticator effective until new enrolment is confirmed."
+      "reason": "Replacement leaves current authenticator effective until new enrolment is confirmed. Phase 11 delivery: Verified disable followed by new enrolment replaces an authenticator, ending existing sessions."
     },
     {
       "controlId": "CTL-1decc5a40bc7",
@@ -5871,9 +5873,9 @@
       "status": "reviewed",
       "disposition": "opens-command-form",
       "operationIds": [
-        "disableMfa"
+        "disableLocalMfa"
       ],
-      "reason": "Confirmation verifies credentials/code and role-required MFA policy before disabling."
+      "reason": "Confirmation verifies credentials/code and role-required MFA policy before disabling. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-109f52e32998",
@@ -5886,7 +5888,7 @@
       "operationIds": [
         "login"
       ],
-      "reason": "Open sign-in and authenticate real local credentials; do not restore a hardcoded user or session."
+      "reason": "Open sign-in and authenticate real local credentials; do not restore a hardcoded user or session. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-4a16c38ad19e",
@@ -5897,9 +5899,9 @@
       "status": "reviewed",
       "disposition": "navigation-read",
       "operationIds": [
-        "listSessions"
+        "getAccountSecurity"
       ],
-      "reason": "Literal navigation to account / Sessions & activity; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+      "reason": "Literal navigation to account / Sessions & activity; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-74c4fab0dc7a",
@@ -9687,9 +9689,9 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "requestIdentityChange"
+        "proposeInternalUserChange"
       ],
-      "reason": "Persist requested email change; nominated second approver is routing only, no fabricated approval. Required audit/security notifications cannot be disabled."
+      "reason": "Persist requested email change; nominated second approver is routing only, no fabricated approval. Required audit/security notifications cannot be disabled. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-6024d631eea5",
@@ -9700,9 +9702,9 @@
       "status": "reviewed",
       "disposition": "read",
       "operationIds": [
-        "getUser"
+        "getAdministrationUsers"
       ],
-      "reason": "Selected subject is the authorised target user ID for identity request; client input cannot select an inaccessible user."
+      "reason": "Selected subject is the authorised target user ID for identity request; client input cannot select an inaccessible user. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-84ae08d2ace0",
@@ -9713,9 +9715,9 @@
       "status": "reviewed",
       "disposition": "read",
       "operationIds": [
-        "getUser"
+        "getAdministrationUsers"
       ],
-      "reason": "Current email is read from server state and not trusted as proof or editable identity input."
+      "reason": "Current email is read from server state and not trusted as proof or editable identity input. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-02d5a8374d81",
@@ -9726,15 +9728,15 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "requestIdentityChange"
+        "proposeInternalUserChange"
       ],
       "apiFields": [
         {
-          "operationId": "requestIdentityChange",
-          "field": "newEmail"
+          "operationId": "proposeInternalUserChange",
+          "field": "email"
         }
       ],
-      "reason": "Email-change proposal requires independent approval; routing approver is not proof of approval and required notifications cannot be suppressed."
+      "reason": "Email-change proposal requires independent approval; routing approver is not proof of approval and required notifications cannot be suppressed. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-d8964d48425a",
@@ -9745,15 +9747,10 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "requestIdentityChange"
+        "proposeInternalUserChange"
       ],
-      "apiFields": [
-        {
-          "operationId": "requestIdentityChange",
-          "field": "requestedApproverId"
-        }
-      ],
-      "reason": "Email-change proposal requires independent approval; routing approver is not proof of approval and required notifications cannot be suppressed."
+      "apiFields": [],
+      "reason": "Email-change proposal requires independent approval; routing approver is not proof of approval and required notifications cannot be suppressed. Phase 11 delivery: Any distinct current administrator may decide a pending request; self approval is denied. The separate approver picker is consolidated into the pending-request decision flow."
     },
     {
       "controlId": "CTL-50bae4c3910a",
@@ -9764,15 +9761,10 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "requestIdentityChange"
+        "proposeInternalUserChange"
       ],
-      "apiFields": [
-        {
-          "operationId": "requestIdentityChange",
-          "field": "notifyUser"
-        }
-      ],
-      "reason": "Email-change proposal requires independent approval; routing approver is not proof of approval and required notifications cannot be suppressed."
+      "apiFields": [],
+      "reason": "Email-change proposal requires independent approval; routing approver is not proof of approval and required notifications cannot be suppressed. Phase 11 delivery: Administrative access changes appear in the owner’s account notices. Mandatory local notices replace the optional notification checkbox; no real external email is claimed."
     },
     {
       "controlId": "CTL-dc47c1c54ea5",
@@ -9783,7 +9775,7 @@
       "status": "reviewed",
       "disposition": "client-only",
       "operationIds": [],
-      "reason": "Copy newly generated recovery codes from current one-time UI state to clipboard after explicit click; no secret-retrieval API or plaintext persistence."
+      "reason": "Copy newly generated recovery codes from current one-time UI state to clipboard after explicit click; no secret-retrieval API or plaintext persistence. Phase 11 delivery: User-initiated clipboard copy of newly issued recovery codes."
     },
     {
       "controlId": "CTL-5ec6b96d9dd9",
@@ -9794,7 +9786,7 @@
       "status": "reviewed",
       "disposition": "client-only",
       "operationIds": [],
-      "reason": "Codes are one-time secret display/copy state from successful generation, not an editable/persisted field."
+      "reason": "Codes are one-time secret display/copy state from successful generation, not an editable/persisted field. Phase 11 delivery: One-time returned recovery-code display."
     },
     {
       "controlId": "CTL-b18928254b6a",
@@ -9805,15 +9797,15 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "replaceRecoveryCodes"
+        "replaceLocalRecoveryCodes"
       ],
       "apiFields": [
         {
-          "operationId": "replaceRecoveryCodes",
+          "operationId": "replaceLocalRecoveryCodes",
           "field": "password"
         }
       ],
-      "reason": "Password is transient reauthentication for generating new codes; old plaintext codes cannot be retrieved."
+      "reason": "Password is transient reauthentication for generating new codes; old plaintext codes cannot be retrieved. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-b88a29907695",
@@ -9824,9 +9816,9 @@
       "status": "reviewed",
       "disposition": "command",
       "operationIds": [
-        "disableMfa"
+        "disableLocalMfa"
       ],
-      "reason": "Verify recent password and MFA/recovery proof plus required-role policy before disabling."
+      "reason": "Verify recent password and MFA/recovery proof plus required-role policy before disabling. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-1906c3818071",
@@ -9837,15 +9829,15 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "disableMfa"
+        "disableLocalMfa"
       ],
       "apiFields": [
         {
-          "operationId": "disableMfa",
+          "operationId": "disableLocalMfa",
           "field": "password"
         }
       ],
-      "reason": "MFA disable requires verified password/code and role policy; never a client-side boolean toggle."
+      "reason": "MFA disable requires verified password/code and role policy; never a client-side boolean toggle. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-ed9a5b84734d",
@@ -9856,15 +9848,15 @@
       "status": "reviewed",
       "disposition": "edit-then-save",
       "operationIds": [
-        "disableMfa"
+        "disableLocalMfa"
       ],
       "apiFields": [
         {
-          "operationId": "disableMfa",
+          "operationId": "disableLocalMfa",
           "field": "reason"
         }
       ],
-      "reason": "MFA disable requires verified password/code and role policy; never a client-side boolean toggle."
+      "reason": "MFA disable requires verified password/code and role policy; never a client-side boolean toggle. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-fd38a2890d20",
@@ -14648,7 +14640,7 @@
       "status": "reviewed",
       "disposition": "client-only",
       "operationIds": [],
-      "reason": "Authenticator-app choice supplies setup instructions only; all offered compatible apps use the same TOTP protocol."
+      "reason": "Authenticator-app choice supplies setup instructions only; all offered compatible apps use the same TOTP protocol. Phase 11 delivery: Authenticator choice consolidated into supported TOTP setup."
     },
     {
       "controlId": "CTL-f42db530136f",
@@ -14659,9 +14651,9 @@
       "status": "reviewed",
       "disposition": "wizard-command",
       "operationIds": [
-        "startMfaEnrolment"
+        "beginLocalMfaEnrolment"
       ],
-      "reason": "Device name is optional enrolment metadata; persist at setup start with recent-auth proof."
+      "reason": "Device name is optional enrolment metadata; persist at setup start with recent-auth proof. Phase 11 delivery: Device name is encoded in the authenticator setup URI label."
     },
     {
       "controlId": "CTL-e17512c0f03a",
@@ -14672,10 +14664,10 @@
       "status": "reviewed",
       "disposition": "wizard-command",
       "operationIds": [
-        "startMfaEnrolment",
-        "confirmMfaEnrolment"
+        "beginLocalMfaEnrolment",
+        "confirmLocalMfaEnrolment"
       ],
-      "reason": "Advance by current stage: start pending enrolment once, then verify six-digit code at verification stage. Never enable MFA based on local UI state."
+      "reason": "Advance by current stage: start pending enrolment once, then verify six-digit code at verification stage. Never enable MFA based on local UI state. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-37ac8f55741b",
@@ -14686,9 +14678,9 @@
       "status": "reviewed",
       "disposition": "wizard-command",
       "operationIds": [
-        "cancelMfaEnrolment"
+        "cancelLocalMfaEnrolment"
       ],
-      "reason": "Cancel any pending enrolment; before one exists only close setup. Destroy temporary secret/code hashes and clear local secrets."
+      "reason": "Cancel any pending enrolment; before one exists only close setup. Destroy temporary secret/code hashes and clear local secrets. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-ccdd7bd72bdb",
@@ -14699,7 +14691,7 @@
       "status": "reviewed",
       "disposition": "client-only",
       "operationIds": [],
-      "reason": "Display static MFA help without sending credentials or modifying enrolment."
+      "reason": "Display static MFA help without sending credentials or modifying enrolment. Phase 11 delivery: Expandable explanation and recovery instructions."
     },
     {
       "controlId": "CTL-cd1aa2b17992",
@@ -14710,10 +14702,10 @@
       "status": "reviewed",
       "disposition": "wizard-command",
       "operationIds": [
-        "startMfaEnrolment",
-        "confirmMfaEnrolment"
+        "beginLocalMfaEnrolment",
+        "confirmLocalMfaEnrolment"
       ],
-      "reason": "Reuse current unexpired enrolment on stage changes; confirm TOTP before showing one-time recovery codes."
+      "reason": "Reuse current unexpired enrolment on stage changes; confirm TOTP before showing one-time recovery codes. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-61d9eb5ae433",
@@ -14724,7 +14716,7 @@
       "status": "reviewed",
       "disposition": "client-only",
       "operationIds": [],
-      "reason": "Move back within the same unexpired enrolment; do not regenerate secrets or recover already-cleared codes."
+      "reason": "Move back within the same unexpired enrolment; do not regenerate secrets or recover already-cleared codes. Phase 11 delivery: Account tab navigation; cancelling pending setup uses the cancel endpoint."
     },
     {
       "controlId": "CTL-60474f988911",
@@ -14735,9 +14727,9 @@
       "status": "reviewed",
       "disposition": "wizard-command",
       "operationIds": [
-        "cancelMfaEnrolment"
+        "cancelLocalMfaEnrolment"
       ],
-      "reason": "Cancel pending setup server-side and clear displayed secret/recovery codes; never disable existing active MFA."
+      "reason": "Cancel pending setup server-side and clear displayed secret/recovery codes; never disable existing active MFA. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-f6ee6e414ad3",
@@ -14748,9 +14740,9 @@
       "status": "reviewed",
       "disposition": "wizard-command",
       "operationIds": [
-        "confirmMfaEnrolment"
+        "confirmLocalMfaEnrolment"
       ],
-      "reason": "Six-digit code is transient secret input; submit to rate-limited enrolment verification, never persist in form history/logs."
+      "reason": "Six-digit code is transient secret input; submit to rate-limited enrolment verification, never persist in form history/logs. Phase 11 delivery: Bound to the implemented administration/account route."
     },
     {
       "controlId": "CTL-bf00dc2dbf93",
@@ -14761,7 +14753,7 @@
       "status": "reviewed",
       "disposition": "client-only",
       "operationIds": [],
-      "reason": "Show manual setup key derived from the currently held otpauth URI; never put the secret in analytics, URLs or local storage."
+      "reason": "Show manual setup key derived from the currently held otpauth URI; never put the secret in analytics, URLs or local storage. Phase 11 delivery: Manual secret and setup URI supplied directly; QR scanning is optional."
     },
     {
       "controlId": "CTL-3117235789fa",
@@ -14772,7 +14764,7 @@
       "status": "reviewed",
       "disposition": "client-only",
       "operationIds": [],
-      "reason": "Copy only currently displayed one-time recovery codes with user gesture. Clipboard failure is shown; no server retrieval of plaintext hashes."
+      "reason": "Copy only currently displayed one-time recovery codes with user gesture. Clipboard failure is shown; no server retrieval of plaintext hashes. Phase 11 delivery: User-initiated clipboard copy of newly issued recovery codes."
     },
     {
       "controlId": "CTL-2648097bf60e",
@@ -14783,7 +14775,7 @@
       "status": "reviewed",
       "disposition": "client-only",
       "operationIds": [],
-      "reason": "Local acknowledgement gates activation and maps to recoveryCodesSaved=true; toggling alone does not enable MFA."
+      "reason": "Local acknowledgement gates activation and maps to recoveryCodesSaved=true; toggling alone does not enable MFA. Phase 11 delivery: Saved-code acknowledgement clears display and returns to sign-in."
     },
     {
       "controlId": "CTL-f593365902af",
@@ -14794,9 +14786,9 @@
       "status": "reviewed",
       "disposition": "wizard-command",
       "operationIds": [
-        "activateMfaEnrolment"
+        "confirmLocalMfaEnrolment"
       ],
-      "reason": "Activate only verified unexpired enrolment after saved-code acknowledgement. Promote secret/hashes atomically and clear plaintext. Retry reads current account state; it never returns codes again."
+      "reason": "Activate only verified unexpired enrolment after saved-code acknowledgement. Promote secret/hashes atomically and clear plaintext. Retry reads current account state; it never returns codes again. Phase 11 delivery: MFA activates only after a verified factor. The final saved-codes acknowledgement returns to sign-in; it cannot activate an unverified enrolment."
     }
   ]
 }

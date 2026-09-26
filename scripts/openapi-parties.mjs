@@ -56,6 +56,7 @@ export function addPartyContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
  s.MatchSubmission=o({id,reference:t(40),agencyId:id,agencyName:t(),identity:r('ClientWrite'),createdAt:instant,quoteId:id,quoteEtag:t(100),captureClosed:b,linkedClientId:id,linkedRelationshipId:id},['id','reference','agencyId','agencyName','identity','createdAt']);
  s.MatchReview.properties.submissionId=id;s.MatchReview.properties.submission=r('MatchSubmission');
  s.MatchReview.properties.candidateRelationshipId={...id,description:'The captured candidate relationship, for unambiguous internal agency context; never infer it from the first account relationship.'};
+ s.MatchRuleSnapshot.properties.brokerOfRecordDays={type:['integer','null'],minimum:1,maximum:3650};
  s.MatchReview.properties.rule=r('MatchRuleSnapshot');s.MatchReview.properties.signals={...a(r('MatchSignal')),maxItems:100};
  s.MatchReview.required=[...s.MatchReview.required.filter(k=>k!=='quoteId'),'submissionId','submission','rule'];
  s.MatchReview.description='Internal comparison evidence pinned at capture. submissionId and embedded submission.id agree; ruleVersionId and rule.id agree. quoteId is absent until linked to an actual quote. No candidate data belongs in a submission-side decline.';

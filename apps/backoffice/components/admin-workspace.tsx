@@ -1,13 +1,14 @@
 'use client';
 
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { ProductCatalogue } from './admin/catalogue';
 import { AuthorityAdministration } from './admin/authority';
 import { ConfigurationAdministration } from './admin/configuration';
 import { UserAdministration } from './admin/users';
+import {IntegrationOversight,AdministrationAudit} from './admin/oversight';
 import { csrfToken } from '../lib/auth';
-import { operationalFetch, jobTone, type Job, type Integration, type AuditEntry, type Page } from '../lib/operations';
+import { operationalFetch, jobTone, type Job, type Integration, type Page } from '../lib/operations';
 import { DataTable, EmptyState, Panel, SectionTabs, Status } from './primitives';
 
 const tabs = [['overview','Overview'],['users','Users & roles'],['products','Products & schemes'],['authority','Delegated authority'],['workflow','Workflow'],['matching','Client matching'],['flags','Customer flags'],['templates','Templates'],['integrations','Integrations'],['audit','Audit log'],['settings','Settings']];
@@ -32,7 +33,7 @@ export function AdminWorkspace({ requestedTab }: { requestedTab: string }) {
   const active = tabs.some(([key]) => key === requestedTab) ? requestedTab : 'overview';
   return <><div className="page-heading"><div><h1>Admin</h1><p>Configuration, integrations and operational oversight</p></div></div>
     <SectionTabs label="Administration sections" active={active} items={tabs.map(([key,label]) => ({key,label,href:`/admin?tab=${key}`}))} />
-    {active === 'users' ? <UserAdministration/> : ['workflow','matching','flags','templates','settings'].includes(active) ? <ConfigurationAdministration key={active} tab={active}/> : active === 'authority' ? <AuthorityAdministration /> : active === 'products' ? <ProductCatalogue /> : active === 'integrations' ? <Integrations /> : active === 'audit' ? <AuditLog /> : active === 'overview' ? <Panel title="Administration"><div className="operations-overview"><h2>Demo operations</h2><p>Inspect persisted integration jobs and the audit record.</p><div className="operations-actions"><Link className="button" href="/admin?tab=integrations">Open integrations</Link><Link className="button" href="/admin?tab=audit">Open audit log</Link><Link className="button" href="/accounting?tab=bordereaux">Open bordereaux</Link></div></div></Panel> : <Panel title={tabs.find(([key]) => key === active)![1]}><EmptyState title="Configuration tools are not available yet">These controls will be added in the configuration phase. Integration monitoring and the audit log are available now.</EmptyState></Panel>}
+    {active === 'users' ? <UserAdministration/> : ['workflow','matching','flags','templates','settings'].includes(active) ? <ConfigurationAdministration key={active} tab={active}/> : active === 'authority' ? <AuthorityAdministration /> : active === 'products' ? <ProductCatalogue /> : active === 'integrations' ? <><IntegrationOversight/><Integrations /></> : active === 'audit' ? <AdministrationAudit /> : active === 'overview' ? <Panel title="Administration"><div className="operations-overview"><h2>Administration tools</h2><p>Manage configuration, staff access and saved operational history.</p><div className="operations-actions"><Link className="button" href="/admin?tab=integrations">Open integrations</Link><Link className="button" href="/admin?tab=audit">Open audit log</Link><Link className="button" href="/accounting?tab=bordereaux">Open bordereaux</Link></div></div></Panel> : null}
   </>;
 }
 
@@ -45,7 +46,7 @@ function Integrations() {
   const [reason, setReason] = useState(''); const [busy, setBusy] = useState(false); const locked = useRef(false);
   const [notice, setNotice] = useState(''); const [error, setError] = useState('');
   const [watchId, setWatchId] = useState(''); const [watched, setWatched] = useState<Job>();
-  const receipt = useRef<{ intent: string; key: string } | null>(null);
+  const receipt = useRef<{ intent: string; key: string; body:unknown } | null>(null);
   useEffect(() => {
     if (!watchId) return;
     let stopped = false; let timer: ReturnType<typeof setTimeout>;
@@ -60,8 +61,8 @@ function Integrations() {
     void poll(); return () => { stopped = true; clearTimeout(timer); };
   }, [watchId]);
   async function command(path: string, body: unknown, intent: string) {
-    if (receipt.current?.intent !== intent) receipt.current = { intent, key: crypto.randomUUID() };
-    const result = await operationalFetch<Job | {jobIds:string[]}>(path, { method: 'POST', headers: {'Content-Type':'application/json','X-CSRF-Token':await csrfToken(),'Idempotency-Key':receipt.current.key}, body:JSON.stringify(body) });
+    if (receipt.current?.intent !== intent) receipt.current = { intent, key: crypto.randomUUID(), body };
+    const result = await operationalFetch<Job | {jobIds:string[]}>(path, { method: 'POST', headers: {'Content-Type':'application/json','X-CSRF-Token':await csrfToken(),'Idempotency-Key':receipt.current.key}, body:JSON.stringify(receipt.current.body) });
     receipt.current = null;
     return result.data;
   }
@@ -86,9 +87,9 @@ function Integrations() {
   }
   function refresh() {setCursor(''); setSelected([]); jobs.refresh(); settings.refresh();}
   return <div className="operations-stack">
-    <Panel title="Service health" note="Fictional demo adapter · no external messages or payments">
+    <Panel title="Diagnostic service health" note="Fictional demo adapter · no external messages or payments">
       {settings.loading ? <div className="panel-footer" role="status">Loading service configuration…</div> : settings.error ? <div className="operations-feedback" role="alert">{settings.error}<button className="button" onClick={settings.refresh}>Try again</button></div> : <DataTable caption="Service health" columns={['Service','Purpose','Status','Configuration']}><tr><td><strong>Foundation demo adapter</strong></td><td>Persisted delivery and recovery scenarios</td><td><Status tone={settings.data?.items.some(x => x.enabled) ? 'success' : 'muted'}>{settings.data?.items.some(x => x.enabled) ? 'Enabled' : 'Disabled'}</Status></td><td>{settings.data?.items.length ?? 0} scenarios available</td></tr></DataTable>}
-      <div className="panel-footer">Rating, documents, payments and reporting adapters will be added with their business workflows.</div>
+      <div className="panel-footer">Business adapter results and attempts are listed in the saved job history above.</div>
       <form className="operations-toolbar" onSubmit={event => {event.preventDefault(); void run('probe');}}><label>Demo scenario<select aria-label="Demo scenario" value={scenario} onChange={event => setScenario(event.target.value)} disabled={busy}>{Object.entries(scenarios).map(([key,label]) => <option key={key} value={key}>{label}</option>)}</select></label><button className="button button-primary" disabled={busy || !settings.data?.items.some(x => x.scenario === scenario && x.enabled)}>{busy ? 'Working…' : 'Run demo probe'}</button></form>
     </Panel>
     <div aria-live="polite">{notice && <p className="notice">{notice}</p>}{error && <p className="error-message operations-feedback" role="alert">{error}</p>}{watched && <div className="notice"><Status tone={jobTone(watched.state)}>{watched.state}</Status><span>Latest probe <span className="operation-id">{watched.id}</span> · {watched.attempts} attempt(s){watched.errorCode ? ` · ${watched.errorCode}` : ''}</span></div>}</div>
@@ -101,14 +102,4 @@ function Integrations() {
       <form className="operations-toolbar" onSubmit={event => {event.preventDefault();void run('retry');}}><label>Recovery reason<input value={reason} maxLength={1000} onChange={event => setReason(event.target.value)} disabled={busy} placeholder="Why should these jobs be retried?" /></label><button className="button" disabled={busy || !selected.length}>Retry selected ({selected.length})</button></form>
       <div className="panel-footer">Only exhausted, recoverable failures can be selected. Two additional recovery cycles are permitted; definitive rejections cannot be retried.</div>
     </Panel></div>;
-}
-
-function AuditLog() {
-  const [filter, setFilter] = useState(''); const [applied, setApplied] = useState(''); const [cursor,setCursor] = useState('');
-  const records = useResource<Page<AuditEntry>>(`/api/v1/admin/audit?pageSize=20${applied ? `&eventType=${encodeURIComponent(applied)}` : ''}${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`);
-  function submit(event: FormEvent) {event.preventDefault();setApplied(filter.trim());setCursor('');records.refresh();}
-  return <Panel title="Audit log" note="Recorded actions · times Europe/London"><form className="operations-toolbar" onSubmit={submit}><label>Action code<input value={filter} maxLength={100} onChange={event => setFilter(event.target.value)} placeholder="For example diagnostic.completed" /></label><button className="button">Apply filter</button><button type="button" className="button" onClick={() => {setFilter('');setApplied('');setCursor('');records.refresh();}}>Clear / refresh</button></form>
-    {records.loading ? <div className="panel-footer" role="status">Loading audit entries…</div> : records.error ? <div className="operations-feedback" role="alert">{records.error}<button className="button" onClick={() => {setCursor('');records.refresh();}}>Refresh list</button></div> : !records.data?.items.length ? <EmptyState title="No audit entries match">Clear the action filter to view the recorded activity.</EmptyState> : <DataTable caption="Audit log" columns={['Timestamp','Actor','Entity','Action','Summary']}>
-      {records.data.items.map(entry => <tr key={entry.id}><td>{stamp(entry.occurredAt)}</td><td>{entry.actorLabel}</td><td className="operation-id">{entry.subjectRecordId ?? '—'}</td><td>{entry.eventType}</td><td>{entry.summary}</td></tr>)}
-    </DataTable>}<div className="panel-footer operations-actions"><span>{records.data?.totalCount ?? '—'} matching entries</span><button className="button" disabled={!cursor} onClick={() => setCursor('')}>First page</button><button className="button" disabled={!records.data?.nextCursor} onClick={() => setCursor(records.data!.nextCursor!)}>Next page</button></div></Panel>;
 }

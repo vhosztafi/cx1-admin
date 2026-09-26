@@ -18,7 +18,7 @@ public sealed partial class UnderwritingRuntimeTests
     {
         await WithDatabase(async(db,password)=>
         {
-            await DemoDatabase.SeedAsync(db,password,includeQuoteCapture:true,includeUnderwriting:true);
+            await DemoDatabase.SeedAsync(db,password,includeQuoteCapture:true,includeUnderwriting:true,includeMatches:true);
             await using(var tx=await db.Database.BeginTransactionAsync()){await WorkflowTaskSeed.SeedAsync(db);await tx.CommitAsync();}
             var admin=await db.Set<StaffUser>().SingleAsync(x=>x.Email=="system-admin@cover.example");
             var actor=new ActorContext(admin.Id,admin.TeamId,null,new HashSet<string>{"system-admin"});
@@ -42,6 +42,12 @@ public sealed partial class UnderwritingRuntimeTests
             Assert.Equal(source.Id,(await db.Set<SettingVersion>().AsNoTracking().Where(x=>x.Scope==source.Scope&&x.EffectiveFrom<=Now).OrderByDescending(x=>x.Version).FirstAsync()).Id);
             Assert.Equal(next.ResourceId,(await db.Set<SettingVersion>().AsNoTracking().Where(x=>x.Scope==source.Scope&&x.EffectiveFrom<=Now.AddDays(1)).OrderByDescending(x=>x.Version).FirstAsync()).Id);
             Assert.Equal(before,(await db.Set<SettingVersion>().AsNoTracking().SingleAsync(x=>x.Id==source.Id)).Values);
+            var matching=await db.Set<SettingVersion>().OrderByDescending(x=>x.Version).FirstAsync(x=>x.Scope=="matching-rule");
+            var matchingRule=JsonSerializer.Deserialize<BackOffice.Application.Parties.MatchRuleSnapshot>(matching.Values,options)! with{BrokerOfRecordDays=60};
+            var matchingClock=new AdministrationClock(matching.EffectiveFrom>Now?matching.EffectiveFrom:Now);
+            var matchingService=new ConfigurationAdministration(factory,new SqlCommandBoundary(factory,matchingClock),new PolicyDocumentRenderer(),matchingClock);
+            var matchingSaved=await matchingService.SaveAsync(actor,new(matching.Scope,JsonSerializer.SerializeToElement(matchingRule,options),matchingClock.GetUtcNow(),"Configure protection evidence"),$"\"{matching.Id:N}-{matching.Version}\"",Guid.NewGuid().ToString("N"));
+            var pinned=await db.Set<SettingVersion>().AsNoTracking().SingleAsync(x=>x.Id==matchingSaved.ResourceId);Assert.Equal(60,JsonSerializer.Deserialize<BackOffice.Application.Parties.MatchRuleSnapshot>(pinned.Values,options)!.BrokerOfRecordDays);
             var template=await db.Set<TemplateVersion>().FirstAsync();var templateBefore=template.ContentJson;
             var edit=new TemplateEdit("Fictional revised heading","Fictional revised notice",Now,Now.AddYears(3),"Publish safe text");
             var preview=await service.PreviewAsync(actor,template.Id,edit);Assert.StartsWith("%PDF",System.Text.Encoding.ASCII.GetString(preview,0,4));

@@ -6,7 +6,7 @@ public sealed record MatchDecisionWrite([property:JsonRequired]string? Outcome,[
 public sealed record ValidatedMatchDecision(string Outcome,string Reason,Guid? CandidateClientId,
     [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? ExpectedQuoteEtag=null);
 public sealed record MatchSignal(string Code,string Summary,string SubmittedValue,string CandidateValue,string Weight,string Result);
-public sealed record MatchRuleSnapshot(Guid Id,int Version,string DuplicateQuotePolicy,[property:JsonRequired]bool RequireReview,string Summary);
+public sealed record MatchRuleSnapshot(Guid Id,int Version,string DuplicateQuotePolicy,[property:JsonRequired]bool RequireReview,string Summary,int? BrokerOfRecordDays=null);
 public sealed record ValidatedMatchEvidence(ClientWrite Identity,MatchSignal[] Signals,MatchRuleSnapshot Rule,string Confidence);
 public sealed class MatchTransitionException() : Exception("This decision is not available in the current review state.");
 
@@ -45,7 +45,7 @@ public static class MatchRules
     {
         var client=ClientIdentity.Validate(identity);var issues=new List<PartyFieldIssue>();
         if(confidence is not ("low" or "medium" or "high"))issues.Add(new("/confidence","invalid-choice","Choose a supported confidence."));
-        if(rule.Id==Guid.Empty || rule.Version<1 || rule.DuplicateQuotePolicy is not ("allow-competing" or "broker-of-record" or "refer"))
+        if(rule.Id==Guid.Empty || rule.Version<1 || rule.BrokerOfRecordDays is <1 or >3650 || rule.DuplicateQuotePolicy is not ("allow-competing" or "broker-of-record" or "refer"))
             issues.Add(new("/rule","invalid-rule","Pin an existing version and supported policy."));
         var ruleSummary=Text(rule.Summary,1000,"/rule/summary",issues);
         if(signals is null || signals.Count is <1 or >100)issues.Add(new("/signals","invalid-count","Supply between one and 100 comparison signals."));

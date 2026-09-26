@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using BackOffice.Application;
 using BackOffice.Infrastructure.Identity;
+using BackOffice.Infrastructure.Administration;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Platform;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +32,7 @@ public static class OperationalJobEndpoints
         var correlation = Guid.NewGuid();
         try
         {
-            var outcome = await commands.ExecuteAsync(new CommandIdentity(actor.UserId, ProbeRoute, key, correlation), input, "diagnostic.requested", async (db, token) =>
+            var outcome = await commands.ExecuteAuthorizedAsync(new CommandIdentity(actor.UserId, ProbeRoute, key, correlation), input, "diagnostic.requested",(db,token)=>AdminAccess.Authorize(db,actor,token), async (db, token) =>
             {
                 var now = time.GetUtcNow();
                 var scope = "diagnostic-probe/" + input.Scenario;
@@ -50,6 +51,7 @@ public static class OperationalJobEndpoints
         catch (CommandKeyConflictException) { return IdentityEndpoints.Problem(context, 409, "idempotency-conflict", "This command key was used with different input."); }
         catch (CommandBusyException) { return IdentityEndpoints.Problem(context, 409, "command-busy", "Retry with the same command key."); }
         catch (DiagnosticConfigurationException) { return IdentityEndpoints.Problem(context, 503, "demo-not-initialized", "Initialize the demo scenarios before starting a probe."); }
+        catch (Exception error) when (QuoteEndpoints.Known(error)) { return QuoteEndpoints.Failure(context,error); }
     }
 
     private static async Task<IResult> GetJob(Guid jobId, HttpContext context, IDbContextFactory<BackOfficeDbContext> factory, TimeProvider time, BackOffice.Infrastructure.Underwriting.QuoteRatingJobs ratingJobs, BackOffice.Infrastructure.Underwriting.CapacityJobs capacityJobs, BackOffice.Infrastructure.Underwriting.QuoteDeliveryJobs deliveryJobs, BackOffice.Infrastructure.Policies.ServicingRatingJobs servicingJobs)

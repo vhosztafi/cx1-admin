@@ -139,8 +139,9 @@ public sealed class ConfigurationAdministration(IDbContextFactory<BackOfficeDbCo
         }
         else if (row.Scope == "matching-rule")
         {
-            var rule = Parse<MatchRuleSnapshot>(values, "id", "version", "duplicateQuotePolicy", "requireReview", "summary");
-            if (rule.DuplicateQuotePolicy is not ("refer" or "allow-competing" or "broker-of-record")) throw Invalid();
+            var fields=new[]{"id","version","duplicateQuotePolicy","requireReview","summary"};
+            var rule = Parse<MatchRuleSnapshot>(values, values.TryGetProperty("brokerOfRecordDays",out _)?[..fields,"brokerOfRecordDays"]:fields);
+            if (rule.BrokerOfRecordDays is <1 or >3650 || rule.DuplicateQuotePolicy is not ("refer" or "allow-competing" or "broker-of-record")) throw Invalid();
             value = rule with { Id = row.Id, Version = row.Version, Summary = AdminAccess.Text(rule.Summary, 1000) };
         }
         else if (row.Scope.StartsWith("flag-definition/", StringComparison.Ordinal))

@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using BackOffice.Infrastructure.Identity;
+using BackOffice.Infrastructure.Administration;
 using BackOffice.Infrastructure.Platform;
 using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Underwriting;
@@ -40,8 +41,8 @@ public static class OperationalRetryEndpoints
         var reason = input.Reason.Trim(); var jobIds = jobs.Select(x => x.JobId).ToArray();
         try
         {
-            var outcome = await commands.ExecuteAsync(new CommandIdentity(actor.UserId, "/api/v1/admin/jobs/retry-batch", key, correlation),
-                new {jobIds, reason}, "diagnostic.batch-retry-requested", async (db, token) =>
+            var outcome = await commands.ExecuteAuthorizedAsync(new CommandIdentity(actor.UserId, "/api/v1/admin/jobs/retry-batch", key, correlation),
+                new {jobs, reason}, "diagnostic.batch-retry-requested",(db,token)=>AdminAccess.Authorize(db,actor,token), async (db, token) =>
                 {
                     // Stable lock order prevents overlapping batches taking opposite row locks.
                     var now = time.GetUtcNow();
@@ -53,6 +54,7 @@ public static class OperationalRetryEndpoints
         catch (JobRetryException failure) { return IdentityEndpoints.Problem(context, failure.Status, failure.Code, "No jobs were queued; refresh the selection and retry."); }
         catch (CommandKeyConflictException) { return IdentityEndpoints.Problem(context, 409, "idempotency-conflict", "This command key was used with different input."); }
         catch (CommandBusyException) { return IdentityEndpoints.Problem(context, 409, "command-busy", "Retry with the same command key."); }
+        catch (Exception error) when (QuoteEndpoints.Known(error)) { return QuoteEndpoints.Failure(context,error); }
     }
 
     private static async Task<IResult> Retry(Guid jobId, HttpContext context, SqlCommandBoundary commands, TimeProvider time,
@@ -107,8 +109,8 @@ public static class OperationalRetryEndpoints
                 return QuoteEndpoints.Outcome(context, servicingOutcome);
             }
             // Preconditions run inside the handler: a prior successful result replays first.
-            var outcome = await commands.ExecuteAsync(new CommandIdentity(actor.UserId, $"/api/v1/jobs/{jobId}/retry", key, correlation),
-                new RetryInput(input.Reason.Trim()), "diagnostic.retry-requested", async (db, token) =>
+            var outcome = await commands.ExecuteAuthorizedAsync(new CommandIdentity(actor.UserId, $"/api/v1/jobs/{jobId}/retry", key, correlation),
+                new {reason=input.Reason.Trim(),etag=versions.ToString()}, "diagnostic.retry-requested",(db,token)=>AdminAccess.Authorize(db,actor,token), async (db, token) =>
                 {
                     var job = await SqlJobRetry.ApplyAsync(db, jobId, expected, actor.UserId, correlation, input.Reason.Trim(), time.GetUtcNow(), token);
                     return new CommandOutcome(job.Id, 202, JsonSerializer.Serialize(OperationalJobEndpoints.View(job), Json));

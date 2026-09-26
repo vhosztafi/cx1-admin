@@ -1,0 +1,1055 @@
+{
+  "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
+  "count": 79,
+  "note": "Maps all original identities to implemented routes or consolidated local UI. This is not a claim that each control received an independent browser test. Named family evidence is recorded in 11-VERIFICATION.md.",
+  "controls": [
+    {
+      "controlId": "CTL-884d9ce1ee34",
+      "label": "Users & roles",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "getAdministrationUsers",
+          "method": "GET",
+          "path": "/api/v1/admin/users"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-f43c26ffcd36",
+      "label": "Client matching",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "getAdministrationConfiguration",
+          "method": "GET",
+          "path": "/api/v1/admin/configuration"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-c1abeccbe48e",
+      "label": "Products & schemes",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "getAdministrationCatalogue",
+          "method": "GET",
+          "path": "/api/v1/admin/catalogue"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-7a70deae880e",
+      "label": "Delegated authority",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "getAdministrationAuthority",
+          "method": "GET",
+          "path": "/api/v1/admin/authority"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-5e8758709f33",
+      "label": "Workflow & tasks",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "getAdministrationConfiguration",
+          "method": "GET",
+          "path": "/api/v1/admin/configuration"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-062173aa3428",
+      "label": "Document & message templates",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "getAdministrationConfiguration",
+          "method": "GET",
+          "path": "/api/v1/admin/configuration"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-f83ab9f84cce",
+      "label": "Integrations",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "getAdministrationIntegrationHealth",
+          "method": "GET",
+          "path": "/api/v1/admin/integration-health"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-1f4136b08d57",
+      "label": "Audit log",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "getAdministrationAudit",
+          "method": "GET",
+          "path": "/api/v1/admin/audit"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-f6daa870681c",
+      "label": "General settings",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "getAdministrationConfiguration",
+          "method": "GET",
+          "path": "/api/v1/admin/configuration"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-c1818cc49cbc",
+      "label": "Invite user",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "inviteInternalUser",
+          "method": "POST",
+          "path": "/api/v1/admin/users/invitations"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-7041753aef98",
+      "label": ".sections[1].rows[0]",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "proposeInternalUserChange",
+          "method": "POST",
+          "path": "/api/v1/admin/users/requests"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-2b90710f6a2a",
+      "label": ".sections[1].rows[3]",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "proposeInternalUserChange",
+          "method": "POST",
+          "path": "/api/v1/admin/users/requests"
+        },
+        {
+          "operationId": "decideInternalUserChange",
+          "method": "POST",
+          "path": "/api/v1/admin/users/requests/{id}/decision"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-d05ecf452764",
+      "label": ".sections[1].rows[4]",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "administrationUserforcereset",
+          "method": "POST",
+          "path": "/api/v1/admin/users/{id}/force-reset"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-55e62661c427",
+      "label": "Rule",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "publishAdministrationConfiguration",
+          "method": "POST",
+          "path": "/api/v1/admin/configuration"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-99ab620eb2d4",
+      "label": "Broker of record period",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "publishAdministrationConfiguration",
+          "method": "POST",
+          "path": "/api/v1/admin/configuration"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx",
+      "note": "Broker protection days are saved in the versioned rule and captured for underwriting review; no automatic protection expiry is invented for historical intakes."
+    },
+    {
+      "controlId": "CTL-a3d0b2052a2b",
+      "label": ".sections[4].rows[0]",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "getMatchReview",
+          "method": "GET",
+          "path": "/api/v1/matches/{matchId}"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-95c96867f896",
+      "label": ".sections[0].rows[2]",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "getPolicy",
+          "method": "GET",
+          "path": "/api/v1/policies/{policyId}"
+        },
+        {
+          "operationId": "getPolicyAsAt",
+          "method": "GET",
+          "path": "/api/v1/terms/{termId}/as-at"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-595fa55cdbb5",
+      "label": "Create draft version",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "cloneProductVersion",
+          "method": "POST",
+          "path": "/api/v1/admin/product-versions/{id}/clone"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-5f57ef7459cf",
+      "label": "Authority for",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "getAdministrationAuthority",
+          "method": "GET",
+          "path": "/api/v1/admin/authority"
+        },
+        {
+          "operationId": "getAdministrationCatalogue",
+          "method": "GET",
+          "path": "/api/v1/admin/catalogue"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-89449214fd17",
+      "label": "Effective from",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "proposeAdministrationAuthority",
+          "method": "POST",
+          "path": "/api/v1/admin/authority/requests"
+        },
+        {
+          "operationId": "decideAdministrationAuthority",
+          "method": "POST",
+          "path": "/api/v1/admin/authority/requests/{id}/decision"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-261936502b06",
+      "label": "Binder",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "proposeAdministrationAuthority",
+          "method": "POST",
+          "path": "/api/v1/admin/authority/requests"
+        },
+        {
+          "operationId": "decideAdministrationAuthority",
+          "method": "POST",
+          "path": "/api/v1/admin/authority/requests/{id}/decision"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx",
+      "note": "The selected existing authority source pins its binder; the successor proposal retains and revalidates that binder."
+    },
+    {
+      "controlId": "CTL-68b6e88e4b7b",
+      "label": "Create draft version",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "proposeAdministrationAuthority",
+          "method": "POST",
+          "path": "/api/v1/admin/authority/requests"
+        },
+        {
+          "operationId": "decideAdministrationAuthority",
+          "method": "POST",
+          "path": "/api/v1/admin/authority/requests/{id}/decision"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-844267662a65",
+      "label": "Preview",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "previewAdministrationTemplate",
+          "method": "POST",
+          "path": "/api/v1/admin/templates/{id}/preview"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-5ba47a39e42b",
+      "label": "Retry batch",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "retryIntegrationBatch",
+          "method": "POST",
+          "path": "/api/v1/admin/jobs/retry-batch"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-f68f49a17b06",
+      "label": "Open bordereaux",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "listBordereaux",
+          "method": "GET",
+          "path": "/api/v1/finance/bordereaux"
+        }
+      ],
+      "implementation": "apps/backoffice/components/admin-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-3e110cd282e0",
+      "label": "Save changes",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "saveOwnProfile",
+          "method": "PUT",
+          "path": "/api/v1/account/profile"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-0a807a86f240",
+      "label": "Back to dashboard",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "getDashboard",
+          "method": "GET",
+          "path": "/api/v1/dashboard"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-0a0a12156da2",
+      "label": "Request a change",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "requestAccountIdentityChange",
+          "method": "POST",
+          "path": "/api/v1/account/identity-requests"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-e9ca9b8ddf5f",
+      "label": "Full name",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "saveOwnProfile",
+          "method": "PUT",
+          "path": "/api/v1/account/profile"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-fb7fd0380a0e",
+      "label": "Display name",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "saveOwnProfile",
+          "method": "PUT",
+          "path": "/api/v1/account/profile"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-ae3dc91658bf",
+      "label": "Contact number",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "saveOwnProfile",
+          "method": "PUT",
+          "path": "/api/v1/account/profile"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-6fa068333beb",
+      "label": "Job title",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "saveOwnProfile",
+          "method": "PUT",
+          "path": "/api/v1/account/profile"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-a6317a500517",
+      "label": "Out of office",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "saveOwnProfile",
+          "method": "PUT",
+          "path": "/api/v1/account/profile"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "Saved profile presence preference; does not bypass workflow assignment authorization."
+    },
+    {
+      "controlId": "CTL-10bc9f0e6f7c",
+      "label": "Task digest",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "saveOwnProfile",
+          "method": "PUT",
+          "path": "/api/v1/account/profile"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "Preference controls an in-app count of the owner’s assigned open tasks, not an email schedule."
+    },
+    {
+      "controlId": "CTL-04e58a7717f8",
+      "label": "Back to dashboard",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "getDashboard",
+          "method": "GET",
+          "path": "/api/v1/dashboard"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-5c6d766be16f",
+      "label": "Sign out",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "revokeOwnSession",
+          "method": "POST",
+          "path": "/api/v1/account/sessions/{id}/revoke"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-2bc7a5b6b24d",
+      "label": "Sign out",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "revokeOwnSession",
+          "method": "POST",
+          "path": "/api/v1/account/sessions/{id}/revoke"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-d163470a6c1c",
+      "label": "Sign out all other sessions",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "revokeOtherAccountSessions",
+          "method": "POST",
+          "path": "/api/v1/account/sessions/revoke-others"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-51186f5e4460",
+      "label": "Report unrecognised activity",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "saveAccountSecurityReport",
+          "method": "POST",
+          "path": "/api/v1/account/security-reports"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-664235c9a920",
+      "label": "Current password",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "changeAccountPassword",
+          "method": "POST",
+          "path": "/api/v1/account/password"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-1ca7dc6c8e73",
+      "label": "New password",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "changeAccountPassword",
+          "method": "POST",
+          "path": "/api/v1/account/password"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-84a03cc130a7",
+      "label": "Confirm new password",
+      "kind": "local-ui",
+      "operations": [],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "New password confirmation must match before submission."
+    },
+    {
+      "controlId": "CTL-8bb02d6fe5ae",
+      "label": "Forgotten your password?",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "requestLocalPasswordReset",
+          "method": "POST",
+          "path": "/api/v1/auth/password-forgot"
+        },
+        {
+          "operationId": "completeLocalPasswordReset",
+          "method": "POST",
+          "path": "/api/v1/auth/password-reset"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-3759ca87f276",
+      "label": "Sign out everywhere",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "revokeAllAccountSessions",
+          "method": "POST",
+          "path": "/api/v1/account/sessions/revoke-all"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "Explicit revoke-all action ends the current session too."
+    },
+    {
+      "controlId": "CTL-f615857e583e",
+      "label": "Set up now",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "beginLocalMfaEnrolment",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/enrolments"
+        },
+        {
+          "operationId": "confirmLocalMfaEnrolment",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/enrolments/{id}/confirm"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-2283b1209a4e",
+      "label": "Set up authenticator app",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "beginLocalMfaEnrolment",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/enrolments"
+        },
+        {
+          "operationId": "confirmLocalMfaEnrolment",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/enrolments/{id}/confirm"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-5d467d2a008f",
+      "label": "Why we ask for this",
+      "kind": "local-ui",
+      "operations": [],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "Expandable two-factor explanation."
+    },
+    {
+      "controlId": "CTL-881262a1851b",
+      "label": "Recovery codes",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "replaceLocalRecoveryCodes",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/recovery-codes"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-481542e5fafd",
+      "label": "View recovery codes",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "replaceLocalRecoveryCodes",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/recovery-codes"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "Existing recovery secrets are never retrieved. Verified replacement reveals a new one-time set."
+    },
+    {
+      "controlId": "CTL-e16137244926",
+      "label": "Regenerate recovery codes",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "replaceLocalRecoveryCodes",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/recovery-codes"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-684745645736",
+      "label": "Replace authenticator app",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "beginLocalMfaEnrolment",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/enrolments"
+        },
+        {
+          "operationId": "confirmLocalMfaEnrolment",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/enrolments/{id}/confirm"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "Verified disable followed by new enrolment replaces an authenticator, ending existing sessions."
+    },
+    {
+      "controlId": "CTL-1decc5a40bc7",
+      "label": "Turn off two-factor authentication",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "disableLocalMfa",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/disable"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-109f52e32998",
+      "label": "Sign back in",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "login",
+          "method": "POST",
+          "path": "/api/v1/auth/login"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-4a16c38ad19e",
+      "label": "Other active sessions",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "getAccountSecurity",
+          "method": "GET",
+          "path": "/api/v1/account/security"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-e94274aa8d30",
+      "label": "Request change",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "proposeInternalUserChange",
+          "method": "POST",
+          "path": "/api/v1/admin/users/requests"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-6024d631eea5",
+      "label": "User",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "getAdministrationUsers",
+          "method": "GET",
+          "path": "/api/v1/admin/users"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-84ae08d2ace0",
+      "label": "Current email",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "getAdministrationUsers",
+          "method": "GET",
+          "path": "/api/v1/admin/users"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-02d5a8374d81",
+      "label": "New email address",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "proposeInternalUserChange",
+          "method": "POST",
+          "path": "/api/v1/admin/users/requests"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-d8964d48425a",
+      "label": "Second approver",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "proposeInternalUserChange",
+          "method": "POST",
+          "path": "/api/v1/admin/users/requests"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "Any distinct current administrator may decide a pending request; self approval is denied. The separate approver picker is consolidated into the pending-request decision flow."
+    },
+    {
+      "controlId": "CTL-50bae4c3910a",
+      "label": "Notify the user",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "proposeInternalUserChange",
+          "method": "POST",
+          "path": "/api/v1/admin/users/requests"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "Administrative access changes appear in the owner’s account notices. Mandatory local notices replace the optional notification checkbox; no real external email is claimed."
+    },
+    {
+      "controlId": "CTL-dc47c1c54ea5",
+      "label": "Copy all codes",
+      "kind": "local-ui",
+      "operations": [],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "User-initiated clipboard copy of newly issued recovery codes."
+    },
+    {
+      "controlId": "CTL-5ec6b96d9dd9",
+      "label": "Codes",
+      "kind": "local-ui",
+      "operations": [],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "One-time returned recovery-code display."
+    },
+    {
+      "controlId": "CTL-b18928254b6a",
+      "label": "Confirm with your password",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "replaceLocalRecoveryCodes",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/recovery-codes"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-b88a29907695",
+      "label": "Turn off",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "disableLocalMfa",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/disable"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-1906c3818071",
+      "label": "Confirm with your password",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "disableLocalMfa",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/disable"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-ed9a5b84734d",
+      "label": "Reason",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "disableLocalMfa",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/disable"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-a0bc1139dfb9",
+      "label": "Authenticator app",
+      "kind": "local-ui",
+      "operations": [],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "Authenticator choice consolidated into supported TOTP setup."
+    },
+    {
+      "controlId": "CTL-f42db530136f",
+      "label": "Name this device",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "beginLocalMfaEnrolment",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/enrolments"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "Device name is encoded in the authenticator setup URI label."
+    },
+    {
+      "controlId": "CTL-e17512c0f03a",
+      "label": "Continue",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "beginLocalMfaEnrolment",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/enrolments"
+        },
+        {
+          "operationId": "confirmLocalMfaEnrolment",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/enrolments/{id}/confirm"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-37ac8f55741b",
+      "label": "Cancel setup",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "cancelLocalMfaEnrolment",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/enrolments/{id}/cancel"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-ccdd7bd72bdb",
+      "label": "Learn more",
+      "kind": "local-ui",
+      "operations": [],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "Expandable explanation and recovery instructions."
+    },
+    {
+      "controlId": "CTL-cd1aa2b17992",
+      "label": "Continue",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "beginLocalMfaEnrolment",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/enrolments"
+        },
+        {
+          "operationId": "confirmLocalMfaEnrolment",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/enrolments/{id}/confirm"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-61d9eb5ae433",
+      "label": "Back",
+      "kind": "local-ui",
+      "operations": [],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "Account tab navigation; cancelling pending setup uses the cancel endpoint."
+    },
+    {
+      "controlId": "CTL-60474f988911",
+      "label": "Cancel setup",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "cancelLocalMfaEnrolment",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/enrolments/{id}/cancel"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-f6ee6e414ad3",
+      "label": "6-digit code",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "confirmLocalMfaEnrolment",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/enrolments/{id}/confirm"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx"
+    },
+    {
+      "controlId": "CTL-bf00dc2dbf93",
+      "label": "Cannot scan",
+      "kind": "local-ui",
+      "operations": [],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "Manual secret and setup URI supplied directly; QR scanning is optional."
+    },
+    {
+      "controlId": "CTL-3117235789fa",
+      "label": "Copy all",
+      "kind": "local-ui",
+      "operations": [],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "User-initiated clipboard copy of newly issued recovery codes."
+    },
+    {
+      "controlId": "CTL-2648097bf60e",
+      "label": "I have saved these recovery codes somewhere safe",
+      "kind": "local-ui",
+      "operations": [],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "Saved-code acknowledgement clears display and returns to sign-in."
+    },
+    {
+      "controlId": "CTL-f593365902af",
+      "label": "Finish and turn on",
+      "kind": "saved-route",
+      "operations": [
+        {
+          "operationId": "confirmLocalMfaEnrolment",
+          "method": "POST",
+          "path": "/api/v1/account/mfa/enrolments/{id}/confirm"
+        }
+      ],
+      "implementation": "apps/backoffice/components/account-workspace.tsx",
+      "note": "MFA activates only after a verified factor. The final saved-codes acknowledgement returns to sign-in; it cannot activate an unverified enrolment."
+    }
+  ]
+}

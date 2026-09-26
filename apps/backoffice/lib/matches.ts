@@ -3,7 +3,7 @@ export type MatchOutcome='link'|'separate'|'decline'|'query'|'reopen';
 export type MatchState='pending'|'queried'|'linked'|'separate'|'declined';
 export type MatchReview={id:string;submissionId:string;candidateClientId:string;candidateRelationshipId:string;confidence:string;state:MatchState;ruleVersionId:string;
   signals:{code:string;summary:string;submittedValue:string;candidateValue:string;weight:string;result:string}[];
-  rule:{id:string;version:number;duplicateQuotePolicy:string;requireReview:boolean;summary:string};
+  rule:{id:string;version:number;duplicateQuotePolicy:string;requireReview:boolean;summary:string;brokerOfRecordDays?:number|null};
   submission:{id:string;reference:string;agencyId:string;agencyName:string;identity:ClientWrite;createdAt:string;linkedClientId?:string;linkedRelationshipId?:string;quoteId?:string;quoteEtag?:string;captureClosed?:boolean}};
 export type MatchDecision={id:string;matchId:string;outcome:MatchOutcome;reason:string;actorLabel:string;occurredAt:string;clientId?:string;relationshipId?:string;informationRequestId?:string};
 export type MatchRequest={id:string;matchId:string;description:string;recordedAt:string;deliveryState:string;correspondence?:{messageId:string;threadId:string;subjectRecordId:string;agencyId:string}};

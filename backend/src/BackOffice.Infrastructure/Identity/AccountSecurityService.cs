@@ -9,8 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackOffice.Infrastructure.Identity;
 public sealed record AccountIdentity(Guid UserId,Guid? AgencyId,string Stamp,Guid? SessionId);
-public sealed record AccountProof(string Password,string? Code);
-public sealed record AccountProfile(string DisplayName,string Etag);
+public sealed record AccountProof(string Password,string? Code,string? DeviceName=null,string? Reason=null);
+public sealed record AccountPreferences(string FullName,string Telephone,string JobTitle,bool OutOfOffice,bool TaskDigest);
+public sealed record AccountProfile(string DisplayName,string Etag,AccountPreferences? Preferences=null);
 public sealed partial class AccountSecurityService(IDbContextFactory<BackOfficeDbContext> factory,IdentitySecrets secrets,TimeProvider time)
 {
     private static readonly PasswordHasher<StaffUser> Hasher=new();
@@ -36,11 +37,21 @@ public sealed partial class AccountSecurityService(IDbContextFactory<BackOfficeD
         var roles=actor.AgencyId==null?await db.Set<Role>().Where(x=>x.Scope=="internal").Select(x=>x.Code).ToArrayAsync(ct):[];
         var currentRoles=await LocalIdentityService.RolesAsync(db,user.Id,ct);
         var reports=await db.Set<AuditEvent>().AsNoTracking().Where(x=>x.ActorId==user.Id&&x.EventType=="security.activity-reported").OrderByDescending(x=>x.OccurredAt).Take(20).Select(x=>new{x.Id,x.OccurredAt,x.Reason}).ToArrayAsync(ct);
-        var result=new{user.Id,user.DisplayName,user.Email,user.TeamId,etag=AdminAccess.Etag(user.RowVersion),mfaEnabled=credential.MfaSecretCiphertext!=null,sessions,requests,teams,roles,currentRoles=currentRoles.Select(x=>x.Code),reports};await tx.CommitAsync(ct);return result;
+        var preference=await db.Set<SettingVersion>().AsNoTracking().Where(x=>x.Scope=="account-profile/"+user.Id).OrderByDescending(x=>x.Version).FirstOrDefaultAsync(ct);
+        var preferences=preference==null?new AccountPreferences(user.DisplayName,"","",false,false):JsonSerializer.Deserialize<AccountPreferences>(preference.Values)!;
+        var taskDigest=preferences.TaskDigest?await db.Set<OperationalTask>().CountAsync(x=>x.OwnerId==user.Id&&(x.State=="open"||x.State=="awaiting-information"),ct):(int?)null;
+        var notices=await db.Set<AuditEvent>().AsNoTracking().Where(x=>x.SubjectRecordId==user.Id&&x.EventType.StartsWith("administration.user")).OrderByDescending(x=>x.OccurredAt).Take(20).Select(x=>new{x.Id,x.EventType,x.OccurredAt}).ToArrayAsync(ct);
+        var result=new{user.Id,user.DisplayName,user.Email,user.TeamId,preferences,taskDigest,notices,etag=AdminAccess.Etag(user.RowVersion),mfaEnabled=credential.MfaSecretCiphertext!=null,sessions,requests,teams,roles,currentRoles=currentRoles.Select(x=>x.Code),reports};await tx.CommitAsync(ct);return result;
     }
     public async Task ProfileAsync(AccountIdentity actor,AccountProfile input,CancellationToken ct=default)
     {
-        await using var db=await factory.CreateDbContextAsync(ct);await using var tx=await db.Database.BeginTransactionAsync(ct);var user=await Own(db,actor,ct);AdminAccess.Version(user,input.Etag);user.DisplayName=AdminAccess.Text(input.DisplayName);Audit(db,user,"account.profile-updated");await db.SaveChangesAsync(ct);await tx.CommitAsync(ct);
+        await using var db=await factory.CreateDbContextAsync(ct);await using var tx=await db.Database.BeginTransactionAsync(ct);var user=await Own(db,actor,ct);AdminAccess.Version(user,input.Etag);user.DisplayName=AdminAccess.Text(input.DisplayName);
+        if(input.Preferences is {} p){var scope="account-profile/"+user.Id;var version=await db.Set<SettingVersion>().Where(x=>x.Scope==scope).Select(x=>(int?)x.Version).MaxAsync(ct)??0;
+            string Optional(string value,int max)=>string.IsNullOrWhiteSpace(value)?"":AdminAccess.Text(value,max);
+            p=p with{FullName=AdminAccess.Text(p.FullName),Telephone=Optional(p.Telephone,50),JobTitle=Optional(p.JobTitle,200)};
+            db.Add(new SettingVersion{Scope=scope,Version=version+1,EffectiveFrom=time.GetUtcNow(),Values=JsonSerializer.Serialize(p),CreatedBy=user.Id,CreatedAt=time.GetUtcNow()});
+            user.UpdatedAt=time.GetUtcNow();db.Entry(user).Property(x=>x.UpdatedAt).IsModified=true;}
+        Audit(db,user,"account.profile-updated");await db.SaveChangesAsync(ct);await tx.CommitAsync(ct);
     }
     public async Task RequestIdentityAsync(AccountIdentity actor,string email,Guid teamId,string[] roles,string reason,CancellationToken ct=default)
     {
@@ -75,12 +86,12 @@ public sealed partial class AccountSecurityService(IDbContextFactory<BackOfficeD
         credential.PasswordHash=Hasher.HashPassword(user,newPassword);credential.MustReset=false;credential.FailedAttempts=0;credential.LockedUntil=null;
         await IdentitySecrets.Invalidate(db,user,time.GetUtcNow(),ct);Audit(db,user,"account.password-reset-completed");await db.SaveChangesAsync(ct);await tx.CommitAsync(ct);return true;
     }
-    public async Task SessionsAsync(AccountIdentity actor,Guid? id,bool others,string reason,CancellationToken ct=default)
+    public async Task SessionsAsync(AccountIdentity actor,Guid? id,bool others,string reason,CancellationToken ct=default,bool all=false)
     {
         await using var db=await factory.CreateDbContextAsync(ct);await using var tx=await db.Database.BeginTransactionAsync(ct);var user=await Own(db,actor,ct);AdminAccess.Text(reason,1000);
         if(others&&actor.SessionId==null)throw Invalid();
         var rows=db.Set<UserSession>().Where(x=>x.UserId==user.Id&&x.RevokedAt==null);
-        rows=others?rows.Where(x=>x.Id!=actor.SessionId):rows.Where(x=>x.Id==id);
+        rows=all?rows:others?rows.Where(x=>x.Id!=actor.SessionId):rows.Where(x=>x.Id==id);
         await rows.ExecuteUpdateAsync(s=>s.SetProperty(x=>x.RevokedAt,time.GetUtcNow()),ct);Audit(db,user,"account.sessions-revoked",reason);await db.SaveChangesAsync(ct);await tx.CommitAsync(ct);
     }
     public async Task ReportAsync(AccountIdentity actor,string description,CancellationToken ct=default)

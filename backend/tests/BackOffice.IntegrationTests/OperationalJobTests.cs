@@ -140,14 +140,15 @@ public sealed class OperationalJobTests
             using (var response = await admin.GetAsync("/api/v1/admin/audit?eventType=diagnostic.completed&from=2020-01-01T00:00:00Z&to=2099-01-01T00:00:00Z&subjectRecordId=" + jobId))
             {
                 response.EnsureSuccessStatusCode(); var text = await response.Content.ReadAsStringAsync();
-                Assert.DoesNotContain("internal-sensitive", text); Assert.DoesNotContain("must-not-be-returned", text);
+                Assert.Contains("internal-sensitive-reason", text); Assert.DoesNotContain("must-not-be-returned", text);
                 using var json = JsonDocument.Parse(text); Assert.Equal(1, json.RootElement.GetProperty("totalCount").GetInt32());
+                using var detail=await admin.GetAsync("/api/v1/admin/audit/"+json.RootElement.GetProperty("items")[0].GetProperty("id").GetGuid());detail.EnsureSuccessStatusCode();Assert.DoesNotContain("must-not-be-returned",await detail.Content.ReadAsStringAsync());
                 Assert.Equal("Demo probe completed.", json.RootElement.GetProperty("items")[0].GetProperty("summary").GetString());
             }
             using (var response = await admin.GetAsync("/api/v1/admin/audit?eventType=unreviewed-event"))
             {
                 response.EnsureSuccessStatusCode(); using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-                Assert.Equal(0, json.RootElement.GetProperty("totalCount").GetInt32());
+                Assert.Equal(1, json.RootElement.GetProperty("totalCount").GetInt32());
             }
             await using (var db = new BackOfficeDbContext(options))
             {

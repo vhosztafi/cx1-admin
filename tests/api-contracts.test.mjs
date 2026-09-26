@@ -14,10 +14,11 @@ const issuedServicing=await read('schemas/issued-servicing.schema.json');
 const issuedCancellation=await read('schemas/issued-cancellation.schema.json');
 ajv.addSchema(issuedCancellation);
 ajv.addSchema(policy);ajv.addSchema(draft);ajv.addSchema(quoteDraft);ajv.addSchema(issuedPolicy);ajv.addSchema(issuedServicing);
+const underwriting=await read('schemas/underwriting-config.schema.json'),commercialUnderwriting=await read('schemas/commercial-underwriting.schema.json');ajv.addSchema(underwriting);ajv.addSchema(commercialUnderwriting);
 const rootId='https://contracts.cover-mga.example/api-schemas';
 function relocate(value){
  if(Array.isArray(value))return value.map(relocate);
- if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([key,v])=>[key,key==='$ref'?v.replace('#/components/schemas/',`${rootId}#/$defs/`).replace('./schemas/policy.schema.json',policy.$id).replace('./schemas/policy-draft.schema.json',draft.$id).replace('./schemas/quote-draft.schema.json',quoteDraft.$id).replace('./schemas/issued-policy.schema.json',issuedPolicy.$id).replace('./schemas/issued-servicing.schema.json',issuedServicing.$id).replace('./schemas/issued-cancellation.schema.json',issuedCancellation.$id):relocate(v)]));
+ if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([key,v])=>[key,key==='$ref'?v.replace('#/components/schemas/',`${rootId}#/$defs/`).replace('./schemas/underwriting-config.schema.json',underwriting.$id).replace('./schemas/commercial-underwriting.schema.json',commercialUnderwriting.$id).replace('./schemas/policy.schema.json',policy.$id).replace('./schemas/policy-draft.schema.json',draft.$id).replace('./schemas/quote-draft.schema.json',quoteDraft.$id).replace('./schemas/issued-policy.schema.json',issuedPolicy.$id).replace('./schemas/issued-servicing.schema.json',issuedServicing.$id).replace('./schemas/issued-cancellation.schema.json',issuedCancellation.$id):relocate(v)]));
  return value;
 }
 ajv.addSchema({$id:rootId,$defs:relocate(document.components.schemas)});
@@ -281,10 +282,10 @@ test('servicing issue requires the policy aggregate version and local profile ca
  const validateIssue=ajv.getSchema(`${rootId}#/$defs/DraftIssueWrite`);
  const command={ratingResultId:'11111111-1111-4111-8111-111111111111',acceptanceId:'22222222-2222-4222-8222-222222222222',targetRevision:4,reason:'Accepted adjustment'};
  assert.equal(validateIssue(command),false);assert.ok(validateIssue({...command,policyEtag:'"v7"'}));
- const validateProfile=ajv.getSchema(`${rootId}#/$defs/ProfileWrite`);
- const profile={fullName:'Demo User',displayName:'Demo',telephone:'0114 000 0000',jobTitle:'Underwriter',outOfOffice:false,taskDigest:'daily-0800'};
+ const validateProfile=ajv.compile(relocate(getOperation('saveOwnProfile').requestBody.content['application/json'].schema));
+ const profile={displayName:'Demo',etag:'version',preferences:{fullName:'Demo User',telephone:'0114 000 0000',jobTitle:'Underwriter',outOfOffice:false,taskDigest:true}};
  assert.ok(validateProfile(profile));assert.equal(validateProfile({...profile,roleCodes:['system-admin']}),false);
- const access=getOperation('requestUserAccessChange');assert.equal(access.responses[200].content['application/json'].schema.$ref,'#/components/schemas/AccessChangeRequest');
+ const access=getOperation('requestAccountIdentityChange');assert.equal(access['x-idempotency'],'not-cached');assert.ok(access.requestBody.content['application/json'].schema.required.includes('reason'));
 });
 test('reviewed control mappings point to real source controls and defined operations',async()=>{
  const inventory=JSON.parse(await readFile(new URL('../docs/design/control-inventory.json',import.meta.url),'utf8'));
@@ -383,6 +384,7 @@ test('servicing input bindings resolve to their actual command payload fields',a
  function hasField(schema,field){
   if(schema.$ref)return hasField(document.components.schemas[schema.$ref.split('/').at(-1)],field);
   if(schema.properties?.[field])return true;
+  if(field.includes('.')){const [head,...rest]=field.split('.');return !!schema.properties?.[head]&&hasField(schema.properties[head],rest.join('.'));}
   // Every alternative must expose a common source form field; one permissive
   // branch must not disguise a missing field on another outcome.
   const branches=schema.oneOf??schema.anyOf;
@@ -390,6 +392,11 @@ test('servicing input bindings resolve to their actual command payload fields',a
  }
  for(const row of rows)for(const binding of row.apiFields??[]){
   let schema=getOperation(binding.operationId).requestBody.content['application/json'].schema;
+  if(binding.configurationScope){
+   while(schema.$ref)schema=document.components.schemas[schema.$ref.split('/').at(-1)];
+   const matching=(schema.oneOf??[]).filter(branch=>branch.properties?.scope?.const===binding.configurationScope);
+   assert.equal(matching.length,1,`${row.controlId}: expected one explicit configuration scope`);schema=matching[0];
+  }
   if(binding.schemaProductCodes){
    while(schema.$ref)schema=document.components.schemas[schema.$ref.split('/').at(-1)];
    const matching=(schema.oneOf??[]).filter(branch=>binding.schemaProductCodes.some(code=>branch.properties?.productCode?.const===code||branch.properties?.productCode?.enum?.includes(code)));
@@ -426,17 +433,15 @@ test('evidence associations retain item scope and withdrawal cannot masquerade a
   assert.deepEqual(withdraw.required,name==='Draft'?['cycleId','associationEtag','reason']:['reason']);assert.equal(withdraw.additionalProperties,false);
  }
 });
-test('MFA verification and activation are separate contracts with explicit acknowledgement',()=>{
- const confirm=getOperation('confirmMfaEnrolment');
+test('MFA activation requires verified factor and secrets are returned only by the uncached confirmation',()=>{
+ const confirm=getOperation('confirmLocalMfaEnrolment');
  const request=confirm.requestBody.content['application/json'].schema;
  const check=ajv.compile(request);
  assert.ok(check({code:'012345'}));assert.equal(check({code:'12345'}),false);assert.equal(check({code:'abcdef'}),false);
  const response=confirm.responses['200'].content['application/json'].schema;
- assert.equal(response.properties.state.const,'verified-pending-activation');
- const activate=getOperation('activateMfaEnrolment');
- const acknowledge=ajv.compile(activate.requestBody.content['application/json'].schema);
- assert.ok(acknowledge({recoveryCodesSaved:true}));assert.equal(acknowledge({recoveryCodesSaved:false}),false);assert.equal(acknowledge({}),false);
- assert.ok(getOperation('cancelMfaEnrolment'));
+ assert.equal(response.properties.state.const,'enabled');assert.ok(response.properties.recoveryCodes);
+ assert.equal(confirm['x-idempotency'],'not-cached');assert.equal(check({}),false);
+ assert.ok(getOperation('cancelLocalMfaEnrolment'));
  assert.ok(document.components.schemas.Agency.properties.state.enum.includes('abandoned'));
 });
 test('every reviewed filter binds to an actual API query parameter',async()=>{
