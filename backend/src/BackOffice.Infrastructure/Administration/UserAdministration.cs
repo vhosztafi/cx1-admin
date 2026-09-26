@@ -13,7 +13,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace BackOffice.Infrastructure.Administration;
 public sealed record UserInvitation(string Email,string DisplayName,Guid TeamId,string Reason);
-public sealed record UserChange(Guid UserId,string Etag,string Email,Guid TeamId,string[] Roles,bool ResetMfa,string Reason);
+public sealed record UserChange(Guid UserId,string Etag,string Email,Guid TeamId,string[] Roles,bool ResetMfa,string Reason,bool SelfRequested=false);
 public sealed class UserAdministration(IDbContextFactory<BackOfficeDbContext> factory,SqlCommandBoundary commands,IdentitySecrets secrets,TimeProvider time,IHostEnvironment environment)
 {
     private static readonly JsonSerializerOptions Json=ProductAdministration.Json;
@@ -51,6 +51,7 @@ public sealed class UserAdministration(IDbContextFactory<BackOfficeDbContext> fa
     public Task<CommandOutcome> ProposeAsync(ActorContext actor,UserChange input,string key,CancellationToken ct=default)
         =>Command(actor,"/api/v1/admin/users/requests",key,input,async(db,t)=>
         {
+            if(input.SelfRequested)throw new QuoteOperationException(400,"user-change-invalid");
             var user=await Internal(db,input.UserId,t);AdminAccess.Version(user,input.Etag);await Validate(db,input,t);
             var row=AdministrationRequests.Create(db,actor,"user",input,time.GetUtcNow());AdminAccess.Audit(db,actor,user.Id,"administration.user-change-requested",input.Reason,null,new{requestId=row.Id,input.UserId,input.Email,input.TeamId,input.Roles,input.ResetMfa},time.GetUtcNow());
             return Outcome(row.Id,AdministrationRequests.View(row),201);
@@ -63,7 +64,11 @@ public sealed class UserAdministration(IDbContextFactory<BackOfficeDbContext> fa
             var input=request.Proposal.Deserialize<UserChange>(Json)!;
             if(approve)
             {
-                await AdminAccess.Authorize(db,new(request.RequestedBy,null,null,new HashSet<string>()),t);
+                if(input.SelfRequested)
+                {
+                    if(request.RequestedBy!=input.UserId||await IdentitySnapshot.Lock(db,new(request.RequestedBy,null),t)==null)throw new QuoteOperationException(403,"requester-no-longer-active");
+                }
+                else await AdminAccess.Authorize(db,new(request.RequestedBy,null,null,new HashSet<string>()),t);
                 var user=await Internal(db,input.UserId,t);AdminAccess.Version(user,input.Etag);await Validate(db,input,t);
                 if(!input.Roles.Contains("system-admin"))await GuardLastAdmin(db,user,t);
                 var before=new{user.Email,user.TeamId};var credential=await db.Set<UserCredential>().SingleAsync(x=>x.UserId==user.Id&&x.Provider=="local",t);

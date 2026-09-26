@@ -2,6 +2,11 @@
 export type ProductVersion = {id:string;productId:string;productCode:string;productName:string;version:number;state:'draft'|'published'|'retired';providerId:string;effectiveFrom:string;effectiveTo:string|null;schemaVersion:string;questionSetVersion:string;coverSections:string[];etag:string};
 export type Provider = {id:string;code:string;name:string;state:'active'|'inactive';etag:string};
 export type Catalogue = {products:{id:string;code:string;name:string}[];versions:ProductVersion[];providers:Provider[]};
+export type AdministrationUser={id:string;email:string;displayName:string;state:string;teamId:string;roles:string[];etag:string;mfaEnabled:boolean;mustReset:boolean};
+export type AdministrationUserChange={userId:string;etag:string;email:string;teamId:string;roles:string[];resetMfa:boolean;reason:string;selfRequested?:boolean};
+export type UserAdministrationView={users:AdministrationUser[];teams:{id:string;name:string;etag:string}[];roles:string[];requests:{id:string;requestedBy:string;state:string;proposal:AdministrationUserChange;etag:string;decisionReason:string|null}[];deliveries:{id:string;userId:string;kind:string;expiresAt:string}[];demoDelivery:boolean};
+export type AccountSecurityView={id:string;displayName:string;email:string;teamId:string;etag:string;mfaEnabled:boolean;currentRoles:string[];roles:string[];teams:{id:string;name:string}[];requests:{id:string;state:string;proposal:{reason:string};decisionReason:string|null}[];sessions:{id:string;deviceLabel:string;createdAt:string;lastSeenAt:string;expiresAt:string;current:boolean}[];reports:{id:string;occurredAt:string;reason:string}[]};
+export type MfaEnrolment={enrolmentId:string;secret:string;otpauthUri:string;expiresAt:string};
 export type AdministrationSetting={id:string;scope:string;version:number;effectiveFrom:string|null;values:Record<string,unknown>;etag:string};
 export type AdministrationTemplate={id:string;productId:string;code:string;kind:string;version:number;effectiveFrom:string;effectiveTo:string;values:{title:string;notice:string};etag:string};
 export type ConfigurationAdministrationView={settings:AdministrationSetting[];templates:AdministrationTemplate[];teams:{id:string;name:string}[];products:{id:string;name:string}[]};

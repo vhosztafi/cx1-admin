@@ -3,9 +3,7 @@ import {useState} from 'react';
 import {Panel,DataTable} from '../primitives';
 import {adminIntent,adminSend} from '../../lib/admin-api';
 import {useAdminResource} from './use-admin-resource';
-type User={id:string;email:string;displayName:string;state:string;teamId:string;roles:string[];etag:string;mfaEnabled:boolean;mustReset:boolean};
-type Change={userId:string;etag:string;email:string;teamId:string;roles:string[];resetMfa:boolean;reason:string};
-type Data={users:User[];teams:{id:string;name:string;etag:string}[];roles:string[];requests:{id:string;requestedBy:string;state:string;proposal:Change;etag:string;decisionReason:string|null}[];deliveries:{id:string;userId:string;kind:string;expiresAt:string}[];demoDelivery:boolean};
+import type {AdministrationUser as User,UserAdministrationView as Data} from '../../../../contracts/generated/administration';
 export function UserAdministration(){
  const r=useAdminResource<Data>('/admin/users'),[query,setQuery]=useState(''),[selected,setSelected]=useState(''),[delivery,setDelivery]=useState(''),[error,setError]=useState('');
  const user=r.data?.users.find(x=>x.id===selected);

@@ -21,6 +21,7 @@ public static class IdentityEndpoints
         builder.Services.AddDbContextFactory<BackOfficeDbContext>(options => options.UseSqlServer(connection,sql => sql.UseCompatibilityLevel(160)));
         builder.Services.AddSingleton(TimeProvider.System);
         builder.Services.AddSingleton<LocalIdentityService>();
+        builder.Services.AddScoped<AccountSecurityService>();
         builder.Services.AddSingleton<SqlTicketStore>();
         var keyPath = builder.Configuration["Cover:DataProtectionPath"];
         if (!development && string.IsNullOrWhiteSpace(keyPath)) throw new InvalidOperationException("Configure persistent Data Protection storage for this environment.");
@@ -131,12 +132,17 @@ public static class IdentityEndpoints
     {
         app.MapGet("/api/v1/auth/csrf",(HttpContext context,IAntiforgery antiforgery) =>
             Results.Ok(new {requestToken=antiforgery.GetAndStoreTokens(context).RequestToken})).AllowAnonymous();
-        app.MapPost("/api/v1/auth/login",async (LoginRequest input,HttpContext context,LocalIdentityService identity) =>
+        app.MapPost("/api/v1/auth/login",async (LoginRequest input,HttpContext context,LocalIdentityService identity,AccountSecurityService security) =>
         {
             if (string.IsNullOrWhiteSpace(input.Email) || input.Email.Length > 254 || string.IsNullOrEmpty(input.Password) || input.Password.Length > 1024)
                 return Problem(context,422,"invalid-credentials-input","Email and password are required.");
-            var result = await identity.AuthenticateAsync(input.Email,input.Password,context.RequestAborted);
+            var result = await identity.AuthenticatePasswordForChallengeAsync(input.Email,input.Password,context.RequestAborted);
             if (result is null) return Problem(context,401,"invalid-credentials","Unable to sign in with these credentials.");
+            if(result.View.MfaEnabled)
+            {
+                if(context.User.Identity?.IsAuthenticated==true)await context.SignOutAsync();
+                return Results.Ok(new{state="mfa-required",challengeToken=await security.ChallengeAsync(result,context.RequestAborted)});
+            }
             // Rotate any existing session on explicit sign-in.
             if (context.User.Identity?.IsAuthenticated == true) await context.SignOutAsync();
             await context.SignInAsync(result.Principal,new AuthenticationProperties {IsPersistent=false});

@@ -27,6 +27,9 @@ public sealed class IdentitySecrets(IDataProtectionProvider protection,TimeProvi
         user.SecurityStamp=Guid.NewGuid().ToString("N");
         await db.Set<UserSession>().Where(x=>x.UserId==user.Id&&x.RevokedAt==null).ExecuteUpdateAsync(s=>s.SetProperty(x=>x.RevokedAt,now),ct);
         await db.Set<IdentityAction>().Where(x=>x.UserId==user.Id&&x.ConsumedAt==null).ExecuteUpdateAsync(s=>s.SetProperty(x=>x.ConsumedAt,now).SetProperty(x=>x.SecretCiphertext,(byte[]?)null),ct);
+        // The bulk invalidation also consumes a recovery factor tracked by the
+        // caller. Do not later write its now-stale rowversion over that result.
+        foreach(var entry in db.ChangeTracker.Entries<IdentityAction>().Where(x=>x.Entity.UserId==user.Id&&x.State!=EntityState.Added).ToArray())entry.State=EntityState.Detached;
     }
     public static async Task<StaffUser> HoldUser(BackOfficeDbContext db,Guid id,CancellationToken ct)
         =>await db.Set<StaffUser>().FromSqlInterpolated($"SELECT * FROM [User] WITH(UPDLOCK,HOLDLOCK) WHERE Id={id}").SingleOrDefaultAsync(ct)??throw new QuoteOperationException(404,"user-not-found");

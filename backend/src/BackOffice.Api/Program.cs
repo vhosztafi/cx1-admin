@@ -300,6 +300,7 @@ app.MapAdministration();
 app.MapAuthorityAdministration();
 app.MapConfigurationAdministration();
 app.MapUserAdministration();
+app.MapAccountSecurity();
 app.MapClients();
 app.MapAgencies();
 app.MapAgencyStateRequests();

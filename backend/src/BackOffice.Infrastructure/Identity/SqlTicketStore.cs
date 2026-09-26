@@ -26,9 +26,14 @@ public sealed class SqlTicketStore(IDbContextFactory<BackOfficeDbContext> factor
             throw new InvalidOperationException("Account roles changed during authentication.");
         if (!LocalIdentityService.ScopeMatches(ticket.Principal,user) || user.State != "active" || user.SecurityStamp != ticket.Principal.FindFirstValue(LocalIdentityService.StampClaim))
             throw new InvalidOperationException("Account changed during authentication.");
+        var credential=await db.Set<UserCredential>().AsNoTracking().SingleAsync(x=>x.UserId==userId&&x.Provider=="local");
+        if(credential.MustReset||credential.MfaSecretCiphertext!=null&&!ticket.Principal.HasClaim("amr","mfa"))throw new InvalidOperationException("Required second factor is not verified.");
         var key = WebEncoders.Base64UrlEncode(RandomNumberGenerator.GetBytes(32));
         var now = time.GetUtcNow();
-        db.Add(new UserSession {UserId=userId,TokenHash=Hash(key),CreatedAt=now,UpdatedAt=now,ExpiresAt=ticket.Properties.ExpiresUtc ?? now.AddHours(8),
+        var sessionId=Guid.NewGuid();var ticketIdentity=(ClaimsIdentity)ticket.Principal.Identity!;
+        foreach(var prior in ticketIdentity.FindAll("cover:session").ToArray())ticketIdentity.RemoveClaim(prior);
+        ticketIdentity.AddClaim(new("cover:session",sessionId.ToString()));
+        db.Add(new UserSession {Id=sessionId,UserId=userId,TokenHash=Hash(key),CreatedAt=now,UpdatedAt=now,ExpiresAt=ticket.Properties.ExpiresUtc ?? now.AddHours(8),
             LastSeenAt=now,DeviceLabel="Back office browser",SecurityStamp=user.SecurityStamp,
             TicketCiphertext=protector.Protect(TicketSerializer.Default.Serialize(ticket))});
         db.Add(LocalIdentityService.AuthenticationAudit(userId,"authentication.succeeded",now));
@@ -58,7 +63,11 @@ public sealed class SqlTicketStore(IDbContextFactory<BackOfficeDbContext> factor
         if (ticket is null || !LocalIdentityService.ScopeMatches(ticket.Principal,user) || ticket.Properties.ExpiresUtc <= now ||
             ticket.Principal.FindFirstValue(ClaimTypes.NameIdentifier) != user.Id.ToString() ||
             ticket.Principal.FindFirstValue(LocalIdentityService.StampClaim) != session.SecurityStamp) return null;
-        ticket = new AuthenticationTicket(LocalIdentityService.Principal(user,roles),ticket.Properties,ticket.AuthenticationScheme);
+        var credential=await db.Set<UserCredential>().AsNoTracking().SingleAsync(x=>x.UserId==user.Id&&x.Provider=="local");
+        if(credential.MustReset||credential.MfaSecretCiphertext!=null&&!ticket.Principal.HasClaim("amr","mfa"))return null;
+        var principal=LocalIdentityService.Principal(user,roles);var claims=(ClaimsIdentity)principal.Identity!;
+        claims.AddClaim(new("cover:session",session.Id.ToString()));if(ticket.Principal.HasClaim("amr","mfa"))claims.AddClaim(new("amr","mfa"));
+        ticket = new AuthenticationTicket(principal,ticket.Properties,ticket.AuthenticationScheme);
         // Avoid rewriting encrypted tickets/rowversions on every asset/API fetch.
         if (session.LastSeenAt < now.AddMinutes(-1))
             await db.Set<UserSession>().Where(x => x.Id == session.Id && x.RevokedAt == null)

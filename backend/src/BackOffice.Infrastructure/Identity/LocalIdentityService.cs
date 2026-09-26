@@ -21,6 +21,10 @@ public sealed class LocalIdentityService(IDbContextFactory<BackOfficeDbContext> 
     private static readonly string DummyHash = Hasher.HashPassword(new StaffUser(),Guid.NewGuid().ToString("N"));
 
     public async Task<LocalIdentity?> AuthenticateAsync(string email,string password,CancellationToken cancellationToken)
+        => await AuthenticateCore(email,password,false,cancellationToken);
+    public async Task<LocalIdentity?> AuthenticatePasswordForChallengeAsync(string email,string password,CancellationToken cancellationToken)
+        => await AuthenticateCore(email,password,true,cancellationToken);
+    private async Task<LocalIdentity?> AuthenticateCore(string email,string password,bool allowMfa,CancellationToken cancellationToken)
     {
         var normalized = email.Trim().ToUpperInvariant();
         await using var db = await factory.CreateDbContextAsync(cancellationToken);
@@ -34,8 +38,8 @@ public sealed class LocalIdentityService(IDbContextFactory<BackOfficeDbContext> 
         var now = time.GetUtcNow();
         var verification = Hasher.VerifyHashedPassword(user ?? new StaffUser(),credential?.PasswordHash ?? DummyHash,password);
         if (credential is null || user is null) return null;
-        if (credential.LockedUntil > now || user.State != "active" || credential.MustReset || credential.MfaSecretCiphertext is not null)
-            return null; // MFA accounts cannot bypass their second factor while its flow is unimplemented.
+        if (credential.LockedUntil > now || user.State != "active" || credential.MustReset || !allowMfa && credential.MfaSecretCiphertext is not null)
+            return null;
         if (verification == PasswordVerificationResult.Failed)
         {
             if (credential.LockedUntil is not null) credential.FailedAttempts=0;
@@ -47,12 +51,12 @@ public sealed class LocalIdentityService(IDbContextFactory<BackOfficeDbContext> 
             await transaction.CommitAsync(cancellationToken);
             return null;
         }
-        credential.FailedAttempts=0; credential.LockedUntil=null;
+        if(credential.MfaSecretCiphertext is null){credential.FailedAttempts=0; credential.LockedUntil=null;}
         if (verification == PasswordVerificationResult.SuccessRehashNeeded) credential.PasswordHash=Hasher.HashPassword(user,password);
         var roles = snapshot!.Roles;
         await db.SaveChangesAsync(cancellationToken);
         await transaction.CommitAsync(cancellationToken);
-        return new LocalIdentity(View(user,roles),Principal(user,roles));
+        return new LocalIdentity(View(user,roles) with {MfaEnabled=credential.MfaSecretCiphertext!=null},Principal(user,roles));
     }
 
     public async Task<ActorView?> GetActorAsync(Guid userId,CancellationToken cancellationToken)
@@ -63,7 +67,7 @@ public sealed class LocalIdentityService(IDbContextFactory<BackOfficeDbContext> 
         await using var transaction = await db.Database.BeginTransactionAsync(cancellationToken);
         var snapshot = await IdentitySnapshot.Lock(db,reference,cancellationToken);
         if (snapshot == null) return null;
-        var result = View(snapshot.User,snapshot.Roles);
+        var result = View(snapshot.User,snapshot.Roles) with {MfaEnabled=await db.Set<UserCredential>().AnyAsync(x=>x.UserId==userId&&x.MfaSecretCiphertext!=null,cancellationToken)};
         await transaction.CommitAsync(cancellationToken); return result;
     }
 
