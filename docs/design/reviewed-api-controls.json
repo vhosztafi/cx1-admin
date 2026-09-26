@@ -10711,7 +10711,7 @@
     "queryFields": [
       {
         "operationId": "searchRecords",
-        "parameter": "inceptionFrom"
+        "parameter": "from"
       }
     ],
     "reason": "Filter the complete authorised server-side collection, reset pagination and retain filters in URL. All/Any omits the parameter. Names resolve to stable IDs; dates use Europe/London. Period selects both from/to. Finance status is a documented tab-specific projection, not a write or cross-tab state enum."

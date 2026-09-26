@@ -38,7 +38,7 @@ export function WorkspaceShell({ actor, children }: { actor: Actor; children: Re
       <div className="drawer-content"><button className="drawer-close button" onClick={() => drawer.current?.close()} aria-label="Close navigation">Close ×</button><Navigation canQuote={canCaptureQuotes(actor.roles)} close={() => drawer.current?.close()} /></div>
     </dialog>
     <div className="workspace-body"><header className="topbar"><button className="button mobile-menu" aria-label="Open navigation" onClick={() => drawer.current?.showModal()}>☰</button>
-      <div className="search-box"><input aria-label="Search clients, policies, quotes and registrations (not available yet)" placeholder="Search clients, policies, quotes, registrations" disabled /><span>All</span></div>
+      <form action="/search" className="search-box"><input name="q" aria-label="Search clients, policies, quotes and registrations" placeholder="Search clients, policies, quotes, registrations" maxLength={200}/><button type="submit" className="button">Search</button></form>
       <Link href="/search" className="advanced-search">Advanced Search</Link>
       <div className="topbar-account"><button className="button alerts-button" disabled title="Alerts are not available yet">Alerts</button>
         <details className="account-menu"><summary><span className="avatar">{initials}</span><span className="user-label"><strong>{actor.displayName}</strong><small>{actor.roles.map(role => role.replaceAll('-', ' ')).join(', ')}</small></span><span className="caret" aria-hidden="true">▾</span></summary>

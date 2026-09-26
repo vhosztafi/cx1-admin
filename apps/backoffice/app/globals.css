@@ -543,3 +543,7 @@ h1, h2, p { margin: 0; }
 .finance-stack .table-scroll td:last-child { white-space: nowrap; }
 @media(max-width:800px) { .finance-measures,.finance-equation { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media(max-width:490px) { .finance-measures,.finance-equation { grid-template-columns: minmax(0,1fr) minmax(0,1fr); } .finance-measures strong,.finance-equation strong { font-size: 16px; } .finance-agency-picker,.finance-form { display: grid; grid-template-columns: minmax(0,1fr); } }
+
+.report-filter-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(210px,1fr)); gap: 16px; padding: 20px; align-items: end; }
+.report-filter-grid label { display: grid; gap: 6px; font-size: 13px; font-weight: 600; }
+.report-filter-grid input, .report-filter-grid select { width: 100%; min-height: 38px; padding: 8px 10px; border: 1px solid var(--border, #cbd5df); border-radius: 6px; background: white; color: inherit; }
