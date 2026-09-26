@@ -2,3 +2,8 @@
 export type ProductVersion = {id:string;productId:string;productCode:string;productName:string;version:number;state:'draft'|'published'|'retired';providerId:string;effectiveFrom:string;effectiveTo:string|null;schemaVersion:string;questionSetVersion:string;coverSections:string[];etag:string};
 export type Provider = {id:string;code:string;name:string;state:'active'|'inactive';etag:string};
 export type Catalogue = {products:{id:string;code:string;name:string}[];versions:ProductVersion[];providers:Provider[]};
+export type AuthorityLimits = {[key:string]:string|number|boolean|number[]|AuthorityLimits};
+export type AdministrationAuthority = {id:string;productVersionId:string;binderVersionId:string;version:string;state:string;productName:string;effectiveFrom:string;effectiveTo:string;limits:AuthorityLimits;etag:string};
+export type AuthorityProposal = {sourceAuthorityId:string;sourceEtag:string;productVersionId:string;effectiveFrom:string;effectiveTo:string;limits:AuthorityLimits;routingTeamId:string;userIds:string[];reason:string};
+export type AuthorityRequest = {id:string;kind:'authority';state:'pending'|'approved'|'rejected';requestedBy:string;requestedAt:string;etag:string;decidedBy:string|null;decisionReason:string|null;proposal:{input:AuthorityProposal;runtimeId:string;binderEtag:string;definition:string;version:string}};
+export type AuthorityAdministrationView = {versions:AdministrationAuthority[];grants:{id:string;userId:string;authorityVersionId:string;effectiveFrom:string;effectiveTo:string;revokedAt:string|null;revocationReason:string|null;etag:string}[];users:{id:string;displayName:string}[];teams:{id:string;name:string}[];routingTeamId:string|null;requests:AuthorityRequest[]};

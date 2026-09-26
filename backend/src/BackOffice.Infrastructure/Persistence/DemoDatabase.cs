@@ -53,6 +53,17 @@ public static class DemoDatabase
                 db.Add(new UserCredential {UserId=user.Id,ProviderSubject=normalized,PasswordHash=new PasswordHasher<StaffUser>().HashPassword(user,password)});
             }
         }
+        // Distinct local administrator for sensitive configuration/identity approvals.
+        // Existing users and credential hashes are never overwritten on reseed.
+        const string adminReviewerEmail="admin-reviewer@cover.example";
+        var adminReviewerNormalized=adminReviewerEmail.ToUpperInvariant();
+        if(!await db.Set<StaffUser>().AnyAsync(x=>x.NormalizedEmail==adminReviewerNormalized,cancellationToken))
+        {
+            var role=db.Set<Role>().Local.SingleOrDefault(x=>x.Code=="system-admin")??await db.Set<Role>().SingleAsync(x=>x.Code=="system-admin",cancellationToken);
+            var adminReviewer=new StaffUser{Email=adminReviewerEmail,NormalizedEmail=adminReviewerNormalized,DisplayName="Demo administrator reviewer",TeamId=team.Id};
+            db.Add(adminReviewer);db.Add(new UserRole{UserId=adminReviewer.Id,RoleId=role.Id});
+            db.Add(new UserCredential{UserId=adminReviewer.Id,ProviderSubject=adminReviewer.NormalizedEmail,PasswordHash=new PasswordHasher<StaffUser>().HashPassword(adminReviewer,password)});
+        }
         // Add a distinct countersigner without changing any existing identity or password.
         const string reviewerEmail="agency-reviewer@cover.example";
         var reviewerNormalized=reviewerEmail.ToUpperInvariant();

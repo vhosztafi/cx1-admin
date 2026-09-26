@@ -124573,6 +124573,1075 @@
         },
         "x-runtime-status": "phase-11-01-implemented"
       }
+    },
+    "/admin/authority": {
+      "get": {
+        "operationId": "getAdministrationAuthority",
+        "summary": "get Administration Authority",
+        "description": "Requires current active internal system administrator, checked in SQL before replay. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "tags": [
+          "admin"
+        ],
+        "x-permission": "current active internal system administrator, checked in SQL before replay",
+        "x-idempotency": "not-cached",
+        "security": [
+          {
+            "Session": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "versions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AdminAuthority"
+                      },
+                      "maxItems": 1000
+                    },
+                    "grants": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AdminAuthorityGrant"
+                      },
+                      "maxItems": 1000
+                    },
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "displayName": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "displayName"
+                        ]
+                      },
+                      "maxItems": 1000
+                    },
+                    "teams": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "name": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name"
+                        ]
+                      },
+                      "maxItems": 1000
+                    },
+                    "routingTeamId": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "requests": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/AdminAuthorityRequest"
+                      },
+                      "maxItems": 1000
+                    }
+                  },
+                  "required": [
+                    "versions",
+                    "grants",
+                    "users",
+                    "teams",
+                    "routingTeamId",
+                    "requests"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-11-02-implemented"
+      }
+    },
+    "/admin/authority/requests": {
+      "post": {
+        "operationId": "proposeAdministrationAuthority",
+        "summary": "propose Administration Authority",
+        "description": "Requires current active internal system administrator, checked in SQL before replay. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "tags": [
+          "admin"
+        ],
+        "x-permission": "current active internal system administrator, checked in SQL before replay",
+        "x-idempotency": "required",
+        "security": [
+          {
+            "Session": [],
+            "Csrf": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 200
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Resource created.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminAuthorityRequest"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "409": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "412": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "422": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "428": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminAuthorityProposal"
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-11-02-implemented"
+      }
+    },
+    "/admin/authority/requests/{id}/decision": {
+      "post": {
+        "operationId": "decideAdministrationAuthority",
+        "summary": "decide Administration Authority",
+        "description": "Requires current active internal system administrator, checked in SQL before replay. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "tags": [
+          "admin"
+        ],
+        "x-permission": "current active internal system administrator, checked in SQL before replay",
+        "x-idempotency": "required",
+        "security": [
+          {
+            "Session": [],
+            "Csrf": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminAuthorityRequest"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "409": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "412": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "422": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "428": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "approve": {
+                    "type": "boolean"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000
+                  }
+                },
+                "required": [
+                  "approve",
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-11-02-implemented"
+      }
+    },
+    "/admin/authority/grants/{id}/revoke": {
+      "post": {
+        "operationId": "revokeAdministrationAuthority",
+        "summary": "revoke Administration Authority",
+        "description": "Requires current active internal system administrator, checked in SQL before replay. Applies record and field scope; see API-CONVENTIONS.md for concurrency, replay and error semantics.",
+        "tags": [
+          "admin"
+        ],
+        "x-permission": "current active internal system administrator, checked in SQL before replay",
+        "x-idempotency": "required",
+        "security": [
+          {
+            "Session": [],
+            "Csrf": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "409": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "412": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "422": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "428": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000
+                  }
+                },
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          }
+        },
+        "x-runtime-status": "phase-11-02-implemented"
+      }
     }
   },
   "components": {
@@ -218611,6 +219680,303 @@
           "name",
           "state",
           "reason"
+        ]
+      },
+      "AdminAuthorityLimits": {
+        "oneOf": [
+          {
+            "$ref": "./schemas/underwriting-config.schema.json#/oneOf/1/properties/limits"
+          },
+          {
+            "$ref": "./schemas/commercial-underwriting.schema.json#/oneOf/2/properties/limits"
+          }
+        ]
+      },
+      "AdminAuthorityProposal": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "sourceAuthorityId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sourceEtag": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "productVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "effectiveFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "effectiveTo": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/AdminAuthorityLimits"
+          },
+          "routingTeamId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userIds": {
+            "type": "array",
+            "maxItems": 100,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "sourceAuthorityId",
+          "sourceEtag",
+          "productVersionId",
+          "effectiveFrom",
+          "effectiveTo",
+          "limits",
+          "routingTeamId",
+          "userIds",
+          "reason"
+        ]
+      },
+      "AdminAuthority": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "productVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "binderVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 60
+          },
+          "state": {
+            "enum": [
+              "published",
+              "retired"
+            ]
+          },
+          "productName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "effectiveFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "effectiveTo": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/AdminAuthorityLimits"
+          },
+          "etag": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "id",
+          "productVersionId",
+          "binderVersionId",
+          "version",
+          "state",
+          "productName",
+          "effectiveFrom",
+          "effectiveTo",
+          "limits",
+          "etag"
+        ]
+      },
+      "AdminAuthorityRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "const": "authority"
+          },
+          "state": {
+            "enum": [
+              "pending",
+              "approved",
+              "rejected"
+            ]
+          },
+          "requestedBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "requestedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "proposal": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "input": {
+                "$ref": "#/components/schemas/AdminAuthorityProposal"
+              },
+              "runtimeId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "binderEtag": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "definition": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 65536
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 60
+              }
+            },
+            "required": [
+              "input",
+              "runtimeId",
+              "binderEtag",
+              "definition",
+              "version"
+            ]
+          },
+          "decidedBy": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "decisionReason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "etag": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "state",
+          "requestedBy",
+          "requestedAt",
+          "proposal",
+          "decidedBy",
+          "decisionReason",
+          "etag"
+        ]
+      },
+      "AdminAuthorityGrant": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "authorityVersionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "effectiveFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "effectiveTo": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "revokedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "revocationReason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "etag": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "id",
+          "userId",
+          "authorityVersionId",
+          "effectiveFrom",
+          "effectiveTo",
+          "revokedAt",
+          "revocationReason",
+          "etag"
         ]
       }
     }
