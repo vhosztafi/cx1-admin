@@ -307,7 +307,11 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Goal:** Verify prototype completeness and deliver a repeatable demonstration.
 **Depends on:** Phase 12
 **Requirements:** ACC-01 through ACC-06
-**Plans:** Not yet planned.
+**Plans:** 3 sequential plans.
+
+- [ ] 13-01 — Traceability and practical regression.
+- [ ] 13-02 — Owned restart, navigation and visual acceptance.
+- [ ] 13-03 — Demo and developer handover.
 
 **Success criteria:**
 
