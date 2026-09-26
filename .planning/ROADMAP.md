@@ -338,7 +338,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 9. Tasks, documents, communication and incidents | 18/18 | Complete | 2026-09-23 |
 | 10. Accounting and insurer reporting | 18/18 | Complete | 2026-09-26 |
 | 11. Configuration and account administration | 6/6 | Complete    | 2026-09-26 |
-| 12. Dashboards, search and reports | 0/5 | Planned | — |
+| 12. Dashboards, search and reports | 1/5 | In progress | — |
 | 13. Complete demo and acceptance | 0/TBD | Not started | — |
 
 ### Phase 3 downstream acceptance obligations
