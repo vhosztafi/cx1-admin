@@ -1,0 +1,3423 @@
+{
+  "milestone": "v1.0",
+  "audited": "2026-09-26T12:14:45.210Z",
+  "sourceCommit": "7224b72",
+  "scope": "Existing phase evidence plus current focused source/contract audit; not a new full-suite certification",
+  "phases": [
+    {
+      "phase": 1,
+      "verification": ".planning/phases/01-data-and-api-design/01-VERIFICATION.md",
+      "status": "passed",
+      "verifiedIds": [
+        "DES-01",
+        "DES-02",
+        "DES-03",
+        "DES-04",
+        "DES-05",
+        "DES-06"
+      ],
+      "summaries": [
+        {
+          "file": ".planning/phases/01-data-and-api-design/01-01-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "DES-01",
+            "DES-06"
+          ],
+          "bodyIds": [
+            "DES-01",
+            "DES-06"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/01-data-and-api-design/01-02-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "DES-02",
+            "DES-03",
+            "DES-05"
+          ],
+          "bodyIds": [
+            "DES-02",
+            "DES-03",
+            "DES-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/01-data-and-api-design/01-03-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "DES-04"
+          ],
+          "bodyIds": [
+            "DES-04"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/01-data-and-api-design/01-04-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "DES-01",
+            "DES-02",
+            "DES-03",
+            "DES-04",
+            "DES-05",
+            "DES-06"
+          ],
+          "bodyIds": [
+            "DES-01",
+            "DES-02",
+            "DES-03",
+            "DES-04",
+            "DES-05",
+            "DES-06"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        }
+      ]
+    },
+    {
+      "phase": 2,
+      "verification": ".planning/phases/02-application-and-persistence-foundation/02-VERIFICATION.md",
+      "status": "passed",
+      "verifiedIds": [
+        "FND-01",
+        "FND-02",
+        "FND-03",
+        "FND-04",
+        "FND-05",
+        "FND-06"
+      ],
+      "summaries": [
+        {
+          "file": ".planning/phases/02-application-and-persistence-foundation/02-01-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "FND-01",
+            "FND-05"
+          ],
+          "bodyIds": [
+            "FND-01",
+            "FND-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/02-application-and-persistence-foundation/02-02-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "FND-01",
+            "FND-04",
+            "FND-05"
+          ],
+          "bodyIds": [
+            "FND-01",
+            "FND-04",
+            "FND-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/02-application-and-persistence-foundation/02-03-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "FND-02",
+            "FND-06"
+          ],
+          "bodyIds": [
+            "FND-02",
+            "FND-06"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/02-application-and-persistence-foundation/02-04-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "FND-03",
+            "FND-02"
+          ],
+          "bodyIds": [
+            "FND-03",
+            "FND-02"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/02-application-and-persistence-foundation/02-05-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "FND-06",
+            "FND-05"
+          ],
+          "bodyIds": [
+            "FND-06",
+            "FND-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/02-application-and-persistence-foundation/02-06-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "FND-01",
+            "FND-02",
+            "FND-03",
+            "FND-04",
+            "FND-05",
+            "FND-06"
+          ],
+          "bodyIds": [
+            "FND-01",
+            "FND-02",
+            "FND-03",
+            "FND-04",
+            "FND-05",
+            "FND-06"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        }
+      ]
+    },
+    {
+      "phase": 3,
+      "verification": ".planning/phases/03-clients-and-contact-servicing/03-VERIFICATION.md",
+      "status": "passed",
+      "verifiedIds": [
+        "CLI-01",
+        "CLI-02",
+        "CLI-03",
+        "CLI-04"
+      ],
+      "summaries": [
+        {
+          "file": ".planning/phases/03-clients-and-contact-servicing/03-01-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "CLI-01",
+            "CLI-02",
+            "CLI-03",
+            "CLI-04"
+          ],
+          "bodyIds": [
+            "CLI-01",
+            "CLI-02",
+            "CLI-03",
+            "CLI-04"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/03-clients-and-contact-servicing/03-02-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "CLI-01",
+            "CLI-02"
+          ],
+          "bodyIds": [
+            "CLI-01",
+            "CLI-02"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/03-clients-and-contact-servicing/03-03-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "CLI-02",
+            "CLI-01"
+          ],
+          "bodyIds": [
+            "CLI-02",
+            "CLI-01"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/03-clients-and-contact-servicing/03-04-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "CLI-03"
+          ],
+          "bodyIds": [
+            "CLI-03",
+            "CLI-01"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/03-clients-and-contact-servicing/03-05-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "CLI-04",
+            "CLI-01"
+          ],
+          "bodyIds": [
+            "CLI-04",
+            "CLI-01"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/03-clients-and-contact-servicing/03-06-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "CLI-01",
+            "CLI-02",
+            "CLI-03",
+            "CLI-04"
+          ],
+          "bodyIds": [
+            "CLI-01",
+            "CLI-02",
+            "CLI-03",
+            "CLI-04"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        }
+      ]
+    },
+    {
+      "phase": 4,
+      "verification": ".planning/phases/04-agency-onboarding-and-access/04-VERIFICATION.md",
+      "status": "passed",
+      "verifiedIds": [
+        "AGY-03",
+        "AGY-01",
+        "AGY-02",
+        "AGY-04",
+        "AGY-05"
+      ],
+      "summaries": [
+        {
+          "file": ".planning/phases/04-agency-onboarding-and-access/04-01-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "AGY-01",
+            "AGY-02",
+            "AGY-03",
+            "AGY-04",
+            "AGY-05"
+          ],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/04-agency-onboarding-and-access/04-02-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/04-agency-onboarding-and-access/04-03-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/04-agency-onboarding-and-access/04-04-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "AGY-05"
+          ],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/04-agency-onboarding-and-access/04-05-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/04-agency-onboarding-and-access/04-06-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/04-agency-onboarding-and-access/04-07-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "AGY-03"
+          ],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/04-agency-onboarding-and-access/04-08-SUMMARY.md",
+          "completed": [
+            "AGY-01",
+            "AGY-02",
+            "AGY-05"
+          ],
+          "legacy": [],
+          "bodyIds": [
+            "AGY-01",
+            "AGY-02",
+            "AGY-05",
+            "AGY-03",
+            "AGY-04"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        }
+      ]
+    },
+    {
+      "phase": 5,
+      "verification": ".planning/phases/05-motor-trade-quote-capture/05-VERIFICATION.md",
+      "status": "passed",
+      "verifiedIds": [
+        "QUO-02",
+        "QUO-03",
+        "QUO-04",
+        "QUO-05",
+        "QUO-01",
+        "QUO-06"
+      ],
+      "summaries": [
+        {
+          "file": ".planning/phases/05-motor-trade-quote-capture/05-01-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "QUO-01",
+            "QUO-02",
+            "QUO-03",
+            "QUO-04",
+            "QUO-05",
+            "QUO-06"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/05-motor-trade-quote-capture/05-02-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "QUO-02",
+            "QUO-06",
+            "DEMO-01"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/05-motor-trade-quote-capture/05-03-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "QUO-02",
+            "QUO-03",
+            "MTS-01",
+            "MTS-03"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/05-motor-trade-quote-capture/05-04-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "QUO-04"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/05-motor-trade-quote-capture/05-05-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "QUO-04"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/05-motor-trade-quote-capture/05-06-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "QUO-03",
+            "QUO-04"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/05-motor-trade-quote-capture/05-07-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "QUO-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/05-motor-trade-quote-capture/05-08-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "QUO-03",
+            "QUO-04"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/05-motor-trade-quote-capture/05-09-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "QUO-06"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/05-motor-trade-quote-capture/05-10-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "QUO-01",
+            "QUO-06"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/05-motor-trade-quote-capture/05-11-SUMMARY.md",
+          "completed": [
+            "QUO-02",
+            "QUO-04",
+            "QUO-05"
+          ],
+          "legacy": [],
+          "bodyIds": [
+            "QUO-02",
+            "QUO-04",
+            "QUO-05",
+            "QUO-01",
+            "QUO-03",
+            "QUO-06",
+            "CLI-01",
+            "AGY-04"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        }
+      ]
+    },
+    {
+      "phase": 6,
+      "verification": ".planning/phases/06-underwriting-and-first-policy-issue/06-VERIFICATION.md",
+      "status": "passed",
+      "verifiedIds": [
+        "UWR-01",
+        "UWR-02",
+        "UWR-03",
+        "UWR-04",
+        "UWR-05",
+        "UWR-06",
+        "UWR-07",
+        "QUO-01",
+        "QUO-03",
+        "QUO-06",
+        "CLI-01",
+        "AGY-04"
+      ],
+      "summaries": [
+        {
+          "file": ".planning/phases/06-underwriting-and-first-policy-issue/06-01-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "UW-09",
+            "UW-22",
+            "W-07"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/06-underwriting-and-first-policy-issue/06-02-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "UW-09",
+            "UW-22",
+            "MTS-06"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/06-underwriting-and-first-policy-issue/06-03-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/06-underwriting-and-first-policy-issue/06-04-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "UW-22",
+            "UW-09",
+            "W-07"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/06-underwriting-and-first-policy-issue/06-05-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "UW-22",
+            "W-07"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/06-underwriting-and-first-policy-issue/06-06-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/06-underwriting-and-first-policy-issue/06-07-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/06-underwriting-and-first-policy-issue/06-08-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/06-underwriting-and-first-policy-issue/06-09-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/06-underwriting-and-first-policy-issue/06-10-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/06-underwriting-and-first-policy-issue/06-11-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/06-underwriting-and-first-policy-issue/06-12-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/06-underwriting-and-first-policy-issue/06-13-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/06-underwriting-and-first-policy-issue/06-14-SUMMARY.md",
+          "completed": [
+            "UWR-01",
+            "UWR-02",
+            "UWR-03",
+            "UWR-04",
+            "UWR-05",
+            "UWR-06",
+            "UWR-07",
+            "QUO-01",
+            "QUO-03",
+            "QUO-06",
+            "CLI-01"
+          ],
+          "legacy": [],
+          "bodyIds": [
+            "UWR-01",
+            "UWR-02",
+            "UWR-03",
+            "UWR-04",
+            "UWR-05",
+            "UWR-06",
+            "UWR-07",
+            "QUO-01",
+            "QUO-03",
+            "QUO-06",
+            "CLI-01",
+            "W-07",
+            "AGY-04"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        }
+      ]
+    },
+    {
+      "phase": 7,
+      "verification": ".planning/phases/07-policy-lifecycle-and-history/07-VERIFICATION.md",
+      "status": "passed",
+      "verifiedIds": [
+        "POL-02",
+        "POL-03",
+        "POL-04",
+        "POL-05",
+        "POL-06",
+        "POL-07",
+        "POL-08",
+        "POL-09",
+        "POL-01"
+      ],
+      "summaries": [
+        {
+          "file": ".planning/phases/07-policy-lifecycle-and-history/07-01-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "POL-02",
+            "POL-04",
+            "POL-05",
+            "POL-06",
+            "POL-07",
+            "POL-08",
+            "POL-09"
+          ],
+          "bodyIds": [
+            "POL-02",
+            "POL-04",
+            "POL-05",
+            "POL-06",
+            "POL-07",
+            "POL-08",
+            "POL-09",
+            "POL-01"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/07-policy-lifecycle-and-history/07-02-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "POL-01",
+            "POL-05",
+            "POL-06"
+          ],
+          "bodyIds": [
+            "POL-01",
+            "POL-05",
+            "POL-06"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/07-policy-lifecycle-and-history/07-03-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "POL-02",
+            "POL-03",
+            "POL-06"
+          ],
+          "bodyIds": [
+            "POL-02",
+            "POL-03",
+            "POL-06"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/07-policy-lifecycle-and-history/07-04-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "POL-01",
+            "POL-02",
+            "POL-03",
+            "POL-06"
+          ],
+          "bodyIds": [
+            "POL-01",
+            "POL-02",
+            "POL-03",
+            "POL-06"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/07-policy-lifecycle-and-history/07-05-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "POL-04",
+            "POL-06"
+          ],
+          "bodyIds": [
+            "POL-04",
+            "POL-06"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/07-policy-lifecycle-and-history/07-06-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "POL-04"
+          ],
+          "bodyIds": [
+            "POL-04",
+            "D-10"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/07-policy-lifecycle-and-history/07-07-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "POL-04"
+          ],
+          "bodyIds": [
+            "POL-04"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/07-policy-lifecycle-and-history/07-08-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "POL-04",
+            "POL-07"
+          ],
+          "bodyIds": [
+            "POL-04",
+            "POL-07"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/07-policy-lifecycle-and-history/07-09-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "POL-04",
+            "POL-09"
+          ],
+          "bodyIds": [
+            "POL-04",
+            "POL-09"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/07-policy-lifecycle-and-history/07-10-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "POL-04",
+            "POL-05",
+            "POL-06"
+          ],
+          "bodyIds": [
+            "POL-04",
+            "POL-05",
+            "POL-06"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/07-policy-lifecycle-and-history/07-11-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "POL-07"
+          ],
+          "bodyIds": [
+            "POL-07",
+            "UW-31"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "POL-07",
+            "POL-08"
+          ],
+          "bodyIds": [
+            "POL-07",
+            "POL-08"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/07-policy-lifecycle-and-history/07-13-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "POL-09"
+          ],
+          "bodyIds": [
+            "POL-09"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/07-policy-lifecycle-and-history/07-14-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "POL-09",
+            "POL-05",
+            "POL-06"
+          ],
+          "bodyIds": [
+            "POL-09",
+            "POL-05",
+            "POL-06"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/07-policy-lifecycle-and-history/07-15-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "POL-01",
+            "POL-02",
+            "POL-05"
+          ],
+          "bodyIds": [
+            "POL-01",
+            "POL-02",
+            "POL-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md",
+          "completed": [
+            "POL-02",
+            "POL-03",
+            "POL-04",
+            "POL-05",
+            "POL-06",
+            "POL-07",
+            "POL-08",
+            "POL-09"
+          ],
+          "legacy": [
+            "POL-01",
+            "POL-02",
+            "POL-03",
+            "POL-04",
+            "POL-05",
+            "POL-06",
+            "POL-07",
+            "POL-08",
+            "POL-09"
+          ],
+          "bodyIds": [
+            "POL-02",
+            "POL-03",
+            "POL-04",
+            "POL-05",
+            "POL-06",
+            "POL-07",
+            "POL-08",
+            "POL-09",
+            "POL-01"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        }
+      ]
+    },
+    {
+      "phase": 8,
+      "verification": ".planning/phases/08-commercial-combined-back-office/08-VERIFICATION.md",
+      "status": "passed",
+      "verifiedIds": [
+        "CC-01",
+        "CC-02",
+        "CC-03",
+        "CC-04",
+        "CC-05"
+      ],
+      "summaries": [
+        {
+          "file": ".planning/phases/08-commercial-combined-back-office/08-01-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "CC-01",
+            "CC-02",
+            "CC-03",
+            "CC-04",
+            "CC-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/08-commercial-combined-back-office/08-02-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "CC-01",
+            "CC-02",
+            "CC-03",
+            "CC-04",
+            "CC-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/08-commercial-combined-back-office/08-03-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "CC-01"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/08-commercial-combined-back-office/08-04-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/08-commercial-combined-back-office/08-05-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "CC-03",
+            "CC-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/08-commercial-combined-back-office/08-06-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "CC-03",
+            "CC-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/08-commercial-combined-back-office/08-07-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "AU-05",
+            "AU-06",
+            "CC-03",
+            "CC-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/08-commercial-combined-back-office/08-08-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "CC-03",
+            "CC-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/08-commercial-combined-back-office/08-09-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "CC-03"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/08-commercial-combined-back-office/08-10-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/08-commercial-combined-back-office/08-11-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/08-commercial-combined-back-office/08-12-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "CC-03",
+            "CC-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/08-commercial-combined-back-office/08-13-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "CC-04",
+            "CC-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/08-commercial-combined-back-office/08-14-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "CC-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/08-commercial-combined-back-office/08-15-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "CC-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/08-commercial-combined-back-office/08-16-SUMMARY.md",
+          "completed": [
+            "CC-01",
+            "CC-02",
+            "CC-03",
+            "CC-04"
+          ],
+          "legacy": [],
+          "bodyIds": [
+            "CC-01",
+            "CC-02",
+            "CC-03",
+            "CC-04",
+            "CC-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        }
+      ]
+    },
+    {
+      "phase": 9,
+      "verification": ".planning/phases/09-tasks-documents-communication-and-incidents/09-VERIFICATION.md",
+      "status": "passed",
+      "verifiedIds": [
+        "POL-01",
+        "OPS-01",
+        "OPS-02",
+        "OPS-03",
+        "OPS-04",
+        "OPS-05",
+        "OPS-06",
+        "OPS-07",
+        "OPS-08",
+        "CC-05"
+      ],
+      "summaries": [
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-01-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "OPS-01",
+            "OPS-02",
+            "OPS-03",
+            "OPS-04",
+            "OPS-05",
+            "OPS-06",
+            "OPS-07",
+            "OPS-08"
+          ],
+          "bodyIds": [
+            "OPS-01",
+            "OPS-02",
+            "OPS-03",
+            "OPS-04",
+            "OPS-05",
+            "OPS-06",
+            "OPS-07",
+            "OPS-08",
+            "CC-05",
+            "POL-01"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-02-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "OPS-01"
+          ],
+          "bodyIds": [
+            "OPS-01"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-03-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "OPS-01"
+          ],
+          "bodyIds": [
+            "OPS-01"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-04-SUMMARY.md",
+          "completed": [
+            "OPS-02"
+          ],
+          "legacy": [],
+          "bodyIds": [
+            "OPS-02",
+            "OPS-01"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-05-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "OPS-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-06-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "OPS-04",
+            "CC-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-07-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "OPS-04",
+            "CC-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-08-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "OPS-04",
+            "CC-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-09-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "OPS-03"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-10-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-11-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-12-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "OPS-07"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-13-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "OPS-07",
+            "CC-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-14-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "OPS-08"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-15-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-16-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-17-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/09-tasks-documents-communication-and-incidents/09-18-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "OPS-01",
+            "OPS-02",
+            "OPS-03",
+            "OPS-04",
+            "OPS-05",
+            "OPS-06",
+            "OPS-07",
+            "OPS-08",
+            "CC-05",
+            "POL-01"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        }
+      ]
+    },
+    {
+      "phase": 10,
+      "verification": ".planning/phases/10-accounting-and-insurer-reporting/10-VERIFICATION.md",
+      "status": "passed",
+      "verifiedIds": [
+        "FIN-01",
+        "FIN-02",
+        "FIN-03",
+        "FIN-04",
+        "FIN-05",
+        "FIN-06",
+        "FIN-07",
+        "FIN-08"
+      ],
+      "summaries": [
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-01-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": false,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-02-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "FIN-01",
+            "FIN-08",
+            "POL-01"
+          ],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-03-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "FIN-01",
+            "FIN-02",
+            "POL-01"
+          ],
+          "bodyIds": [
+            "FIN-01",
+            "FIN-02",
+            "POL-01"
+          ],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-04-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "FIN-03"
+          ],
+          "bodyIds": [
+            "FIN-03"
+          ],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-05-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "FIN-03",
+            "FIN-01"
+          ],
+          "bodyIds": [
+            "FIN-03",
+            "FIN-01"
+          ],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-06-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "FIN-04"
+          ],
+          "bodyIds": [
+            "FIN-04"
+          ],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-07-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "FIN-05"
+          ],
+          "bodyIds": [
+            "FIN-05"
+          ],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-08-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "FIN-05"
+          ],
+          "bodyIds": [
+            "FIN-05"
+          ],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-09-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "FIN-06"
+          ],
+          "bodyIds": [
+            "FIN-06"
+          ],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-10-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "FIN-07"
+          ],
+          "bodyIds": [
+            "FIN-07"
+          ],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-11-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "FIN-08",
+            "FIN-01"
+          ],
+          "bodyIds": [
+            "FIN-08",
+            "FIN-01"
+          ],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-12-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [
+            "FIN-01"
+          ],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-13-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-14-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-15-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-16-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-17-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": ""
+        },
+        {
+          "file": ".planning/phases/10-accounting-and-insurer-reporting/10-18-SUMMARY.md",
+          "completed": [
+            "FIN-01",
+            "FIN-05",
+            "FIN-08"
+          ],
+          "legacy": [],
+          "bodyIds": [
+            "FIN-01",
+            "FIN-05",
+            "FIN-08"
+          ],
+          "hasFrontmatter": true,
+          "status": ""
+        }
+      ]
+    },
+    {
+      "phase": 11,
+      "verification": ".planning/phases/11-configuration-and-account-administration/11-VERIFICATION.md",
+      "status": "passed",
+      "verifiedIds": [
+        "ADM-01",
+        "ADM-02",
+        "ADM-03",
+        "ADM-04",
+        "ADM-05",
+        "ADM-06",
+        "ADM-07",
+        "ADM-08"
+      ],
+      "summaries": [
+        {
+          "file": ".planning/phases/11-configuration-and-account-administration/11-01-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "ADM-01"
+          ],
+          "bodyIds": [
+            "ADM-01"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/11-configuration-and-account-administration/11-02-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "ADM-02"
+          ],
+          "bodyIds": [
+            "ADM-02"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/11-configuration-and-account-administration/11-03-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "ADM-03"
+          ],
+          "bodyIds": [
+            "ADM-03"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/11-configuration-and-account-administration/11-04-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "ADM-04",
+            "ADM-06"
+          ],
+          "bodyIds": [
+            "ADM-04",
+            "ADM-06"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/11-configuration-and-account-administration/11-05-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "ADM-05",
+            "ADM-06"
+          ],
+          "bodyIds": [
+            "ADM-05",
+            "ADM-06"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/11-configuration-and-account-administration/11-06-SUMMARY.md",
+          "completed": [],
+          "legacy": [
+            "ADM-07",
+            "ADM-08"
+          ],
+          "bodyIds": [
+            "ADM-07",
+            "ADM-08"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        }
+      ]
+    },
+    {
+      "phase": 12,
+      "verification": ".planning/phases/12-dashboards-search-and-reports/12-VERIFICATION.md",
+      "status": "passed",
+      "verifiedIds": [
+        "RPT-01",
+        "RPT-02",
+        "RPT-03",
+        "RPT-04",
+        "RPT-05"
+      ],
+      "summaries": [
+        {
+          "file": ".planning/phases/12-dashboards-search-and-reports/12-01-SUMMARY.md",
+          "completed": [
+            "RPT-01"
+          ],
+          "legacy": [],
+          "bodyIds": [
+            "RPT-01"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/12-dashboards-search-and-reports/12-02-SUMMARY.md",
+          "completed": [
+            "RPT-02"
+          ],
+          "legacy": [],
+          "bodyIds": [
+            "RPT-02"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/12-dashboards-search-and-reports/12-03-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/12-dashboards-search-and-reports/12-04-SUMMARY.md",
+          "completed": [],
+          "legacy": [],
+          "bodyIds": [],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/12-dashboards-search-and-reports/12-05-SUMMARY.md",
+          "completed": [
+            "RPT-03",
+            "RPT-04",
+            "RPT-05"
+          ],
+          "legacy": [],
+          "bodyIds": [
+            "RPT-03",
+            "RPT-04",
+            "RPT-05"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        }
+      ]
+    },
+    {
+      "phase": 13,
+      "verification": ".planning/phases/13-complete-demo-and-acceptance/13-VERIFICATION.md",
+      "status": "passed",
+      "verifiedIds": [
+        "ACC-01",
+        "ACC-02",
+        "ACC-03",
+        "ACC-04",
+        "ACC-05",
+        "ACC-06",
+        "AGY-03",
+        "AGY-04",
+        "POL-01"
+      ],
+      "summaries": [
+        {
+          "file": ".planning/phases/13-complete-demo-and-acceptance/13-01-SUMMARY.md",
+          "completed": [
+            "ACC-03",
+            "ACC-04"
+          ],
+          "legacy": [],
+          "bodyIds": [
+            "ACC-03",
+            "ACC-04"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/13-complete-demo-and-acceptance/13-02-SUMMARY.md",
+          "completed": [
+            "ACC-05"
+          ],
+          "legacy": [],
+          "bodyIds": [
+            "ACC-05",
+            "ACC-02"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        },
+        {
+          "file": ".planning/phases/13-complete-demo-and-acceptance/13-03-SUMMARY.md",
+          "completed": [
+            "ACC-01",
+            "ACC-06"
+          ],
+          "legacy": [],
+          "bodyIds": [
+            "ACC-01",
+            "ACC-06"
+          ],
+          "hasFrontmatter": true,
+          "status": "complete"
+        }
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "id": "DES-01",
+      "checked": true,
+      "description": "Reviewer can trace every prototype screen, tab, modal, link, command and disabled-state rule to an implementation requirement and acceptance scenario.",
+      "verifications": [
+        ".planning/phases/01-data-and-api-design/01-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/01-data-and-api-design/01-01-SUMMARY.md",
+        ".planning/phases/01-data-and-api-design/01-04-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "1",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "DES-02",
+      "checked": true,
+      "description": "Reviewer can inspect an ERD, relational data dictionary, keys, indexes and retention rules that distinguish clients, people, quotes, policies, terms, transactions, versions and financial entries.",
+      "verifications": [
+        ".planning/phases/01-data-and-api-design/01-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/01-data-and-api-design/01-02-SUMMARY.md",
+        ".planning/phases/01-data-and-api-design/01-04-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "1",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "DES-03",
+      "checked": true,
+      "description": "Reviewer can validate versioned JSON schemas and realistic examples for both Motor Trade products and Commercial Combined, including extension and migration rules.",
+      "verifications": [
+        ".planning/phases/01-data-and-api-design/01-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/01-data-and-api-design/01-02-SUMMARY.md",
+        ".planning/phases/01-data-and-api-design/01-04-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "1",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "DES-04",
+      "checked": true,
+      "description": "Reviewer can inspect OpenAPI request/response/error examples, permissions, pagination, concurrency and idempotency rules for every feature command.",
+      "verifications": [
+        ".planning/phases/01-data-and-api-design/01-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/01-data-and-api-design/01-03-SUMMARY.md",
+        ".planning/phases/01-data-and-api-design/01-04-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "1",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "DES-05",
+      "checked": true,
+      "description": "Reviewer can inspect state-transition and authority tables plus worked examples for issue, amendment, renewal, cancellation, effective dates and financial calculations.",
+      "verifications": [
+        ".planning/phases/01-data-and-api-design/01-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/01-data-and-api-design/01-02-SUMMARY.md",
+        ".planning/phases/01-data-and-api-design/01-04-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "1",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "DES-06",
+      "checked": true,
+      "description": "Reviewer can trace Motor Trade fields and option identities to the read-only funnel reference, with missing or conflicting evidence explicitly recorded.",
+      "verifications": [
+        ".planning/phases/01-data-and-api-design/01-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/01-data-and-api-design/01-01-SUMMARY.md",
+        ".planning/phases/01-data-and-api-design/01-04-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "1",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "FND-01",
+      "checked": true,
+      "description": "Developer can run the Next.js application, .NET API and SQL Server with documented commands, version pins, migrations and persistent volumes.",
+      "verifications": [
+        ".planning/phases/02-application-and-persistence-foundation/02-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/02-application-and-persistence-foundation/02-01-SUMMARY.md",
+        ".planning/phases/02-application-and-persistence-foundation/02-02-SUMMARY.md",
+        ".planning/phases/02-application-and-persistence-foundation/02-06-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "2",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "FND-02",
+      "checked": true,
+      "description": "Staff can sign in with seeded local accounts, keep a secure session across refresh, sign out and have API requests checked against server-side permissions.",
+      "verifications": [
+        ".planning/phases/02-application-and-persistence-foundation/02-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/02-application-and-persistence-foundation/02-03-SUMMARY.md",
+        ".planning/phases/02-application-and-persistence-foundation/02-04-SUMMARY.md",
+        ".planning/phases/02-application-and-persistence-foundation/02-06-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "2",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "FND-03",
+      "checked": true,
+      "description": "Staff can navigate a responsive shell matching the prototype's typography, blue record headers, sidebar, tabs, tables, action rails and meaningful loading/error/empty states.",
+      "verifications": [
+        ".planning/phases/02-application-and-persistence-foundation/02-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/02-application-and-persistence-foundation/02-04-SUMMARY.md",
+        ".planning/phases/02-application-and-persistence-foundation/02-06-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "2",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "FND-04",
+      "checked": true,
+      "description": "Developer can seed a repeatable fictional dataset with a consistent clock and reset only a designated demo database through an explicit command.",
+      "verifications": [
+        ".planning/phases/02-application-and-persistence-foundation/02-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/02-application-and-persistence-foundation/02-02-SUMMARY.md",
+        ".planning/phases/02-application-and-persistence-foundation/02-06-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "2",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "FND-05",
+      "checked": true,
+      "description": "Developer can run unit tests, API checks and SQL Server integration tests in the documented verification workflow.",
+      "verifications": [
+        ".planning/phases/02-application-and-persistence-foundation/02-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/02-application-and-persistence-foundation/02-01-SUMMARY.md",
+        ".planning/phases/02-application-and-persistence-foundation/02-02-SUMMARY.md",
+        ".planning/phases/02-application-and-persistence-foundation/02-05-SUMMARY.md",
+        ".planning/phases/02-application-and-persistence-foundation/02-06-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "2",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "FND-06",
+      "checked": true,
+      "description": "Staff can see audited mutations and durable demo-adapter jobs that survive application restart; sensitive values are excluded from ordinary logs.",
+      "verifications": [
+        ".planning/phases/02-application-and-persistence-foundation/02-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/02-application-and-persistence-foundation/02-03-SUMMARY.md",
+        ".planning/phases/02-application-and-persistence-foundation/02-05-SUMMARY.md",
+        ".planning/phases/02-application-and-persistence-foundation/02-06-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "2",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "CLI-01",
+      "checked": true,
+      "description": "Staff can search, filter and page clients and open linked policies, quotes, contacts and activity.",
+      "verifications": [
+        ".planning/phases/03-clients-and-contact-servicing/03-VERIFICATION.md",
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-14-SUMMARY.md"
+      ],
+      "legacy": [
+        ".planning/phases/03-clients-and-contact-servicing/03-01-SUMMARY.md",
+        ".planning/phases/03-clients-and-contact-servicing/03-02-SUMMARY.md",
+        ".planning/phases/03-clients-and-contact-servicing/03-03-SUMMARY.md",
+        ".planning/phases/03-clients-and-contact-servicing/03-05-SUMMARY.md",
+        ".planning/phases/03-clients-and-contact-servicing/03-06-SUMMARY.md"
+      ],
+      "bodyOnly": [
+        ".planning/phases/03-clients-and-contact-servicing/03-04-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-11-SUMMARY.md"
+      ],
+      "assignment": "3",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "CLI-02",
+      "checked": true,
+      "description": "Staff can create and update business accounts and contacts, recording legal identity, addresses, consent and a single primary contact.",
+      "verifications": [
+        ".planning/phases/03-clients-and-contact-servicing/03-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/03-clients-and-contact-servicing/03-01-SUMMARY.md",
+        ".planning/phases/03-clients-and-contact-servicing/03-02-SUMMARY.md",
+        ".planning/phases/03-clients-and-contact-servicing/03-03-SUMMARY.md",
+        ".planning/phases/03-clients-and-contact-servicing/03-06-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "3",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "CLI-03",
+      "checked": true,
+      "description": "Authorised staff can add, review, amend and resolve person-level support flags, with audit and separate internal versus agency wording.",
+      "verifications": [
+        ".planning/phases/03-clients-and-contact-servicing/03-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/03-clients-and-contact-servicing/03-01-SUMMARY.md",
+        ".planning/phases/03-clients-and-contact-servicing/03-04-SUMMARY.md",
+        ".planning/phases/03-clients-and-contact-servicing/03-06-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "3",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "CLI-04",
+      "checked": true,
+      "description": "Staff can review duplicate-match evidence and record link, new-client or reject decisions without exposing another agency's restricted records.",
+      "verifications": [
+        ".planning/phases/03-clients-and-contact-servicing/03-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/03-clients-and-contact-servicing/03-01-SUMMARY.md",
+        ".planning/phases/03-clients-and-contact-servicing/03-05-SUMMARY.md",
+        ".planning/phases/03-clients-and-contact-servicing/03-06-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "3",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "AGY-01",
+      "checked": true,
+      "description": "Staff can create and resume agency onboarding with contacts, products, commission terms, required evidence and activation checks.",
+      "verifications": [
+        ".planning/phases/04-agency-onboarding-and-access/04-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/04-agency-onboarding-and-access/04-08-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [
+        ".planning/phases/04-agency-onboarding-and-access/04-01-SUMMARY.md"
+      ],
+      "assignment": "4",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "AGY-02",
+      "checked": true,
+      "description": "Authorised staff can maintain agency users and invitations, expire/resend/revoke invitations, suspend access and enforce internal/agency role separation.",
+      "verifications": [
+        ".planning/phases/04-agency-onboarding-and-access/04-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/04-agency-onboarding-and-access/04-08-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [
+        ".planning/phases/04-agency-onboarding-and-access/04-01-SUMMARY.md"
+      ],
+      "assignment": "4",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "AGY-03",
+      "checked": true,
+      "description": "Staff can view agency products, access settings, accounts and activity from persisted records.",
+      "verifications": [
+        ".planning/phases/04-agency-onboarding-and-access/04-VERIFICATION.md",
+        ".planning/phases/13-complete-demo-and-acceptance/13-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [],
+      "bodyOnly": [
+        ".planning/phases/04-agency-onboarding-and-access/04-01-SUMMARY.md",
+        ".planning/phases/04-agency-onboarding-and-access/04-07-SUMMARY.md",
+        ".planning/phases/04-agency-onboarding-and-access/04-08-SUMMARY.md"
+      ],
+      "assignment": "4 / 10 / 13",
+      "status": "satisfied-local-evidence",
+      "review": "Manual compound closure: Phase 13 verification and docs/acceptance/ACCEPTANCE.md reconcile earlier phase evidence and current record wiring."
+    },
+    {
+      "id": "AGY-04",
+      "checked": true,
+      "description": "Staff can inspect an internal agency-sharing view with field-level restrictions; an agency-scoped API identity cannot access another agency's records.",
+      "verifications": [
+        ".planning/phases/04-agency-onboarding-and-access/04-VERIFICATION.md",
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-VERIFICATION.md",
+        ".planning/phases/13-complete-demo-and-acceptance/13-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [],
+      "bodyOnly": [
+        ".planning/phases/04-agency-onboarding-and-access/04-01-SUMMARY.md",
+        ".planning/phases/04-agency-onboarding-and-access/04-08-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-11-SUMMARY.md",
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-14-SUMMARY.md"
+      ],
+      "assignment": "4 / 5 / 6 / 9 / 13",
+      "status": "satisfied-local-evidence",
+      "review": "Manual compound closure: Phase 13 verification and docs/acceptance/ACCEPTANCE.md reconcile earlier phase evidence and current record wiring."
+    },
+    {
+      "id": "AGY-05",
+      "checked": true,
+      "description": "Agency activation and user invitation create persistent demo notifications with visible delivery outcomes.",
+      "verifications": [
+        ".planning/phases/04-agency-onboarding-and-access/04-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/04-agency-onboarding-and-access/04-08-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [
+        ".planning/phases/04-agency-onboarding-and-access/04-01-SUMMARY.md",
+        ".planning/phases/04-agency-onboarding-and-access/04-04-SUMMARY.md"
+      ],
+      "assignment": "4",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "QUO-01",
+      "checked": true,
+      "description": "Staff can browse, search, sort, filter and page policies/quotes by product, agency, client, reference, registration and status.",
+      "verifications": [
+        ".planning/phases/05-motor-trade-quote-capture/05-VERIFICATION.md",
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-14-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [
+        ".planning/phases/05-motor-trade-quote-capture/05-01-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-10-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-11-SUMMARY.md"
+      ],
+      "assignment": "5 / 6",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "QUO-02",
+      "checked": true,
+      "description": "Staff can create, save and resume Motor Trade Road Risks and Motor Trade Combined quotes linked to a client, agency and effective product configuration.",
+      "verifications": [
+        ".planning/phases/05-motor-trade-quote-capture/05-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/05-motor-trade-quote-capture/05-11-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [
+        ".planning/phases/05-motor-trade-quote-capture/05-01-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-02-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-03-SUMMARY.md"
+      ],
+      "assignment": "5",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "QUO-03",
+      "checked": true,
+      "description": "Staff can capture business activities, experience, declarations, premises, cover, endorsements, previous insurance and claims history with field validation.",
+      "verifications": [
+        ".planning/phases/05-motor-trade-quote-capture/05-VERIFICATION.md",
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-14-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [
+        ".planning/phases/05-motor-trade-quote-capture/05-01-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-03-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-06-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-08-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-11-SUMMARY.md"
+      ],
+      "assignment": "5 / 6",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "QUO-04",
+      "checked": true,
+      "description": "Staff can add/edit/remove drivers, licence evidence, convictions, losses, vehicles and trade plates with stable risk-item identities.",
+      "verifications": [
+        ".planning/phases/05-motor-trade-quote-capture/05-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/05-motor-trade-quote-capture/05-11-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [
+        ".planning/phases/05-motor-trade-quote-capture/05-01-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-04-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-05-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-06-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-08-SUMMARY.md"
+      ],
+      "assignment": "5",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "QUO-05",
+      "checked": true,
+      "description": "Staff can run deterministic postcode/vehicle/driver lookup adapters, inspect failure outcomes and complete supported manual entry.",
+      "verifications": [
+        ".planning/phases/05-motor-trade-quote-capture/05-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/05-motor-trade-quote-capture/05-11-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [
+        ".planning/phases/05-motor-trade-quote-capture/05-01-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-07-SUMMARY.md"
+      ],
+      "assignment": "5",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "QUO-06",
+      "checked": true,
+      "description": "Staff can revise, clone and withdraw quotes with reasons and version history; changed risk or terms invalidates prior rating and acceptance.",
+      "verifications": [
+        ".planning/phases/05-motor-trade-quote-capture/05-VERIFICATION.md",
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-14-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [
+        ".planning/phases/05-motor-trade-quote-capture/05-01-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-02-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-09-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-10-SUMMARY.md",
+        ".planning/phases/05-motor-trade-quote-capture/05-11-SUMMARY.md"
+      ],
+      "assignment": "5 / 6",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "UWR-01",
+      "checked": true,
+      "description": "Staff can rate a quote and inspect reproducible premium components, factors, rule version and rate-input version.",
+      "verifications": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-14-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [],
+      "assignment": "6",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "UWR-02",
+      "checked": true,
+      "description": "Staff can submit and route referrals generated from all applicable product authority dimensions and missing information.",
+      "verifications": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-14-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [],
+      "assignment": "6",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "UWR-03",
+      "checked": true,
+      "description": "Authorised underwriters can approve, condition, query or decline referrals with actor, reason and evidence; insufficient authority blocks decision or issue.",
+      "verifications": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-14-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [],
+      "assignment": "6",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "UWR-04",
+      "checked": true,
+      "description": "Staff can escalate to a capacity provider, record correspondence, process deterministic responses and resolve attached conditions.",
+      "verifications": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-14-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [],
+      "assignment": "6",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "UWR-05",
+      "checked": true,
+      "description": "Staff can send a quotation through a demo delivery record and record acceptance of its exact current version and terms.",
+      "verifications": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-14-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [],
+      "assignment": "6",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "UWR-06",
+      "checked": true,
+      "description": "Staff can bind only a valid, current, accepted quote whose referrals and evidence are satisfied; repeated issue requests cannot create duplicate policies or charges.",
+      "verifications": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-14-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [],
+      "assignment": "6",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "UWR-07",
+      "checked": true,
+      "description": "Staff can open the issued policy, term, immutable risk snapshot and transaction, with initial financial obligations and durable document/delivery work committed together.",
+      "verifications": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/06-underwriting-and-first-policy-issue/06-14-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [],
+      "assignment": "6",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "POL-01",
+      "checked": true,
+      "description": "Staff can inspect policy summary, product sections, drivers/vehicles, documents, transactions, finance, tasks, notes, messages and claims using linked persisted records.",
+      "verifications": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-VERIFICATION.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-VERIFICATION.md",
+        ".planning/phases/13-complete-demo-and-acceptance/13-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-02-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-15-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md",
+        ".planning/phases/10-accounting-and-insurer-reporting/10-03-SUMMARY.md"
+      ],
+      "bodyOnly": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-01-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-01-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-18-SUMMARY.md",
+        ".planning/phases/10-accounting-and-insurer-reporting/10-02-SUMMARY.md"
+      ],
+      "assignment": "7 / 8 / 9 / 10 / 13",
+      "status": "satisfied-local-evidence",
+      "review": "Manual compound closure: Phase 13 verification and docs/acceptance/ACCEPTANCE.md reconcile earlier phase evidence and current record wiring."
+    },
+    {
+      "id": "POL-02",
+      "checked": true,
+      "description": "Staff can create an adjustment draft, compare proposed changes by stable item identity, edit effective date and resume the draft without changing in-force cover.",
+      "verifications": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md"
+      ],
+      "legacy": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-01-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-03-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-15-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "7",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "POL-03",
+      "checked": true,
+      "description": "Staff can acquire/release an expiring editing lease, take over with permission and reason, and receive a clear conflict when saving a stale revision.",
+      "verifications": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md"
+      ],
+      "legacy": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-03-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "7",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "POL-04",
+      "checked": true,
+      "description": "Staff can rate, refer, obtain acceptance, issue or abandon an adjustment with recalculated premium and all issue prerequisites enforced.",
+      "verifications": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md"
+      ],
+      "legacy": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-01-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-05-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-06-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-07-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-08-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-09-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-10-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "7",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "POL-05",
+      "checked": true,
+      "description": "Staff can inspect issued versions and before/after differences and query policy history by effective date or processing date; drafts never alter issued history.",
+      "verifications": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md"
+      ],
+      "legacy": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-01-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-02-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-10-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-14-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-15-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "7",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "POL-06",
+      "checked": true,
+      "description": "Staff receive explicit blocks for out-of-term, unsupported out-of-sequence or conflicting changes, and authority checks for permitted backdating.",
+      "verifications": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md"
+      ],
+      "legacy": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-01-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-02-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-03-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-04-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-05-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-10-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-14-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "7",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "POL-07",
+      "checked": true,
+      "description": "Staff can prepare renewal terms from the correct expiring snapshot, rate, resolve referrals, invite, record acceptance and issue a linked new term.",
+      "verifications": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md"
+      ],
+      "legacy": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-01-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-08-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-11-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "7",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "POL-08",
+      "checked": true,
+      "description": "Staff can lapse an unaccepted renewal with reason and notification; date-driven due/overdue states use the configured clock.",
+      "verifications": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md"
+      ],
+      "legacy": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-01-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-12-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "7",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "POL-09",
+      "checked": true,
+      "description": "Staff can review cancellation dates, reasons and premium return, obtain required approval and issue cancellation with a refund obligation and notification.",
+      "verifications": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md"
+      ],
+      "legacy": [
+        ".planning/phases/07-policy-lifecycle-and-history/07-01-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-09-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-13-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-14-SUMMARY.md",
+        ".planning/phases/07-policy-lifecycle-and-history/07-16-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "7",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "CC-01",
+      "checked": true,
+      "description": "Staff can create/resume an internal Commercial Combined quote using the shared client, agency and quote lifecycle.",
+      "verifications": [
+        ".planning/phases/08-commercial-combined-back-office/08-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/08-commercial-combined-back-office/08-16-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [
+        ".planning/phases/08-commercial-combined-back-office/08-01-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-02-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-03-SUMMARY.md"
+      ],
+      "assignment": "8",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "CC-02",
+      "checked": true,
+      "description": "Staff can maintain locations, construction/protections, property sums insured, liabilities, wage rolls, business interruption and losses using product-specific JSON sections.",
+      "verifications": [
+        ".planning/phases/08-commercial-combined-back-office/08-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/08-commercial-combined-back-office/08-16-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [
+        ".planning/phases/08-commercial-combined-back-office/08-01-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-02-SUMMARY.md"
+      ],
+      "assignment": "8",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "CC-03",
+      "checked": true,
+      "description": "Staff can rate and refer CC risks using documented demo assumptions, including location exposure, estimated loss and postcode aggregation.",
+      "verifications": [
+        ".planning/phases/08-commercial-combined-back-office/08-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/08-commercial-combined-back-office/08-16-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [
+        ".planning/phases/08-commercial-combined-back-office/08-01-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-02-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-05-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-06-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-07-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-08-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-09-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-12-SUMMARY.md"
+      ],
+      "assignment": "8",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "CC-04",
+      "checked": true,
+      "description": "Staff can issue and service CC policies through adjustments, renewals, cancellation and historical views without Motor Trade-only tabs or validation.",
+      "verifications": [
+        ".planning/phases/08-commercial-combined-back-office/08-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/08-commercial-combined-back-office/08-16-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [
+        ".planning/phases/08-commercial-combined-back-office/08-01-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-02-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-13-SUMMARY.md"
+      ],
+      "assignment": "8",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "CC-05",
+      "checked": true,
+      "description": "Staff can log CC property/liability incidents and generate product-appropriate document content through the shared operational infrastructure.",
+      "verifications": [
+        ".planning/phases/08-commercial-combined-back-office/08-VERIFICATION.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [],
+      "bodyOnly": [
+        ".planning/phases/08-commercial-combined-back-office/08-01-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-02-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-05-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-06-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-07-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-08-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-12-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-13-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-14-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-15-SUMMARY.md",
+        ".planning/phases/08-commercial-combined-back-office/08-16-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-01-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-06-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-07-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-08-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-13-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-18-SUMMARY.md"
+      ],
+      "assignment": "8, 9",
+      "status": "satisfied-local-evidence",
+      "review": "Manual closure: Phase 9 final verification, 09-13/18 summaries and current claims/document dispatcher wiring supersede Phase 8 partial status."
+    },
+    {
+      "id": "OPS-01",
+      "checked": true,
+      "description": "Staff can view personal/team queues, create tasks, set priority/due date/owner, link records, change status and record completion reasons.",
+      "verifications": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-01-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-02-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-03-SUMMARY.md"
+      ],
+      "bodyOnly": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-04-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-18-SUMMARY.md"
+      ],
+      "assignment": "9",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "OPS-02",
+      "checked": true,
+      "description": "Stored workflow rules create tasks for referrals, missing information, renewals, agency evidence and integration exceptions without duplicates.",
+      "verifications": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-04-SUMMARY.md"
+      ],
+      "legacy": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-01-SUMMARY.md"
+      ],
+      "bodyOnly": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-18-SUMMARY.md"
+      ],
+      "assignment": "9",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "OPS-03",
+      "checked": true,
+      "description": "Staff can add internal notes and send agency-visible thread messages with attachments, recipients and visibility enforced on the server.",
+      "verifications": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-01-SUMMARY.md"
+      ],
+      "bodyOnly": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-09-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-18-SUMMARY.md"
+      ],
+      "assignment": "9",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "OPS-04",
+      "checked": true,
+      "description": "Staff can generate, preview and download actual policy/quote/renewal/cancellation documents linked to the exact source version and template version.",
+      "verifications": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-01-SUMMARY.md"
+      ],
+      "bodyOnly": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-06-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-07-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-08-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-18-SUMMARY.md"
+      ],
+      "assignment": "9",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "OPS-05",
+      "checked": true,
+      "description": "Staff can upload and retrieve evidence files through authorised endpoints and see durable metadata, checksums and document version history.",
+      "verifications": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-01-SUMMARY.md"
+      ],
+      "bodyOnly": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-05-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-18-SUMMARY.md"
+      ],
+      "assignment": "9",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "OPS-06",
+      "checked": true,
+      "description": "Staff can send/resend a document pack and inspect delivery failures/retries; historical issued documents retain their original content.",
+      "verifications": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-01-SUMMARY.md"
+      ],
+      "bodyOnly": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-18-SUMMARY.md"
+      ],
+      "assignment": "9",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "OPS-07",
+      "checked": true,
+      "description": "Staff can log a Motor Trade or CC incident, select relevant risk items, send a demo claims handoff and view returned administrator summaries.",
+      "verifications": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-01-SUMMARY.md"
+      ],
+      "bodyOnly": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-12-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-13-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-18-SUMMARY.md"
+      ],
+      "assignment": "9",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "OPS-08",
+      "checked": true,
+      "description": "Staff can inspect and retry MID/data-reporting exceptions for relevant Motor Trade vehicles with stable request and response history.",
+      "verifications": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-01-SUMMARY.md"
+      ],
+      "bodyOnly": [
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-14-SUMMARY.md",
+        ".planning/phases/09-tasks-documents-communication-and-incidents/09-18-SUMMARY.md"
+      ],
+      "assignment": "9",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "FIN-01",
+      "checked": true,
+      "description": "Finance users can inspect transaction-ledger entries and agency balances derived from issued insurance movements.",
+      "verifications": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-18-SUMMARY.md"
+      ],
+      "legacy": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-03-SUMMARY.md",
+        ".planning/phases/10-accounting-and-insurer-reporting/10-05-SUMMARY.md",
+        ".planning/phases/10-accounting-and-insurer-reporting/10-11-SUMMARY.md"
+      ],
+      "bodyOnly": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-02-SUMMARY.md",
+        ".planning/phases/10-accounting-and-insurer-reporting/10-12-SUMMARY.md"
+      ],
+      "assignment": "10",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "FIN-02",
+      "checked": true,
+      "description": "Finance users can generate and download agency statements with period filters and consistent opening/movement/closing balances.",
+      "verifications": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-03-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "10",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "FIN-03",
+      "checked": true,
+      "description": "Finance users can record demo receipts, assign payers, allocate/unallocate amounts to invoices and see residual balances without over-allocation.",
+      "verifications": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-04-SUMMARY.md",
+        ".planning/phases/10-accounting-and-insurer-reporting/10-05-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "10",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "FIN-04",
+      "checked": true,
+      "description": "Finance users can reconcile recorded bank lines against receipts/refunds/settlements and resolve or explain variances with an audit record.",
+      "verifications": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-06-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "10",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "FIN-05",
+      "checked": true,
+      "description": "Authorised finance users can approve/reject refunds within limits and execute a retry-safe demo payment with persisted outcome.",
+      "verifications": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-18-SUMMARY.md"
+      ],
+      "legacy": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-07-SUMMARY.md",
+        ".planning/phases/10-accounting-and-insurer-reporting/10-08-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "10",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "FIN-06",
+      "checked": true,
+      "description": "Finance users can generate versioned bordereau batches, inspect validation failures, correct data or exclude records with reasons, revalidate and export CSV.",
+      "verifications": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-09-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "10",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "FIN-07",
+      "checked": true,
+      "description": "Finance users can submit only valid bordereau batches through the demo adapter and inspect submission status and history.",
+      "verifications": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-10-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "10",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "FIN-08",
+      "checked": true,
+      "description": "Finance users can close a period and handle later corrections through auditable adjustments rather than editing posted entries.",
+      "verifications": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-18-SUMMARY.md"
+      ],
+      "legacy": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-11-SUMMARY.md"
+      ],
+      "bodyOnly": [
+        ".planning/phases/10-accounting-and-insurer-reporting/10-02-SUMMARY.md"
+      ],
+      "assignment": "10",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "ADM-01",
+      "checked": true,
+      "description": "Administrators can maintain product/scheme versions, capacity providers, cover sections, effective dates and draft/published status.",
+      "verifications": [
+        ".planning/phases/11-configuration-and-account-administration/11-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/11-configuration-and-account-administration/11-01-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "11",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "ADM-02",
+      "checked": true,
+      "description": "Administrators can configure multidimensional delegated authority and referral routing with effective dates, approval evidence and audit.",
+      "verifications": [
+        ".planning/phases/11-configuration-and-account-administration/11-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/11-configuration-and-account-administration/11-02-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "11",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "ADM-03",
+      "checked": true,
+      "description": "Administrators can maintain workflow types, queues, assignment rules, document/message templates and organisation/reference/notification settings.",
+      "verifications": [
+        ".planning/phases/11-configuration-and-account-administration/11-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/11-configuration-and-account-administration/11-03-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "11",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "ADM-04",
+      "checked": true,
+      "description": "Administrators can manage internal users, teams, roles and authority, with required second-person approvals for sensitive identity changes.",
+      "verifications": [
+        ".planning/phases/11-configuration-and-account-administration/11-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/11-configuration-and-account-administration/11-04-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "11",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "ADM-05",
+      "checked": true,
+      "description": "Users can update permitted profile fields, change passwords, inspect/revoke sessions and complete functional local MFA enrolment, verification, recovery and disable/reset flows.",
+      "verifications": [
+        ".planning/phases/11-configuration-and-account-administration/11-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/11-configuration-and-account-administration/11-05-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "11",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "ADM-06",
+      "checked": true,
+      "description": "Administrators can suspend accounts or force resets; revoked sessions and disabled users lose API access.",
+      "verifications": [
+        ".planning/phases/11-configuration-and-account-administration/11-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/11-configuration-and-account-administration/11-04-SUMMARY.md",
+        ".planning/phases/11-configuration-and-account-administration/11-05-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "11",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "ADM-07",
+      "checked": true,
+      "description": "Authorised users can search/filter audit history and inspect actor, timestamp, reason and appropriate before/after fields.",
+      "verifications": [
+        ".planning/phases/11-configuration-and-account-administration/11-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/11-configuration-and-account-administration/11-06-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "11",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "ADM-08",
+      "checked": true,
+      "description": "Administrators can inspect integration health, adapter scenario configuration, failed jobs and retry history without viewing secrets.",
+      "verifications": [
+        ".planning/phases/11-configuration-and-account-administration/11-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [
+        ".planning/phases/11-configuration-and-account-administration/11-06-SUMMARY.md"
+      ],
+      "bodyOnly": [],
+      "assignment": "11",
+      "status": "satisfied-local-evidence",
+      "review": "Manual legacy-format reconciliation: completed summary requirements/body and phase verification supply evidence despite absent requirements_completed key."
+    },
+    {
+      "id": "RPT-01",
+      "checked": true,
+      "description": "Staff can use global and advanced search across authorised clients, quotes, policies and registrations and navigate to matching records.",
+      "verifications": [
+        ".planning/phases/12-dashboards-search-and-reports/12-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/12-dashboards-search-and-reports/12-01-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [],
+      "assignment": "12",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "RPT-02",
+      "checked": true,
+      "description": "Staff can see dashboard counts, queues, recent activity and renewal/exception measures computed from stored records.",
+      "verifications": [
+        ".planning/phases/12-dashboards-search-and-reports/12-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/12-dashboards-search-and-reports/12-02-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [],
+      "assignment": "12",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "RPT-03",
+      "checked": true,
+      "description": "Staff can run distinct underwriting, portfolio, renewal, finance, agency-performance and compliance/exception reports with relevant filters and drill-down.",
+      "verifications": [
+        ".planning/phases/12-dashboards-search-and-reports/12-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/12-dashboards-search-and-reports/12-05-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [],
+      "assignment": "12",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "RPT-04",
+      "checked": true,
+      "description": "Staff can export authorised report results and manage recent/favourite reports; agency and sensitive-field restrictions apply to exports.",
+      "verifications": [
+        ".planning/phases/12-dashboards-search-and-reports/12-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/12-dashboards-search-and-reports/12-05-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [],
+      "assignment": "12",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "RPT-05",
+      "checked": true,
+      "description": "Staff can reconcile report measures and dashboard totals against underlying records, including empty results and defined date/earning bases.",
+      "verifications": [
+        ".planning/phases/12-dashboards-search-and-reports/12-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/12-dashboards-search-and-reports/12-05-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [],
+      "assignment": "12",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "ACC-01",
+      "checked": true,
+      "description": "Business users can follow a documented demo script covering Motor Trade quote issue, blocked/referral adjustment, renewal, cancellation/refund and CC servicing.",
+      "verifications": [
+        ".planning/phases/13-complete-demo-and-acceptance/13-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/13-complete-demo-and-acceptance/13-03-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [],
+      "assignment": "13",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "ACC-02",
+      "checked": false,
+      "description": "Business users can restart the application and database and recover saved work, adapter outcomes, files, history and balances.",
+      "verifications": [
+        ".planning/phases/13-complete-demo-and-acceptance/13-VERIFICATION.md"
+      ],
+      "completed": [],
+      "legacy": [],
+      "bodyOnly": [
+        ".planning/phases/13-complete-demo-and-acceptance/13-02-SUMMARY.md"
+      ],
+      "assignment": "13",
+      "status": "partial",
+      "review": "Application restart evidence only; database engine restart unperformed."
+    },
+    {
+      "id": "ACC-03",
+      "checked": true,
+      "description": "Reviewers can verify every prototype action has a working destination or documented domain-based disabled state and acceptance evidence.",
+      "verifications": [
+        ".planning/phases/13-complete-demo-and-acceptance/13-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/13-complete-demo-and-acceptance/13-01-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [],
+      "assignment": "13",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "ACC-04",
+      "checked": true,
+      "description": "Developers can run passing unit, component, API, real-SQL integration and critical browser checks, including permission denial, stale writes, rollback and retries.",
+      "verifications": [
+        ".planning/phases/13-complete-demo-and-acceptance/13-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/13-complete-demo-and-acceptance/13-01-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [],
+      "assignment": "13",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "ACC-05",
+      "checked": true,
+      "description": "Reviewers can compare rendered key screens with the prototype and confirm usable desktop/narrow layouts and keyboard interaction.",
+      "verifications": [
+        ".planning/phases/13-complete-demo-and-acceptance/13-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/13-complete-demo-and-acceptance/13-02-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [],
+      "assignment": "13",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    },
+    {
+      "id": "ACC-06",
+      "checked": true,
+      "description": "Developers can use setup, seed/reset, troubleshooting and module-boundary documentation to prepare later project-by-project improvements.",
+      "verifications": [
+        ".planning/phases/13-complete-demo-and-acceptance/13-VERIFICATION.md"
+      ],
+      "completed": [
+        ".planning/phases/13-complete-demo-and-acceptance/13-03-SUMMARY.md"
+      ],
+      "legacy": [],
+      "bodyOnly": [],
+      "assignment": "13",
+      "status": "satisfied-local-evidence",
+      "review": "Explicit completion metadata corroborated with phase verification and traceability."
+    }
+  ]
+}

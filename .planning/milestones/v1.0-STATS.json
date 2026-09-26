@@ -1,0 +1,19 @@
+{
+  "plans": 131,
+  "summaries": 131,
+  "plannedXmlTasks": 261,
+  "sourceFiles": 1006,
+  "physicalSourceLines": 66172,
+  "scope": "Tracked apps/backoffice and backend/src code, excluding generated/EF migrations; includes blank/comment lines",
+  "firstCommit": "cfda6e7",
+  "endBeforeArchive": "47e73e5",
+  "commitsBeforeArchive": 795,
+  "allTrackedDiff": {
+    "files": 2725,
+    "insertions": 2141477,
+    "deletions": 1
+  },
+  "start": "2026-09-13",
+  "end": "2026-09-26",
+  "elapsedCalendarDays": 13
+}

@@ -11,7 +11,7 @@
     "code_review": false,
     "ui_phase": false,
     "ui_review": false,
-    "_auto_chain_active": true,
+    "_auto_chain_active": false,
     "pattern_mapper": false,
     "ui_safety_gate": false
   },
