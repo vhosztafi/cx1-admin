@@ -2,6 +2,7 @@
 
 import { useRef, useState, useSyncExternalStore } from 'react';
 import { authError, csrfToken, validateSignIn } from '../lib/auth';
+import {InternalInvitation} from './invitation-acceptance';
 
 const subscribe = () => () => {};
 const clientReady = () => true;
@@ -36,10 +37,10 @@ export function SignIn() {
     finally { submitting.current = false; setBusy(false); }
   }
 
-  return <form onSubmit={submit} method="post" noValidate className="sign-in-form" aria-busy={busy}>
+  return <><form onSubmit={submit} method="post" noValidate className="sign-in-form" aria-busy={busy}>
     <div className="field"><label htmlFor="email">Email address</label><input id="email" name="email" type="email" autoComplete="username" maxLength={254} value={email} onChange={event => setEmail(event.target.value)} placeholder="name@company.co.uk" required disabled={!ready || busy} /></div>
     <div className="field"><label htmlFor="password">Password</label><input id="password" name="password" type="password" autoComplete="current-password" maxLength={1024} value={password} onChange={event => setPassword(event.target.value)} required disabled={!ready || busy} /></div>
     <div className="form-feedback" aria-live="polite" role="status">{error && <p className="error-message">{error}</p>}</div>
     <button className="button button-primary" type="submit" disabled={!ready || busy}>{busy ? 'Signing in…' : 'Sign in'}</button>
-  </form>;
+  </form><InternalInvitation/></>;
 }

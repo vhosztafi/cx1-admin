@@ -43,6 +43,7 @@ public sealed class UserCredential : MutableRecord
     public string ProviderSubject { get; set; } = "";
     public string? PasswordHash { get; set; }
     public byte[]? MfaSecretCiphertext { get; set; }
+    public long? LastTotpStep { get; set; }
     public bool MustReset { get; set; }
     public int FailedAttempts { get; set; }
     public DateTimeOffset? LockedUntil { get; set; }

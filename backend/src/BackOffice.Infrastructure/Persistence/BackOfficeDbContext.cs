@@ -25,6 +25,7 @@ public sealed partial class BackOfficeDbContext(DbContextOptions<BackOfficeDbCon
 
     protected override void OnModelCreating(ModelBuilder model)
     {
+        ConfigureAdministration(model);
         var users = Record<StaffUser>(model, "User");
         Text(users, ("Email",254), ("NormalizedEmail",254), ("DisplayName",200), ("State",20), ("SecurityStamp",100));
         users.HasIndex(x => x.NormalizedEmail).IsUnique();
