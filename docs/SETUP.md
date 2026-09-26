@@ -1,6 +1,6 @@
 # Local setup
 
-Current status: SQL persistence, local authentication, prototype shell and durable diagnostic operations are implemented and locally verified. Client identity, agency relationships, contacts, restricted support flags and duplicate intake review are also implemented. Insurance workflows remain in later phases. The native foundation acceptance gate passed on 2026-09-14; human UAT and hosted CI remain unperformed.
+Current status (26 September 2026): Phases 1–12 are implemented, including Motor Trade and Commercial Combined issue/servicing, operations, finance, administration/security and reporting. Phase 13 acceptance is recorded in [acceptance/ACCEPTANCE.md](acceptance/ACCEPTANCE.md). Human UAT, SQL engine restart, hosted CI, Docker runtime and production deployment are not claimed. Start with [HANDOVER.md](HANDOVER.md) and the short [demo](DEMO.md).
 
 For the verified native preview on API port 5087/web port 3100 and a short business-facing walkthrough, follow [DEMO.md](DEMO.md). The general development defaults below use API port 5080.
 
@@ -46,8 +46,7 @@ Phase6 policy storage adds migration `20260917030154_FirstPolicyIssueStorage`.
 Normal initialization applies it without resetting quotes, accepted terms or
 credentials. It introduces immutable policy versions, original financial
 components, balanced sealed journals and durable policy document requests.
-Storage alone does not expose issue endpoints; those are enabled by the following
-verified issue-service slice. Document generation remains Phase9.
+Issue endpoints require the current saved acceptance, authority and source versions. Phase9 document generation and delivery are implemented with saved request/template/file identities.
 
 Set COVER_DEMO_PASSWORD locally (at least 12 characters with upper/lower case, number and symbol), then run:
 
@@ -55,7 +54,7 @@ Set COVER_DEMO_PASSWORD locally (at least 12 characters with upper/lower case, n
 dotnet run --project backend/src/BackOffice.Api --no-restore -- --initialize-demo
 ```
 
-COVER_SQL_CONNECTION optionally overrides the native Windows connection; its database must be exactly CoverMGA_Demo. The command migrates and seeds transactionally without changing existing passwords or records. Eight fictional users have addresses servicing@cover.example, underwriter@cover.example, senior-underwriter@cover.example, agency-admin@cover.example, finance@cover.example, finance-reviewer@cover.example, system-admin@cover.example and agency-reviewer@cover.example. The two reviewers have independent agency-admin and finance identities respectively; reseeding preserves their existing credentials. Sign-in is available through the auth API and /login browser screen. Products are deliberately draft foundation definitions without rating rules. Initialization also adds an immutable quote-capture setting for the two existing Motor Trade demo product versions when no setting exists. It preserves product metadata, agency grants and any later capture revocation or malformed operator setting. This setting enables internal capture eligibility; create/save screens and APIs are available. The separate --seed-quote-demo command in DEMO.md imports eight fictional captures without resetting existing records. DemoClock starts frozen at 2026-09-13 12:00 UTC.
+COVER_SQL_CONNECTION optionally overrides the native Windows connection; its database must be exactly CoverMGA_Demo. The command migrates and seeds transactionally without changing existing passwords or records. Nine fictional users have addresses servicing@cover.example, underwriter@cover.example, senior-underwriter@cover.example, agency-admin@cover.example, finance@cover.example, finance-reviewer@cover.example, system-admin@cover.example, admin-reviewer@cover.example and agency-reviewer@cover.example. The three reviewers provide independent system-admin, agency-admin and finance identities; reseeding preserves their existing credentials. Sign-in is available through the auth API and /login browser screen. Initialization includes the current quote, underwriting, renewal, commercial and operational seed configuration. Published version/agency-term eligibility still governs capture; an initialization does not issue a policy. Initialization also adds an immutable quote-capture setting for the two existing Motor Trade demo product versions when no setting exists. It preserves product metadata, agency grants and any later capture revocation or malformed operator setting. This setting enables internal capture eligibility; create/save screens and APIs are available. The separate --seed-quote-demo command in DEMO.md imports eight fictional captures without resetting existing records. DemoClock starts frozen at 2026-09-13 12:00 UTC.
 
 For an intentional destructive reset of this demo database only, add --reset-demo after --initialize-demo. The command validates its target and password before deletion. Never use it to reset any other database. Repeated initialization without reset preserves existing data.
 
@@ -72,16 +71,16 @@ The profile follows Microsoft's [SQL Server container guidance](https://learn.mi
 
 Use GET /api/v1/auth/csrf to establish the antiforgery cookie and retrieve requestToken. POST /api/v1/auth/login with JSON email/password, the cookie and X-CSRF-Token. After successful login, fetch a new CSRF token for the authenticated identity. GET /api/v1/account returns the current actor. POST /api/v1/auth/logout requires the authenticated CSRF token and revokes the SQL session. All API responses use Cache-Control: no-store. Unknown JSON properties are rejected.
 
-Development uses cover-dev-session with HttpOnly, Path=/ and SameSite=Lax. Sessions have a fixed eight-hour maximum; SQL status, security stamp, expiry and current roles are checked for every authenticated request. Five bad passwords lock the local credential for 15 minutes; a separate per-direct-IP limiter permits 20 login requests/minute. These use real UTC time, independently of the frozen business demo clock. MFA-enabled or must-reset credentials cannot sign in until their full flows are implemented.
+Development uses cover-dev-session with HttpOnly, Path=/ and SameSite=Lax. Sessions have a fixed eight-hour maximum; SQL status, security stamp, expiry and current roles are checked for every authenticated request. Five bad passwords lock the local credential for 15 minutes; a separate per-direct-IP limiter permits 20 login requests/minute. These use real UTC time, independently of the frozen business demo clock. MFA-enabled sign-in requires a current TOTP or unused recovery code. Password resets and force-reset transitions use the implemented account flow; do not alter SQL hashes to bypass them.
 
 Data Protection keys persist under the API content root's .local/data-protection directory by default; Cover__DataProtectionPath can select an explicit persistent directory. Windows keys are protected with the current user's DPAPI. A restart must retain the same key directory and OS identity. Non-development startup requires an explicit key path, enforces HTTPS and uses the Secure __Host-cover-session cookie without a Domain attribute. Non-Windows production hosting is blocked until encrypted key storage is configured; this milestone has not deployed a production environment. No forwarded headers are trusted automatically.
 
-Re-run --initialize-demo after pulling migrations. Test hosts use independent databases and key directories in ignored .local/auth-test-keys; tests restart the ASP.NET host and reuse the original cookie to verify persisted keys/tickets and SQL revocation. API tests do not replace browser or human acceptance checks.
+On a fresh or explicitly approved demo instance, --initialize-demo applies migrations and current seeds. On the original retained workstation, privileged-reviewer provisioning was previously rejected by automatic approval; that retained identity upgrade remains unperformed. Do not use reinitialization to bypass that decision. Test hosts use independent databases and key directories in ignored .local/auth-test-keys; tests restart the ASP.NET host and reuse the original cookie to verify persisted keys/tickets and SQL revocation. API tests do not replace browser or human acceptance checks.
 
 
 ## Frontend verification and preview
 
-Run pnpm web:test for validation/error-message unit checks, pnpm web:lint, pnpm web:typecheck and pnpm web:build. The font is extracted from the supplied prototype into public/fonts by scripts/extract-prototype-font.mjs, with no runtime font CDN request. The shell matches the source's 238px sidebar and 62px header. Missing business metrics show an unavailable marker; future-feature pages do not pretend to save data.
+Run pnpm web:test for validation/error-message unit checks, pnpm web:lint, pnpm web:typecheck and pnpm web:build. The font is extracted from the supplied prototype into public/fonts by scripts/extract-prototype-font.mjs, with no runtime font CDN request. The shell matches the source's 238px sidebar and 62px header. Dashboard and report metrics now query current saved sources; unavailable role-specific measures remain explicitly unavailable.
 
 For a built preview on a different API port, set BACKOFFICE_API_ORIGIN before both build and start: Next rewrites are compiled at build time, and server-rendered account requests use the runtime value. This host had an unrelated Docker listener on 5080 during browser verification; the test API used 5087 and web used 3100. Run the API with --urls http://127.0.0.1:5087 and Development environment, set BACKOFFICE_API_ORIGIN=http://127.0.0.1:5087, build the frontend, then run pnpm --filter @cover/backoffice start --hostname 127.0.0.1 --port 3100.
 
@@ -260,7 +259,7 @@ attempt history. Missing recipients produce a visible failed job.
 Fresh `--initialize-demo` includes invitation templates. For an existing migrated
 demo, `--seed-renewal-lifecycle-demo` only adds missing renewal invitation templates;
 there is no need to reset or reseed policy history. Policy document generation
-and MID dispatch remain separate later-phase workers.
+and MID dispatch are implemented as separate Phase9 workers.
 
 `node scripts/verify-renewallifecycle-browser.mjs` requires a built web application,
 local Chrome and `COVER_SQL_TEST_CONNECTION`. It creates and removes only isolated

@@ -39,7 +39,7 @@ try {
   await page.getByRole('heading', { name: 'Your account cannot access this area' }).waitFor();
   await page.goto(`${origin}/account`);
   await page.getByRole('link', { name: 'Password', exact: true }).click();
-  await page.getByRole('heading', { name: 'This account feature is not available yet' }).waitFor();
+  await page.getByRole('heading', { name: 'Change password' }).waitFor();
   await page.goto(`${origin}/`);
   await page.getByRole('heading', { name: 'Welcome, Demo servicing' }).waitFor();
   await page.locator('.desktop-sidebar').waitFor({ state: 'visible' });
@@ -95,3 +95,4 @@ try {
   await browser.close();
   if (sourceServer) await new Promise(resolve => sourceServer.close(resolve));
 }
+

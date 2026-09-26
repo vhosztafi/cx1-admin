@@ -1,12 +1,12 @@
 # Local acceptance record
 
-Status: Phase 13 acceptance in progress. Phase 12 production ends at `7179127`; its closeout is `329f9c7`. This record distinguishes fresh checks from reused historical evidence. It is not a production certification or human UAT sign-off.
+Status: Phase 13 local automated acceptance and handover complete. Phase 12 production ends at `7179127`; its closeout is `329f9c7`. This record distinguishes fresh checks from reused historical evidence. It is not a production certification or human UAT sign-off.
 
 ## Evidence available
 
 | Scope | Result and source |
 |---|---|
-| Original prototype identities | 949/949 mapped, zero missing, 537 referenced API operation identities validated, twelve phase verification files linked. `node scripts/build-milestone-acceptance.mjs` regenerates [implementation-evidence.json](implementation-evidence.json). A reviewed mapping is not itself a live test. |
+| Original prototype identities | 949/949 mapped, zero missing, all mapped operation IDs resolve within the 537-operation contract, twelve phase verification files linked. `node scripts/build-milestone-acceptance.mjs` regenerates [implementation-evidence.json](implementation-evidence.json). A reviewed mapping is not itself a live test. |
 | Current backend unit tests | 1,400 passed, zero skipped: `.local/phase13-tests/unit.trx`. |
 | Current frontend tests | 214 passed, zero skipped: `.local/phase13-web-tests.txt`. |
 | Current root tests | 450/451 initially passed; one historical/current reporting mapping comparison was corrected, then all four ownership cases passed. All 451 distinct cases have passing results across this run and correction. `.local/phase13-tests/root.txt`, `quote-ownership-corrected.txt`. No runtime failure was hidden by the correction. |
@@ -17,7 +17,7 @@ Status: Phase 13 acceptance in progress. Phase 12 production ends at `7179127`; 
 
 ## Remaining acceptance scope
 
-Owned application restart, keyboard/narrow-screen navigation and current handover documentation complete in the remaining Phase 13 slices. Human business/assistive-technology UAT, SQL engine restart, Docker runtime, hosted CI and production deployment remain unperformed. A SQL Server service restart would disrupt other databases on this workstation; it is not part of the isolated fixture check.
+Owned application restart, keyboard/narrow-screen navigation and current handover documentation are complete; see the evidence below and HANDOVER.md. Human business/assistive-technology UAT, SQL engine restart, Docker runtime, hosted CI and production deployment remain unperformed. A SQL Server service restart would disrupt other databases on this workstation; it is not part of the isolated fixture check.
 
 Known limitations: retained historical Commercial Combined PDF continuation spacing is tight; earned report months must fit one configured accounting period; CSV and screen paging deliberately rerun current data. Retained privileged-reviewer provisioning was rejected by automatic approval review in Phase 11 and has not been bypassed. Local deterministic adapters do not make real customer, carrier or payment calls.
 ## Owned restart and visual acceptance — 26 September 2026
@@ -27,3 +27,5 @@ Eight browser checks passed in `.local/phase13-tests/restart-browser.json`: the 
 Four additional loaded-state visual checks passed in `loaded-visual.json`, with no browser page errors. Initial narrow screenshots captured loading states, so they were superseded by `*-loaded.png` captures. Visually inspected the source prototype, current desktop dashboard/reporting, loaded narrow tasks/search and report layout bounds. The sidebar, typography, panel treatment and controls follow the prototype; actual counts and role-specific queues replace fixed samples. Wide record tables scroll within their panel at 390px instead of expanding the page.
 
 Screenshots are in ignored `output/playwright/phase13/`. Scripts: `verify-acceptance-browser.mjs prepare|verify` and `verify-acceptance-visual.mjs`. Browser cookies are stored only under ignored `.local/phase13-tests`; never publish that storage-state file. The owned preview remains available at localhost:3193 with API 5095. Historical retained preview and SQL service were not stopped.
+
+The final shell check confirms the implemented Password tab without credential changes (`account-shell.json`). Sixteen local documentation links resolve. See [phase verification](../../.planning/phases/13-complete-demo-and-acceptance/13-VERIFICATION.md) and [developer handover](../HANDOVER.md).

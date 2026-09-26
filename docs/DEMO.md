@@ -1,6 +1,23 @@
 # Back office demonstration
 
-The current demo has persisted foundation, servicing, underwriting, policy, operational and finance slices. Sign-in, account identity and business records use SQL; the finance workspace reads saved ledgers, statements, receipts, bank reconciliation, bordereaux, refunds and period review through authorized APIs. The finance evidence and remaining gaps are described in the Phase 10 section below. The complete insurance MVP remains in progress. The supplied sales funnel remains unchanged.
+Current implementation covers Phases 1–12. Use [HANDOVER.md](HANDOVER.md) to select the intended database, binary, file/key roots and ports. The retained 3100/5087 preview is an older preserved build; current Phase 11–13 checks used a separate fixture on 3193/5095. Do not mix their saved IDs, cookies, credentials or schemas. The supplied sales funnel is unchanged.
+
+## Short business demonstration
+
+Allow roughly 20 minutes for the main path, then choose one exception. On a fresh instance, initialize and prepare the fictional captures as described below. Existing retained policy IDs later in this document are historical examples, not universal seed IDs.
+
+| Step / role | Action | Observable saved outcome |
+|---|---|---|
+| 1. Servicing or underwriter | Search by client, quote, policy or registration. Open a returned record. Create/edit a Motor Trade quote through New Quote. | The saved reference and revision survive reload. Product/agency terms must be eligible; Fleet remains unavailable. |
+| 2. Underwriter, then authorised senior if referred | Follow [rate, accept and issue](#rate-accept-and-issue-a-motor-trade-policy). Resolve required evidence/authority and record exact terms acceptance before issue. | An immutable policy transaction/version, financial obligation and document request exist. Refresh/replay cannot issue twice. |
+| 3. Servicing / underwriter | From a policy, Make an Adjustment. Change a driver/vehicle/cover and review rating. Choose a referral example; show its blocked issue until a valid independent decision/approval. | Draft changes remain separate from issued cover. Current referrals and stale-source errors are visible; the old issued version remains readable. |
+| 4. Servicing / underwriter | Start Renewal from an eligible expiring term; prepare experience, terms and acceptance, then issue when allowed. | Contiguous successor term with its own transaction and historical source. An invitation alone is not a renewal. |
+| 5. Servicing, finance, finance reviewer | Prepare and review cancellation, then issue. In Accounting choose the actual agency and refund attention item; use a separate authorised approver and the deterministic payment adapter. | Signed credit, refund approval, saved provider outcome and one cash posting. A retry does not pay again. |
+| 6. Underwriter | Repeat the servicing path for Commercial Combined, reviewing property/location, liability and business interruption rather than Motor Trade vehicles. | Commercial schema/rating/authority pins and immutable history remain product-specific. |
+| 7. Any relevant internal role | Dashboard → saved task → history; Alerts → mark read. Reporting → agency/underwriting report → source record; save a favourite, reload, Export CSV. Finance signs in separately for financial reports. | Counts reconcile with source rows, filters persist, export has actual CSV bytes and forbidden categories remain unavailable. |
+| 8. System administrator / account owner | Inspect Admin configuration and audit; show a pending sensitive change requiring another administrator. In account settings demonstrate profile/security controls without sharing recovery secrets. | Versioned changes and independent approvals; sessions and recovery codes have real persisted state. |
+
+Use the current [acceptance record](acceptance/ACCEPTANCE.md) for the tested boundaries. The local adapters simulate customer/carrier/payment outcomes; this is not live external delivery. Business and assistive-technology UAT still need a person. Record the scenario, role, saved reference, expected/observed result and any issue; a rejected permission or valid referral block is an expected domain result.
 
 ## Start the native Windows preview
 
