@@ -260,7 +260,18 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Goal:** Expose controlled configuration and complete account functions.
 **Depends on:** Phase 10
 **Requirements:** ADM-01 through ADM-08
-**Plans:** Not yet planned.
+**Plans:** 6 plans; 0/6 complete. Direct planning under the lighter delivery agreement.
+
+- [ ] 11-01 — Versioned product and scheme administration (wave 1).
+- [ ] 11-02 — Delegated authority and referral administration (wave 2).
+- [ ] 11-03 — Workflow templates and organisation settings (wave 3).
+- [ ] 11-04 — Internal users teams and sensitive approvals (wave 4).
+- [ ] 11-05 — Account profile password sessions and local MFA (wave 5).
+- [ ] 11-06 — Audit integration oversight and concise acceptance (wave 6).
+
+**Wave dependencies:** 01 → 02 → 04 → 05; 03 follows 01; 06 follows 03 and 05. Execute sequentially in the shared workspace.
+
+**Cross-cutting constraints:** Current authority before replay; immutable historical versions; independent sensitive approvals; additive migrations; no secret disclosure; focused checks only.
 
 **Success criteria:**
 
@@ -320,7 +331,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 8. Commercial Combined back office | 16/16 | Complete | 2026-09-21 |
 | 9. Tasks, documents, communication and incidents | 18/18 | Complete | 2026-09-23 |
 | 10. Accounting and insurer reporting | 18/18 | Complete | 2026-09-26 |
-| 11. Configuration and account administration | 0/TBD | Not started | — |
+| 11. Configuration and account administration | 0/6 | Planned | — |
 | 12. Dashboards, search and reports | 0/TBD | Not started | — |
 | 13. Complete demo and acceptance | 0/TBD | Not started | — |
 

@@ -11,8 +11,9 @@
     "code_review": false,
     "ui_phase": false,
     "ui_review": false,
-    "_auto_chain_active": false,
-    "pattern_mapper": false
+    "_auto_chain_active": true,
+    "pattern_mapper": false,
+    "ui_safety_gate": false
   },
   "planning": {
     "commit_docs": true,

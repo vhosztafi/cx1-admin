@@ -1,0 +1,1138 @@
+{
+  "sourceSha256": "8f2cebfc855fef104a24a53cda82dddd7dd9774000b287eec9bb050335048a77",
+  "count": 79,
+  "note": "Original source labels group admin controls under ADM-03; plans cover the full ADM-01..08 requirements. This is an inventory, not a claim of runtime implementation.",
+  "controls": [
+    {
+      "controlId": "CTL-884d9ce1ee34",
+      "method": "pAdmin",
+      "label": "Users & roles",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-884d9ce1ee34",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listUsers"
+      ],
+      "reason": "Literal pAdmin tab selection Users & roles; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-f43c26ffcd36",
+      "method": "pAdmin",
+      "label": "Client matching",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-f43c26ffcd36",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listMatchingRules"
+      ],
+      "reason": "Literal pAdmin tab selection Client matching; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-c1abeccbe48e",
+      "method": "pAdmin",
+      "label": "Products & schemes",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-c1abeccbe48e",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listProducts"
+      ],
+      "reason": "Literal pAdmin tab selection Products & schemes; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-7a70deae880e",
+      "method": "pAdmin",
+      "label": "Delegated authority",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-7a70deae880e",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listAuthorityVersions"
+      ],
+      "reason": "Literal pAdmin tab selection Delegated authority; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-5e8758709f33",
+      "method": "pAdmin",
+      "label": "Workflow & tasks",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-5e8758709f33",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listWorkflowRules"
+      ],
+      "reason": "Literal pAdmin tab selection Workflow; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-062173aa3428",
+      "method": "pAdmin",
+      "label": "Document & message templates",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-062173aa3428",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listTemplateVersions"
+      ],
+      "reason": "Literal pAdmin tab selection Templates; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-f83ab9f84cce",
+      "method": "pAdmin",
+      "label": "Integrations",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-f83ab9f84cce",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listIntegrationSettings"
+      ],
+      "reason": "Literal pAdmin tab selection Integrations; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-1f4136b08d57",
+      "method": "pAdmin",
+      "label": "Audit log",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-1f4136b08d57",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listAuditEvents"
+      ],
+      "reason": "Literal pAdmin tab selection Audit log; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-f6daa870681c",
+      "method": "pAdmin",
+      "label": "General settings",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-f6daa870681c",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getGeneralSettings"
+      ],
+      "reason": "Literal pAdmin tab selection Settings; read current authorised record collection only. Render/add/edit commands within the tab are independently mapped."
+    },
+    {
+      "controlId": "CTL-c1818cc49cbc",
+      "method": "pAdmin",
+      "label": "Invite user",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-c1818cc49cbc",
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "inviteInternalUser"
+      ],
+      "reason": "Invite user opens the internal-user invitation form; only confirmation creates an invitation."
+    },
+    {
+      "controlId": "CTL-7041753aef98",
+      "method": "pAdmin",
+      "label": ".sections[1].rows[0]",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-7041753aef98",
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "requestIdentityChange"
+      ],
+      "reason": "Email-change form records a dual-control request, not a direct email edit."
+    },
+    {
+      "controlId": "CTL-2b90710f6a2a",
+      "method": "pAdmin",
+      "label": ".sections[1].rows[3]",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-2b90710f6a2a",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "requestIdentityChange",
+        "decideIdentityChange"
+      ],
+      "reason": "MFA reset must follow identity approval and session revocation; replace toast with tracked request/outcome."
+    },
+    {
+      "controlId": "CTL-d05ecf452764",
+      "method": "pAdmin",
+      "label": ".sections[1].rows[4]",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-d05ecf452764",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "adminRequestPasswordReset"
+      ],
+      "reason": "Queue a demo reset delivery to selected user; never display or log the reset token."
+    },
+    {
+      "controlId": "CTL-55e62661c427",
+      "method": "pAdmin",
+      "label": "Rule",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-55e62661c427",
+      "status": "reviewed",
+      "disposition": "edit-then-command",
+      "operationIds": [
+        "updateMatchingRule"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateMatchingRule",
+          "field": "duplicateQuotePolicy"
+        }
+      ],
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
+    },
+    {
+      "controlId": "CTL-99ab620eb2d4",
+      "method": "pAdmin",
+      "label": "Broker of record period",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-99ab620eb2d4",
+      "status": "reviewed",
+      "disposition": "edit-then-command",
+      "operationIds": [
+        "updateMatchingRule"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateMatchingRule",
+          "field": "brokerOfRecordDays"
+        }
+      ],
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
+    },
+    {
+      "controlId": "CTL-a3d0b2052a2b",
+      "method": "pAdmin",
+      "label": ".sections[4].rows[0]",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-a3d0b2052a2b",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getMatchReview"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-95c96867f896",
+      "method": "pAdmin",
+      "label": ".sections[0].rows[2]",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-95c96867f896",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getPolicy",
+        "getPolicyAsAt"
+      ],
+      "reason": "Inspected navigation-only closure with go intercepted in an isolated VM; resolved destination is recorded in dynamic-navigation.json. Read selected authorised record ID and target tab; never use prototype fixed references. Navigation creates no domain mutation."
+    },
+    {
+      "controlId": "CTL-595fa55cdbb5",
+      "method": "pAdmin",
+      "label": "Create draft version",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-595fa55cdbb5",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "createProductVersion"
+      ],
+      "reason": "Create a draft copy of the selected product version without changing the published version."
+    },
+    {
+      "controlId": "CTL-5f57ef7459cf",
+      "method": "pAdmin",
+      "label": "Authority for",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-5f57ef7459cf",
+      "status": "reviewed",
+      "disposition": "query-filter",
+      "operationIds": [
+        "listAuthorityVersions",
+        "listProductVersions"
+      ],
+      "queryFields": [
+        {
+          "operationId": "listAuthorityVersions",
+          "parameter": "productVersionId"
+        }
+      ],
+      "reason": "Authority-for selects a published product version and loads its authority matrix. Product selection alone does not grant authority or change a binder."
+    },
+    {
+      "controlId": "CTL-89449214fd17",
+      "method": "pAdmin",
+      "label": "Effective from",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-89449214fd17",
+      "status": "reviewed",
+      "disposition": "edit-then-command",
+      "operationIds": [
+        "createAuthorityVersion"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createAuthorityVersion",
+          "field": "effectiveFrom"
+        }
+      ],
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
+    },
+    {
+      "controlId": "CTL-261936502b06",
+      "method": "pAdmin",
+      "label": "Binder",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-261936502b06",
+      "status": "reviewed",
+      "disposition": "edit-then-command",
+      "operationIds": [
+        "createAuthorityVersion"
+      ],
+      "apiFields": [
+        {
+          "operationId": "createAuthorityVersion",
+          "field": "binderVersionId"
+        }
+      ],
+      "reason": "Explicit source field maps to typed command field. Report periods resolve both from/to (Custom requires dates); reports run with saved filters. Configuration edits remain drafts until explicit save/publish/independent approval; display labels map to enum values or stable binder IDs."
+    },
+    {
+      "controlId": "CTL-68b6e88e4b7b",
+      "method": "pAdmin",
+      "label": "Create draft version",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-68b6e88e4b7b",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "createAuthorityVersion"
+      ],
+      "reason": "Create selected product/binder authority proposal; approval is separate and cannot exceed binder."
+    },
+    {
+      "controlId": "CTL-844267662a65",
+      "method": "pAdmin",
+      "label": "Preview",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-844267662a65",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "previewTemplate",
+        "getJob",
+        "downloadDocumentVersion"
+      ],
+      "reason": "Produce an actual preview artifact from pinned source/template and safe audience."
+    },
+    {
+      "controlId": "CTL-5ba47a39e42b",
+      "method": "pAdmin",
+      "label": "Retry batch",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-5ba47a39e42b",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "retryIntegrationBatch"
+      ],
+      "reason": "Retry selected failed integration jobs with original operation identities and recorded reason."
+    },
+    {
+      "controlId": "CTL-f68f49a17b06",
+      "method": "pAdmin",
+      "label": "Open bordereaux",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-f68f49a17b06",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listBordereaux"
+      ],
+      "reason": "Literal navigation to accounting / Bordereaux; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+    },
+    {
+      "controlId": "CTL-3e110cd282e0",
+      "method": "pAccount",
+      "label": "Save changes",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-3e110cd282e0",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "updateProfile"
+      ],
+      "reason": "Save editable self-profile fields with current ETag; identity/access fields excluded."
+    },
+    {
+      "controlId": "CTL-0a807a86f240",
+      "method": "pAccount",
+      "label": "Back to dashboard",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-0a807a86f240",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getDashboard"
+      ],
+      "reason": "Literal navigation to dashboard; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+    },
+    {
+      "controlId": "CTL-0a0a12156da2",
+      "method": "pAccount",
+      "label": "Request a change",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-0a0a12156da2",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "requestAccountAdminChange"
+      ],
+      "reason": "Generic account-change request supports email, role/team or authority routing; submitting it does not grant requested access."
+    },
+    {
+      "controlId": "CTL-e9ca9b8ddf5f",
+      "method": "pAccount",
+      "label": "Full name",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-e9ca9b8ddf5f",
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateProfile"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateProfile",
+          "field": "fullName"
+        }
+      ],
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+    },
+    {
+      "controlId": "CTL-fb7fd0380a0e",
+      "method": "pAccount",
+      "label": "Display name",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-fb7fd0380a0e",
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateProfile"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateProfile",
+          "field": "displayName"
+        }
+      ],
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+    },
+    {
+      "controlId": "CTL-ae3dc91658bf",
+      "method": "pAccount",
+      "label": "Contact number",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-ae3dc91658bf",
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateProfile"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateProfile",
+          "field": "telephone"
+        }
+      ],
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+    },
+    {
+      "controlId": "CTL-6fa068333beb",
+      "method": "pAccount",
+      "label": "Job title",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-6fa068333beb",
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateProfile"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateProfile",
+          "field": "jobTitle"
+        }
+      ],
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+    },
+    {
+      "controlId": "CTL-a6317a500517",
+      "method": "pAccount",
+      "label": "Out of office",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-a6317a500517",
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateProfile"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateProfile",
+          "field": "outOfOffice"
+        }
+      ],
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+    },
+    {
+      "controlId": "CTL-10bc9f0e6f7c",
+      "method": "pAccount",
+      "label": "Task digest",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-10bc9f0e6f7c",
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "updateProfile"
+      ],
+      "apiFields": [
+        {
+          "operationId": "updateProfile",
+          "field": "taskDigest"
+        }
+      ],
+      "reason": "Self-profile fields persist under profile ETag; out-of-office affects new assignments only."
+    },
+    {
+      "controlId": "CTL-04e58a7717f8",
+      "method": "pAccount",
+      "label": "Back to dashboard",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-04e58a7717f8",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "getDashboard"
+      ],
+      "reason": "Literal navigation to dashboard; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+    },
+    {
+      "controlId": "CTL-5c6d766be16f",
+      "method": "pAccount",
+      "label": "Sign out",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-5c6d766be16f",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "revokeSession"
+      ],
+      "reason": "Revoke selected own session server-side, keeping other sessions intact."
+    },
+    {
+      "controlId": "CTL-2bc7a5b6b24d",
+      "method": "pAccount",
+      "label": "Sign out",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-2bc7a5b6b24d",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "revokeSession"
+      ],
+      "reason": "Second rendered device row uses its own session identity."
+    },
+    {
+      "controlId": "CTL-d163470a6c1c",
+      "method": "pAccount",
+      "label": "Sign out all other sessions",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-d163470a6c1c",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "revokeOtherSessions"
+      ],
+      "reason": "Atomically revoke all own sessions except current after recent authentication."
+    },
+    {
+      "controlId": "CTL-51186f5e4460",
+      "method": "pAccount",
+      "label": "Report unrecognised activity",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-51186f5e4460",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "reportUnrecognisedActivity"
+      ],
+      "reason": "Persist a restricted security task and administrator notification linked to the reported session."
+    },
+    {
+      "controlId": "CTL-664235c9a920",
+      "method": "pAccount",
+      "label": "Current password",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-664235c9a920",
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "changePassword"
+      ],
+      "apiFields": [
+        {
+          "operationId": "changePassword",
+          "field": "currentPassword"
+        }
+      ],
+      "reason": "Password input remains transient; explicit command uses framework verification/history and never caches secrets."
+    },
+    {
+      "controlId": "CTL-1ca7dc6c8e73",
+      "method": "pAccount",
+      "label": "New password",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-1ca7dc6c8e73",
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "changePassword"
+      ],
+      "apiFields": [
+        {
+          "operationId": "changePassword",
+          "field": "newPassword"
+        }
+      ],
+      "reason": "Password input remains transient; explicit command uses framework verification/history and never caches secrets."
+    },
+    {
+      "controlId": "CTL-84a03cc130a7",
+      "method": "pAccount",
+      "label": "Confirm new password",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-84a03cc130a7",
+      "status": "reviewed",
+      "disposition": "client-only",
+      "operationIds": [],
+      "reason": "New-password confirmation is a transient equality check; only the actual password is submitted and server policy remains authoritative."
+    },
+    {
+      "controlId": "CTL-8bb02d6fe5ae",
+      "method": "pAccount",
+      "label": "Forgotten your password?",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-8bb02d6fe5ae",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "requestPasswordReset"
+      ],
+      "reason": "Queue a demo reset with non-enumerating response and single-use token."
+    },
+    {
+      "controlId": "CTL-3759ca87f276",
+      "method": "pAccount",
+      "label": "Sign out everywhere",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-3759ca87f276",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "revokeOtherSessions"
+      ],
+      "reason": "Prototype handler explicitly signs out other sessions; current session retained and UI label clarifies that behaviour."
+    },
+    {
+      "controlId": "CTL-f615857e583e",
+      "method": "pAccount",
+      "label": "Set up now",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-f615857e583e",
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "startMfaEnrolment",
+        "confirmMfaEnrolment"
+      ],
+      "reason": "Enter enrolment flow; enabled state changes only after a valid code."
+    },
+    {
+      "controlId": "CTL-2283b1209a4e",
+      "method": "pAccount",
+      "label": "Set up authenticator app",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-2283b1209a4e",
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "startMfaEnrolment",
+        "confirmMfaEnrolment"
+      ],
+      "reason": "Equivalent authenticator setup entry point."
+    },
+    {
+      "controlId": "CTL-5d467d2a008f",
+      "method": "pAccount",
+      "label": "Why we ask for this",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-5d467d2a008f",
+      "status": "reviewed",
+      "disposition": "client-only",
+      "operationIds": [],
+      "reason": "Static explanation of MFA purpose; no read or domain mutation needed."
+    },
+    {
+      "controlId": "CTL-881262a1851b",
+      "method": "pAccount",
+      "label": "Recovery codes",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-881262a1851b",
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "replaceRecoveryCodes"
+      ],
+      "reason": "Security correction: previously issued plaintext codes cannot be retrieved from hashes. Show remaining count and offer recently authenticated replacement; reveal new codes once."
+    },
+    {
+      "controlId": "CTL-481542e5fafd",
+      "method": "pAccount",
+      "label": "View recovery codes",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-481542e5fafd",
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "replaceRecoveryCodes"
+      ],
+      "reason": "Same recovery-code security correction; never add plaintext code storage to reproduce mock display."
+    },
+    {
+      "controlId": "CTL-e16137244926",
+      "method": "pAccount",
+      "label": "Regenerate recovery codes",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-e16137244926",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "replaceRecoveryCodes"
+      ],
+      "reason": "Generate new single-use codes and atomically invalidate old codes after recent authentication."
+    },
+    {
+      "controlId": "CTL-684745645736",
+      "method": "pAccount",
+      "label": "Replace authenticator app",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-684745645736",
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "startMfaEnrolment",
+        "confirmMfaEnrolment"
+      ],
+      "reason": "Replacement leaves current authenticator effective until new enrolment is confirmed."
+    },
+    {
+      "controlId": "CTL-1decc5a40bc7",
+      "method": "pAccount",
+      "label": "Turn off two-factor authentication",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-1decc5a40bc7",
+      "status": "reviewed",
+      "disposition": "opens-command-form",
+      "operationIds": [
+        "disableMfa"
+      ],
+      "reason": "Confirmation verifies credentials/code and role-required MFA policy before disabling."
+    },
+    {
+      "controlId": "CTL-109f52e32998",
+      "method": "pLogout",
+      "label": "Sign back in",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-109f52e32998",
+      "status": "reviewed",
+      "disposition": "command-or-navigation",
+      "operationIds": [
+        "login"
+      ],
+      "reason": "Open sign-in and authenticate real local credentials; do not restore a hardcoded user or session."
+    },
+    {
+      "controlId": "CTL-4a16c38ad19e",
+      "method": "pLogout",
+      "label": "Other active sessions",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-4a16c38ad19e",
+      "status": "reviewed",
+      "disposition": "navigation-read",
+      "operationIds": [
+        "listSessions"
+      ],
+      "reason": "Literal navigation to account / Sessions & activity; display only. Record IDs come from selected scoped row, not fixed prototype IDs. Opening capture does not save, issue or send; its confirmed commands are separately reviewed."
+    },
+    {
+      "controlId": "CTL-e94274aa8d30",
+      "method": "modalVals",
+      "label": "Request change",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-e94274aa8d30",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "requestIdentityChange"
+      ],
+      "reason": "Persist requested email change; nominated second approver is routing only, no fabricated approval. Required audit/security notifications cannot be disabled."
+    },
+    {
+      "controlId": "CTL-6024d631eea5",
+      "method": "modalVals",
+      "label": "User",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-6024d631eea5",
+      "status": "reviewed",
+      "disposition": "read",
+      "operationIds": [
+        "getUser"
+      ],
+      "reason": "Selected subject is the authorised target user ID for identity request; client input cannot select an inaccessible user."
+    },
+    {
+      "controlId": "CTL-84ae08d2ace0",
+      "method": "modalVals",
+      "label": "Current email",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-84ae08d2ace0",
+      "status": "reviewed",
+      "disposition": "read",
+      "operationIds": [
+        "getUser"
+      ],
+      "reason": "Current email is read from server state and not trusted as proof or editable identity input."
+    },
+    {
+      "controlId": "CTL-02d5a8374d81",
+      "method": "modalVals",
+      "label": "New email address",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-02d5a8374d81",
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "requestIdentityChange"
+      ],
+      "apiFields": [
+        {
+          "operationId": "requestIdentityChange",
+          "field": "newEmail"
+        }
+      ],
+      "reason": "Email-change proposal requires independent approval; routing approver is not proof of approval and required notifications cannot be suppressed."
+    },
+    {
+      "controlId": "CTL-d8964d48425a",
+      "method": "modalVals",
+      "label": "Second approver",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-d8964d48425a",
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "requestIdentityChange"
+      ],
+      "apiFields": [
+        {
+          "operationId": "requestIdentityChange",
+          "field": "requestedApproverId"
+        }
+      ],
+      "reason": "Email-change proposal requires independent approval; routing approver is not proof of approval and required notifications cannot be suppressed."
+    },
+    {
+      "controlId": "CTL-50bae4c3910a",
+      "method": "modalVals",
+      "label": "Notify the user",
+      "requirement": "ADM-03",
+      "acceptanceId": "AT-50bae4c3910a",
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "requestIdentityChange"
+      ],
+      "apiFields": [
+        {
+          "operationId": "requestIdentityChange",
+          "field": "notifyUser"
+        }
+      ],
+      "reason": "Email-change proposal requires independent approval; routing approver is not proof of approval and required notifications cannot be suppressed."
+    },
+    {
+      "controlId": "CTL-dc47c1c54ea5",
+      "method": "modalVals",
+      "label": "Copy all codes",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-dc47c1c54ea5",
+      "status": "reviewed",
+      "disposition": "client-only",
+      "operationIds": [],
+      "reason": "Copy newly generated recovery codes from current one-time UI state to clipboard after explicit click; no secret-retrieval API or plaintext persistence."
+    },
+    {
+      "controlId": "CTL-5ec6b96d9dd9",
+      "method": "modalVals",
+      "label": "Codes",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-5ec6b96d9dd9",
+      "status": "reviewed",
+      "disposition": "client-only",
+      "operationIds": [],
+      "reason": "Codes are one-time secret display/copy state from successful generation, not an editable/persisted field."
+    },
+    {
+      "controlId": "CTL-b18928254b6a",
+      "method": "modalVals",
+      "label": "Confirm with your password",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-b18928254b6a",
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "replaceRecoveryCodes"
+      ],
+      "apiFields": [
+        {
+          "operationId": "replaceRecoveryCodes",
+          "field": "password"
+        }
+      ],
+      "reason": "Password is transient reauthentication for generating new codes; old plaintext codes cannot be retrieved."
+    },
+    {
+      "controlId": "CTL-b88a29907695",
+      "method": "modalVals",
+      "label": "Turn off",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-b88a29907695",
+      "status": "reviewed",
+      "disposition": "command",
+      "operationIds": [
+        "disableMfa"
+      ],
+      "reason": "Verify recent password and MFA/recovery proof plus required-role policy before disabling."
+    },
+    {
+      "controlId": "CTL-1906c3818071",
+      "method": "modalVals",
+      "label": "Confirm with your password",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-1906c3818071",
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "disableMfa"
+      ],
+      "apiFields": [
+        {
+          "operationId": "disableMfa",
+          "field": "password"
+        }
+      ],
+      "reason": "MFA disable requires verified password/code and role policy; never a client-side boolean toggle."
+    },
+    {
+      "controlId": "CTL-ed9a5b84734d",
+      "method": "modalVals",
+      "label": "Reason",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-ed9a5b84734d",
+      "status": "reviewed",
+      "disposition": "edit-then-save",
+      "operationIds": [
+        "disableMfa"
+      ],
+      "apiFields": [
+        {
+          "operationId": "disableMfa",
+          "field": "reason"
+        }
+      ],
+      "reason": "MFA disable requires verified password/code and role policy; never a client-side boolean toggle."
+    },
+    {
+      "controlId": "CTL-a0bc1139dfb9",
+      "method": "faWizard",
+      "label": "Authenticator app",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-a0bc1139dfb9",
+      "status": "reviewed",
+      "disposition": "client-only",
+      "operationIds": [],
+      "reason": "Authenticator-app choice supplies setup instructions only; all offered compatible apps use the same TOTP protocol."
+    },
+    {
+      "controlId": "CTL-f42db530136f",
+      "method": "faWizard",
+      "label": "Name this device",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-f42db530136f",
+      "status": "reviewed",
+      "disposition": "wizard-command",
+      "operationIds": [
+        "startMfaEnrolment"
+      ],
+      "reason": "Device name is optional enrolment metadata; persist at setup start with recent-auth proof."
+    },
+    {
+      "controlId": "CTL-e17512c0f03a",
+      "method": "faWizard",
+      "label": "Continue",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-e17512c0f03a",
+      "status": "reviewed",
+      "disposition": "wizard-command",
+      "operationIds": [
+        "startMfaEnrolment",
+        "confirmMfaEnrolment"
+      ],
+      "reason": "Advance by current stage: start pending enrolment once, then verify six-digit code at verification stage. Never enable MFA based on local UI state."
+    },
+    {
+      "controlId": "CTL-37ac8f55741b",
+      "method": "faWizard",
+      "label": "Cancel setup",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-37ac8f55741b",
+      "status": "reviewed",
+      "disposition": "wizard-command",
+      "operationIds": [
+        "cancelMfaEnrolment"
+      ],
+      "reason": "Cancel any pending enrolment; before one exists only close setup. Destroy temporary secret/code hashes and clear local secrets."
+    },
+    {
+      "controlId": "CTL-ccdd7bd72bdb",
+      "method": "faWizard",
+      "label": "Learn more",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-ccdd7bd72bdb",
+      "status": "reviewed",
+      "disposition": "client-only",
+      "operationIds": [],
+      "reason": "Display static MFA help without sending credentials or modifying enrolment."
+    },
+    {
+      "controlId": "CTL-cd1aa2b17992",
+      "method": "faWizard",
+      "label": "Continue",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-cd1aa2b17992",
+      "status": "reviewed",
+      "disposition": "wizard-command",
+      "operationIds": [
+        "startMfaEnrolment",
+        "confirmMfaEnrolment"
+      ],
+      "reason": "Reuse current unexpired enrolment on stage changes; confirm TOTP before showing one-time recovery codes."
+    },
+    {
+      "controlId": "CTL-61d9eb5ae433",
+      "method": "faWizard",
+      "label": "Back",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-61d9eb5ae433",
+      "status": "reviewed",
+      "disposition": "client-only",
+      "operationIds": [],
+      "reason": "Move back within the same unexpired enrolment; do not regenerate secrets or recover already-cleared codes."
+    },
+    {
+      "controlId": "CTL-60474f988911",
+      "method": "faWizard",
+      "label": "Cancel setup",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-60474f988911",
+      "status": "reviewed",
+      "disposition": "wizard-command",
+      "operationIds": [
+        "cancelMfaEnrolment"
+      ],
+      "reason": "Cancel pending setup server-side and clear displayed secret/recovery codes; never disable existing active MFA."
+    },
+    {
+      "controlId": "CTL-f6ee6e414ad3",
+      "method": "faWizard",
+      "label": "6-digit code",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-f6ee6e414ad3",
+      "status": "reviewed",
+      "disposition": "wizard-command",
+      "operationIds": [
+        "confirmMfaEnrolment"
+      ],
+      "reason": "Six-digit code is transient secret input; submit to rate-limited enrolment verification, never persist in form history/logs."
+    },
+    {
+      "controlId": "CTL-bf00dc2dbf93",
+      "method": "faWizard",
+      "label": "Cannot scan",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-bf00dc2dbf93",
+      "status": "reviewed",
+      "disposition": "client-only",
+      "operationIds": [],
+      "reason": "Show manual setup key derived from the currently held otpauth URI; never put the secret in analytics, URLs or local storage."
+    },
+    {
+      "controlId": "CTL-3117235789fa",
+      "method": "faWizard",
+      "label": "Copy all",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-3117235789fa",
+      "status": "reviewed",
+      "disposition": "client-only",
+      "operationIds": [],
+      "reason": "Copy only currently displayed one-time recovery codes with user gesture. Clipboard failure is shown; no server retrieval of plaintext hashes."
+    },
+    {
+      "controlId": "CTL-2648097bf60e",
+      "method": "faWizard",
+      "label": "I have saved these recovery codes somewhere safe",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-2648097bf60e",
+      "status": "reviewed",
+      "disposition": "client-only",
+      "operationIds": [],
+      "reason": "Local acknowledgement gates activation and maps to recoveryCodesSaved=true; toggling alone does not enable MFA."
+    },
+    {
+      "controlId": "CTL-f593365902af",
+      "method": "faWizard",
+      "label": "Finish and turn on",
+      "requirement": "ADM-05",
+      "acceptanceId": "AT-f593365902af",
+      "status": "reviewed",
+      "disposition": "wizard-command",
+      "operationIds": [
+        "activateMfaEnrolment"
+      ],
+      "reason": "Activate only verified unexpired enrolment after saved-code acknowledgement. Promote secret/hashes atomically and clear plaintext. Retry reads current account state; it never returns codes again."
+    }
+  ]
+}

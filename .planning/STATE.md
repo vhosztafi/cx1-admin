@@ -1,15 +1,13 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.0
-milestone_name: Functional Back Office MVP
-status: Ready to plan Phase 11
-stopped_at: Phase 10 delivered; lighter workflow approved; plan Phase 11 next.
-last_updated: "2026-09-26"
-last_activity: "2026-09-26 — Closed Phase 10 and removed repeated exhaustive workflow barriers; Phase 11 next."
+milestone_name: milestone
+status: Ready to execute Phase 11
+last_updated: "2026-09-26T04:46:43.260Z"
 progress:
   total_phases: 13
   completed_phases: 10
-  total_plans: 117
+  total_plans: 123
   completed_plans: 117
   percent: 69
 ---
@@ -32,7 +30,7 @@ The original source denominator is unchanged: 118 controls (109 Phase9 owned, ni
 
 ## Next work
 
-Next command: `$gsd-plan-phase 11 --auto`. Phase 11 configuration/account administration is not yet planned. Phases 11–13 remain; the v1.0 milestone is active. Preserve the retained demo database, file root, data-protection keys and frontend-code. The existing preview on port 3100 remains running; verify process/binary/listener ownership before changing it. The inherited generated `apps/backoffice/next-env.d.ts` and `tsconfig.json` edits, untracked `.idea/`, and preview-generated `apps/backoffice/AGENTS.md` and `CLAUDE.md` are not part of Phase 10 commits.
+Phase 11 has six approved direct plans covering ADM-01..08. Auto execution proceeds with `$gsd-execute-phase 11 --auto --no-transition`, using targeted checks only. Phases 11–13 remain; the v1.0 milestone is active. Preserve the retained demo database, file root, data-protection keys and frontend-code. The existing preview on port 3100 remains running; verify process/binary/listener ownership before changing it. The inherited generated `apps/backoffice/next-env.d.ts` and `tsconfig.json` edits, untracked `.idea/`, and preview-generated `apps/backoffice/AGENTS.md` and `CLAUDE.md` are not part of Phase 10 commits.
 
 ## Decisions and continuity
 
