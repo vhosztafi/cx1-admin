@@ -1,4 +1,4 @@
-import {addReportingContracts} from './openapi-reporting.mjs';
+import {addReportingContracts,addReportExecutionContracts} from './openapi-reporting.mjs';
 import {addQuoteContracts} from './openapi-quotes.mjs';
 import {addAdministrationContracts,writeAdministrationTypes} from './openapi-administration.mjs';
 import {addUnderwritingContracts} from './openapi-underwriting.mjs';
@@ -200,6 +200,7 @@ addFinancePeriodContracts({schemas,ref,operation,paths,id,instant,decimal});
 addFinanceEarningContracts({schemas,ref,operation,paths,id,instant,decimal});
 addAdministrationContracts({schemas,ref,operation,paths,id,instant,text,object,array});
 addReportingContracts({schemas,ref,operation,paths,id,instant,text,object,array});
+addReportExecutionContracts({schemas,ref,operation,paths,id,instant,text,object,array});
 await writeOperationalContracts();
 await writeFinanceLedgerTypes();
 await writeFinanceStatementTypes();

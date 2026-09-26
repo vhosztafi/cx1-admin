@@ -547,3 +547,6 @@ h1, h2, p { margin: 0; }
 .report-filter-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(210px,1fr)); gap: 16px; padding: 20px; align-items: end; }
 .report-filter-grid label { display: grid; gap: 6px; font-size: 13px; font-weight: 600; }
 .report-filter-grid input, .report-filter-grid select { width: 100%; min-height: 38px; padding: 8px 10px; border: 1px solid var(--border, #cbd5df); border-radius: 6px; background: white; color: inherit; }
+.report-library { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:12px; padding:0 20px 20px; }
+.report-card { display:grid; gap:10px; text-align:left; padding:18px; background:white; border:1px solid #dae0ea; border-radius:8px; color:inherit; cursor:pointer; }
+.report-card strong {font-size:15px}.report-card span {font-size:13px;color:#66758b;line-height:1.5}.report-card small {color:#465fff}.report-card.selected {border-color:#465fff;box-shadow:inset 3px 0 #465fff}.report-source {display:block;max-width:250px;font-size:10px;color:#66758b;overflow-wrap:anywhere;margin-top:6px}

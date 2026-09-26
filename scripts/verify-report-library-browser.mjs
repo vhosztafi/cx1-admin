@@ -1,0 +1,15 @@
+import {chromium} from 'playwright';
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const fixture=JSON.parse(await readFile('.local/phase11-fixture/fixture.json','utf8'));assert.match(fixture.database,/^CoverMGA_Test_Phase11_[a-f0-9]{32}$/);
+const saved=JSON.parse(await readFile('.local/phase11-fixture/reporting.json','utf8'));
+const origin='http://localhost:3193',password=(await readFile('.local/phase11-fixture/password.txt','utf8')).trim();const browser=await chromium.launch({channel:'chrome',headless:true});const page=await browser.newPage({viewport:{width:1540,height:1000}});page.setDefaultTimeout(60000);const evidence={passed:false,checks:[]};
+try{
+ await page.goto(origin+'/login');await page.getByLabel('Email address',{exact:true}).fill('underwriter@cover.example');await page.getByLabel('Password',{exact:true}).fill(password);await page.getByRole('button',{name:'Sign in',exact:true}).click();await page.waitForURL(origin+'/');
+ await page.goto(origin+'/reporting');await page.getByRole('button',{name:/^Underwriting performance/}).click();await page.getByRole('button',{name:'Run report',exact:true}).waitFor();
+ let pending=page.waitForResponse(r=>r.url().endsWith('/run')&&r.request().method()==='POST');await page.getByRole('button',{name:'Run report',exact:true}).click();let r=await pending;assert.equal(r.status(),200,await r.text());const result=await r.json();assert.ok(result.totalRows>=3);assert.equal(new Set(result.rows.filter(x=>saved.quotes.includes(x.recordId)).map(x=>x.productCode)).size,3);assert.equal(result.measures.find(x=>x.code==='count').value,String(result.totalRows));evidence.checks.push('three saved products reconcile quote-created cohort and rows');
+ await page.getByRole('table',{name:'Report source records',exact:true}).waitFor();await mkdir('output/playwright',{recursive:true});await page.screenshot({path:'output/playwright/phase12-report-library.png',fullPage:true});
+ const first=result.rows[0];await page.getByRole('table',{name:'Report source records',exact:true}).getByRole('link',{name:first.reference,exact:true}).click();await page.waitForURL('**/quotes/'+first.recordId);evidence.checks.push('report source opens saved quote');
+ await page.goto(origin+'/reporting?reportId='+result.reportId);await page.getByRole('button',{name:'Run report',exact:true}).waitFor();await page.getByLabel('Agency',{exact:true}).selectOption(saved.agencyId);pending=page.waitForResponse(r=>r.url().endsWith('/run')&&r.request().method()==='POST');await page.getByRole('button',{name:'Run report',exact:true}).click();r=await pending;assert.equal(r.status(),200);assert.equal((await r.json()).totalRows,3);evidence.checks.push('saved report definition and stable agency filter reload');evidence.passed=true;
+}finally{await mkdir('.local/phase12-tests',{recursive:true});await writeFile('.local/phase12-tests/insurance-browser.json',JSON.stringify(evidence,null,2));await browser.close();}
+console.log(JSON.stringify(evidence));
