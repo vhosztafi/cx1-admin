@@ -27,6 +27,22 @@ public static class DemoDatabase
         await SeedAsync(db,password,cancellationToken,includeSupportFlags:true,includeMatches:true,includeQuoteCapture:true,includeUnderwriting:true,includeRenewalLifecycle:true,includeCommercialCapture:true,includeCommercialUnderwriting:true,includeOperationalWorkflows:true);
     }
 
+    public static void ValidateHostedDevTarget(string connectionString)
+    {
+        var connection = new SqlConnectionStringBuilder(connectionString);
+        if (connection.InitialCatalog != "Cx1_Dev" || !string.IsNullOrEmpty(connection.AttachDBFilename))
+            throw new InvalidOperationException("Hosted dev initialization is restricted to Cx1_Dev without attached files.");
+    }
+
+    public static async Task InitializeHostedDevAsync(string connectionString, string password, CancellationToken cancellationToken = default)
+    {
+        ValidateHostedDevTarget(connectionString);
+        ValidatePassword(password);
+        await using var db = new BackOfficeDbContext(new DbContextOptionsBuilder<BackOfficeDbContext>().UseSqlServer(connectionString, sql => sql.UseCompatibilityLevel(160)).Options);
+        await db.Database.MigrateAsync(cancellationToken);
+        await SeedAsync(db,password,cancellationToken,includeSupportFlags:true,includeMatches:true,includeQuoteCapture:true,includeUnderwriting:true,includeRenewalLifecycle:true,includeCommercialCapture:true,includeCommercialUnderwriting:true,includeOperationalWorkflows:true);
+    }
+
     public static async Task SeedAsync(BackOfficeDbContext db,string password,CancellationToken cancellationToken = default,bool includeSupportFlags=false,bool includeMatches=false,bool includeQuoteCapture=false,bool includeUnderwriting=false,bool includeRenewalLifecycle=false,bool includeAccounting=true,bool includeCommercialCapture=false,bool includeCommercialUnderwriting=false,bool includeOperationalWorkflows=false)
     {
         ValidatePassword(password);

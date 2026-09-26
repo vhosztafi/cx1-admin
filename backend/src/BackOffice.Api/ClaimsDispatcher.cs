@@ -30,6 +30,6 @@ public sealed class ClaimsDispatcher(IServiceScopeFactory scopes,ILogger<ClaimsD
     public static void Register(WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<ClaimsHandoffWorker>();
-        if(builder.Environment.IsDevelopment()&&builder.Configuration.GetValue("Cover:OperationalClaimsWorkerEnabled",true))builder.Services.AddHostedService<ClaimsDispatcher>();
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) &&builder.Configuration.GetValue("Cover:OperationalClaimsWorkerEnabled",true))builder.Services.AddHostedService<ClaimsDispatcher>();
     }
 }

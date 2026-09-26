@@ -27,7 +27,9 @@
     "web:browser:matches": "node scripts/verify-matches-browser.mjs",
     "web:browser:agencies": "node scripts/verify-agency-suite.mjs",
     "web:browser:quotes": "node scripts/verify-quote-suite.mjs",
-    "web:browser:underwriting": "node scripts/verify-underwriting-suite.mjs"
+    "web:browser:underwriting": "node scripts/verify-underwriting-suite.mjs",
+    "deploy:worker:build": "node scripts/deploy/build-worker.mjs",
+    "deploy:api:package": "powershell -NoProfile -File scripts/deploy/package-api.ps1"
   },
   "devDependencies": {
     "@redocly/cli": "2.52.1",

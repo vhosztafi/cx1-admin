@@ -44,7 +44,7 @@ public sealed class FinancePaymentDispatcher(IServiceScopeFactory scopes,
     public static void Register(WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<FinancePaymentWorker>();
-        if (builder.Environment.IsDevelopment() &&
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) &&
             builder.Configuration.GetValue("Cover:FinancePaymentWorkerEnabled", true))
             builder.Services.AddHostedService<FinancePaymentDispatcher>();
     }

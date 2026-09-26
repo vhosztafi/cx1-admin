@@ -41,7 +41,7 @@ public sealed class FileFinalizationDispatcher(IServiceScopeFactory scopes, Time
             return new OperationalFileStore(root, [builder.Environment.WebRootPath ?? Path.Combine(builder.Environment.ContentRootPath, "wwwroot")]);
         });
         builder.Services.AddScoped<FileService>(); builder.Services.AddScoped<FileFinalizationWorker>();
-        if (builder.Environment.IsDevelopment() && builder.Configuration.GetValue("Cover:FileWorkerEnabled", false))
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) && builder.Configuration.GetValue("Cover:FileWorkerEnabled", false))
             builder.Services.AddHostedService<FileFinalizationDispatcher>();
     }
 }

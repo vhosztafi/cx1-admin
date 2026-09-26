@@ -34,7 +34,7 @@ public sealed class AgencyNotificationDispatcher(SqlJobLeases leases,AgencyNotif
         builder.Services.AddSingleton<AgencyNotificationPayload>();
         builder.Services.AddSingleton<AgencyNotificationService>();
         builder.Services.AddSingleton<AgencyNotificationWorker>();
-        if(builder.Environment.IsDevelopment()&&builder.Configuration.GetValue("Cover:AgencyNotificationWorkerEnabled",true))
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) &&builder.Configuration.GetValue("Cover:AgencyNotificationWorkerEnabled",true))
             builder.Services.AddHostedService<AgencyNotificationDispatcher>();
     }
 }

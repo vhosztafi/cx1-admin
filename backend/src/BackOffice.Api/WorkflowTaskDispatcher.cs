@@ -27,7 +27,7 @@ public sealed class WorkflowTaskDispatcher(IServiceScopeFactory scopes, TimeProv
     public static void Register(WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<WorkflowTaskService>(); builder.Services.AddScoped<WorkflowTaskScanner>();
-        if (builder.Environment.IsDevelopment() && builder.Configuration.GetValue("Cover:WorkflowTaskWorkerEnabled", false))
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) && builder.Configuration.GetValue("Cover:WorkflowTaskWorkerEnabled", false))
             builder.Services.AddHostedService<WorkflowTaskDispatcher>();
     }
 }

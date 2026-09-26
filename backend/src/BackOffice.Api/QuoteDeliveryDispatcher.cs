@@ -30,6 +30,6 @@ public sealed class QuoteDeliveryDispatcher(SqlJobLeases leases, QuoteDeliveryWo
         builder.Services.AddScoped<QuoteTermsService>(); builder.Services.AddScoped<QuoteAcceptanceService>(); builder.Services.AddSingleton<QuoteDeliveryWorker>();
         builder.Services.AddScoped<QuoteTermsReadModel>();
         builder.Services.AddScoped<QuoteDeliveryJobs>();
-        if (builder.Environment.IsDevelopment() && builder.Configuration.GetValue("Cover:QuoteDeliveryWorkerEnabled", true)) builder.Services.AddHostedService<QuoteDeliveryDispatcher>();
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) && builder.Configuration.GetValue("Cover:QuoteDeliveryWorkerEnabled", true)) builder.Services.AddHostedService<QuoteDeliveryDispatcher>();
     }
 }

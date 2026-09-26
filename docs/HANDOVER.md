@@ -2,6 +2,7 @@
 
 ## Start here
 
+- [Development deployment](../deploy/STATUS.md): protected Cloudflare frontend and the Windows/IIS API package; server installation and routing pending.
 - [Demo](DEMO.md): short role-based walkthrough, then detailed fictional scenario preparation.
 - [Setup](SETUP.md): pinned tools, restore, SQL initialization, auth and preview commands.
 - [Acceptance](acceptance/ACCEPTANCE.md): current versus historical evidence and remaining human/runtime checks.

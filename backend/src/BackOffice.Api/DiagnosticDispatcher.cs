@@ -52,7 +52,7 @@ public sealed class DiagnosticDispatcher(
         builder.Services.AddSingleton<DiagnosticDemoProvider>();
         builder.Services.AddSingleton<DiagnosticInbox>();
         // Demo fault scenarios are never dispatched by a production host.
-        if (builder.Environment.IsDevelopment() && builder.Configuration.GetValue("Cover:DiagnosticWorkerEnabled", true))
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) && builder.Configuration.GetValue("Cover:DiagnosticWorkerEnabled", true))
             builder.Services.AddHostedService<DiagnosticDispatcher>();
     }
 }

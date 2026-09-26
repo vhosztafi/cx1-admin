@@ -62,7 +62,7 @@ public sealed class RenewalLifecycleDispatcher(IDbContextFactory<BackOfficeDbCon
         builder.Services.AddSingleton<RenewalLifecycleService>();builder.Services.AddSingleton<RenewalLapseNotificationWorker>();
         // Explicit local demo opt-in prevents a clock worker running against
         // arbitrary developer/test databases before migration and configuration.
-        if(builder.Environment.IsDevelopment() && builder.Configuration.GetValue("Cover:RenewalLifecycleWorkerEnabled",false))
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) && builder.Configuration.GetValue("Cover:RenewalLifecycleWorkerEnabled",false))
             builder.Services.AddHostedService<RenewalLifecycleDispatcher>();
     }
 }

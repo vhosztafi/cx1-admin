@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cx1-admin-dev",
+  "account_id": "e5ddcd53fc8f6f1fbc5392d48aeb47d8",
+  "main": "worker/index.mjs",
+  "compatibility_date": "2026-09-26",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{ "pattern": "cx1-admin-dev.gyongyos.co.uk", "custom_domain": true }],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS", "run_worker_first": true },
+  "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "cx1-admin-dev" }],
+  "ratelimits": [{ "name": "LOGIN_LIMITER", "namespace_id": "10010926", "simple": { "limit": 10, "period": 60 } }],
+  "vars": {
+    "BACKOFFICE_API_ORIGIN": "https://cx1-admin-api-dev.gyongyos.co.uk"
+  },
+  "observability": { "enabled": false }
+}

@@ -41,6 +41,6 @@ public sealed class MidDispatcher(IServiceScopeFactory scopes,ILogger<MidDispatc
     public static void Register(WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<MidSubmissionRegistration>();builder.Services.AddScoped<MidSubmissionService>();builder.Services.AddScoped<MidSubmissionWorker>();
-        if(builder.Environment.IsDevelopment()&&builder.Configuration.GetValue("Cover:OperationalMidWorkerEnabled",true))builder.Services.AddHostedService<MidDispatcher>();
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) &&builder.Configuration.GetValue("Cover:OperationalMidWorkerEnabled",true))builder.Services.AddHostedService<MidDispatcher>();
     }
 }

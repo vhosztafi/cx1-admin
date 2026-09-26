@@ -44,7 +44,7 @@ public sealed class FinanceSubmissionDispatcher(IServiceScopeFactory scopes,
     public static void Register(WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<FinanceSubmissionWorker>();
-        if (builder.Environment.IsDevelopment() &&
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) &&
             builder.Configuration.GetValue("Cover:FinanceSubmissionWorkerEnabled", true))
             builder.Services.AddHostedService<FinanceSubmissionDispatcher>();
     }

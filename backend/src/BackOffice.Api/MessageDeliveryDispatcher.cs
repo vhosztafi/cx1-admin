@@ -30,6 +30,6 @@ public sealed class MessageDeliveryDispatcher(IServiceScopeFactory scopes,ILogge
     public static void Register(WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<MessageDeliveryWorker>();
-        if(builder.Environment.IsDevelopment()&&builder.Configuration.GetValue("Cover:OperationalDeliveryWorkerEnabled",true))builder.Services.AddHostedService<MessageDeliveryDispatcher>();
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) &&builder.Configuration.GetValue("Cover:OperationalDeliveryWorkerEnabled",true))builder.Services.AddHostedService<MessageDeliveryDispatcher>();
     }
 }

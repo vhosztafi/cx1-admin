@@ -2,6 +2,17 @@ using BackOffice.Infrastructure.Persistence;
 using BackOffice.Infrastructure.Finance;
 using BackOffice.Api;
 
+if (args.Contains("--initialize-hosted-dev", StringComparer.Ordinal))
+{
+    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Staging" || args.Length != 1)
+        throw new InvalidOperationException("Hosted dev initialization requires Staging and only --initialize-hosted-dev.");
+    await DemoDatabase.InitializeHostedDevAsync(
+        Environment.GetEnvironmentVariable("COVER_SQL_CONNECTION") ?? throw new InvalidOperationException("Set COVER_SQL_CONNECTION."),
+        Environment.GetEnvironmentVariable("COVER_DEMO_PASSWORD") ?? throw new InvalidOperationException("Set COVER_DEMO_PASSWORD."));
+    Console.WriteLine("Cx1_Dev migrated and fictional accounts/configuration seeded; no reset performed.");
+    return;
+}
+
 if (args.Contains("--backfill-finance-earnings", StringComparer.Ordinal))
 {
     if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Development")
@@ -125,6 +136,7 @@ builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.UnderwritingEv
 builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.QuoteReferralService>();
 builder.Services.AddScoped<BackOffice.Infrastructure.Underwriting.QuoteReferralReadModel>();
 var app = builder.Build();
+app.UseDeploymentBoundary();
 if(args.Contains("--seed-accounting-periods-demo",StringComparer.Ordinal))
 {
     if(!app.Environment.IsDevelopment())throw new InvalidOperationException("Accounting fixtures require local Development.");

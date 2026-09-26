@@ -29,6 +29,6 @@ public sealed class CapacityDispatcher(SqlJobLeases leases, CapacityWorker worke
     {
         builder.Services.AddScoped<CapacityService>(); builder.Services.AddScoped<CapacityReadModel>(); builder.Services.AddSingleton<CapacityWorker>();
         builder.Services.AddScoped<CapacityJobs>();
-        if (builder.Environment.IsDevelopment() && builder.Configuration.GetValue("Cover:CapacityWorkerEnabled", true)) builder.Services.AddHostedService<CapacityDispatcher>();
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) && builder.Configuration.GetValue("Cover:CapacityWorkerEnabled", true)) builder.Services.AddHostedService<CapacityDispatcher>();
     }
 }

@@ -29,7 +29,7 @@ public sealed class ServicingDeliveryDispatcher(SqlJobLeases leases,ServicingDel
     public static void Register(WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<ServicingTermsService>();builder.Services.AddSingleton<ServicingDeliveryWorker>();
-        if(builder.Environment.IsDevelopment() && builder.Configuration.GetValue("Cover:ServicingDeliveryWorkerEnabled",true))
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) && builder.Configuration.GetValue("Cover:ServicingDeliveryWorkerEnabled",true))
             builder.Services.AddHostedService<ServicingDeliveryDispatcher>();
     }
 }

@@ -54,6 +54,6 @@ public sealed class CancellationOperationsDispatcher(IServiceScopeFactory scopes
     {
         builder.Services.AddScoped<CancellationOperationsWorker>();
         builder.Services.AddScoped<CancellationOperationsService>();
-        if (builder.Environment.IsDevelopment() && builder.Configuration.GetValue("Cover:OperationalCancellationWorkerEnabled", true)) builder.Services.AddHostedService<CancellationOperationsDispatcher>();
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) && builder.Configuration.GetValue("Cover:OperationalCancellationWorkerEnabled", true)) builder.Services.AddHostedService<CancellationOperationsDispatcher>();
     }
 }

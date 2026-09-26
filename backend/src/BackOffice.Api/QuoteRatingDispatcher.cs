@@ -30,6 +30,6 @@ public sealed class QuoteRatingDispatcher(SqlJobLeases leases, QuoteRatingWorker
         builder.Services.AddScoped<QuoteRatingService>(); builder.Services.AddScoped<QuoteUnderwritingLifecycle>(); builder.Services.AddScoped<QuoteUnderwritingReadModel>();
         builder.Services.AddSingleton<QuoteRatingWorker>();
         builder.Services.AddScoped<QuoteRatingJobs>();
-        if (builder.Environment.IsDevelopment() && builder.Configuration.GetValue("Cover:QuoteRatingWorkerEnabled", true)) builder.Services.AddHostedService<QuoteRatingDispatcher>();
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) && builder.Configuration.GetValue("Cover:QuoteRatingWorkerEnabled", true)) builder.Services.AddHostedService<QuoteRatingDispatcher>();
     }
 }

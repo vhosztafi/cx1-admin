@@ -33,7 +33,7 @@ public sealed class ServicingRatingDispatcher(SqlJobLeases leases, ServicingRati
         builder.Services.AddScoped<ServicingRatingReadModel>();
         builder.Services.AddScoped<ServicingRatingJobs>();
         builder.Services.AddSingleton<ServicingRatingWorker>();
-        if (builder.Environment.IsDevelopment() && builder.Configuration.GetValue("Cover:ServicingRatingWorkerEnabled", true))
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) && builder.Configuration.GetValue("Cover:ServicingRatingWorkerEnabled", true))
             builder.Services.AddHostedService<ServicingRatingDispatcher>();
     }
 }

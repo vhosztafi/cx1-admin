@@ -22,6 +22,8 @@ See PROJECT.md and MILESTONES.md; complete v1.0 requirements and roadmap are in 
 
 v1.0 closed 2026-09-26 with accepted verification limits. All 131 plan/summary pairs present. Audit 82/83 requirements on local evidence. No next milestone is active. Next command: $gsd-new-milestone.
 
+Post-milestone development deployment requested: protected Cloudflare frontend is live at cx1-admin-dev.gyongyos.co.uk; Windows API package prepared for IIS / .\sql2022 / Cx1_Dev. API server installation and DNS/Tunnel routing remain pending. See deploy/STATUS.md and deploy/windows/README.md. This deployment does not resolve the archived business/human verification debt.
+
 ## Deferred Items
 
 User accepted the audit limits by invoking complete-milestone after the explicit close-with-limits offer. Open artifact records acknowledged: 2.

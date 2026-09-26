@@ -1,4 +1,9 @@
 packages:
   - apps/*
 allowBuilds:
+  esbuild: true
   unrs-resolver: true
+  workerd: true
+minimumReleaseAgeExclude:
+  - miniflare@5.20260925.0-alpha
+  - wrangler@4.141.0

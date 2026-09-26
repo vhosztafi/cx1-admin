@@ -30,6 +30,6 @@ public sealed class ServicingCapacityDispatcher(SqlJobLeases leases, ServicingCa
     {
         builder.Services.AddScoped<ServicingCapacityService>(); builder.Services.AddScoped<ServicingCapacityReadModel>(); builder.Services.AddSingleton<ServicingCapacityWorker>();
 
-        if (builder.Environment.IsDevelopment() && builder.Configuration.GetValue("Cover:ServicingCapacityWorkerEnabled", true)) builder.Services.AddHostedService<ServicingCapacityDispatcher>();
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) && builder.Configuration.GetValue("Cover:ServicingCapacityWorkerEnabled", true)) builder.Services.AddHostedService<ServicingCapacityDispatcher>();
     }
 }

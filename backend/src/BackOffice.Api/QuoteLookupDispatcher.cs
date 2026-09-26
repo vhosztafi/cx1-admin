@@ -37,7 +37,7 @@ public sealed class QuoteLookupDispatcher(SqlJobLeases leases, QuoteLookupWorker
     {
         builder.Services.AddScoped<QuoteLookupService>();
         builder.Services.AddSingleton<QuoteLookupWorker>();
-        if (builder.Environment.IsDevelopment() && builder.Configuration.GetValue("Cover:QuoteLookupWorkerEnabled", true))
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) && builder.Configuration.GetValue("Cover:QuoteLookupWorkerEnabled", true))
             builder.Services.AddHostedService<QuoteLookupDispatcher>();
     }
 }

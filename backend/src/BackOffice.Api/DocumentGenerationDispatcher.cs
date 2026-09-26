@@ -43,6 +43,6 @@ public sealed class DocumentGenerationDispatcher(IServiceScopeFactory scopes,Tim
     }
     public static void Register(WebApplicationBuilder builder)
     {
-        if(builder.Environment.IsDevelopment()&&builder.Configuration.GetValue("Cover:DocumentWorkerEnabled",false))builder.Services.AddHostedService<DocumentGenerationDispatcher>();
+        if (DeploymentBoundary.DemoWorkersEnabled(builder) &&builder.Configuration.GetValue("Cover:DocumentWorkerEnabled",false))builder.Services.AddHostedService<DocumentGenerationDispatcher>();
     }
 }
