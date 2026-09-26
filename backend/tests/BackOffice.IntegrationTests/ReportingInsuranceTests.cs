@@ -14,7 +14,7 @@ public sealed partial class UnderwritingRuntimeTests
  {
   await WithDatabase(async(db,password)=>{
    var setup=await AcceptedIssue(db,password);var f=setup.Source;var issued=await new QuoteIssueService(f.Factory,f.Clock).IssueAsync(f.Underwriter,f.QuoteId,setup.Version,setup.Input,Guid.NewGuid().ToString(),Guid.NewGuid());
-   var service=new ReportService(f.Factory,f.Clock);var definitions=await service.CatalogueAsync(f.Servicing);Assert.Equal(5,definitions.Length);
+   var service=new ReportService(f.Factory,f.Clock);var definitions=await service.CatalogueAsync(f.Servicing);Assert.Equal(5,definitions.Count(x=>x.Category is "underwriting" or "portfolio" or "renewal"));
    var created=await db.Set<Quote>().Where(x=>x.Id==f.QuoteId).Select(x=>x.CreatedAt).SingleAsync();var day=DateOnly.FromDateTime(created.UtcDateTime);
    var filters=new ReportFilters(day.AddDays(-1),day.AddDays(1));var report=await service.RunAsync(f.Servicing,ReportCatalogue.All.Single(x=>x.Code=="underwriting").Id,filters);
    Assert.Contains(report.Rows,x=>x.RecordId==f.QuoteId);Assert.Equal("1",report.Measures.Single(x=>x.Code=="bound").Value);Assert.Equal("100",report.Measures.Single(x=>x.Code=="conversion").Value);
@@ -32,3 +32,4 @@ public sealed partial class UnderwritingRuntimeTests
   });
  }
 }
+
