@@ -18,7 +18,7 @@ Staff can complete a quote-to-policy-to-servicing journey and trust that its pol
 
 ### Validated
 
-Phases1–8 are verified locally. Both Motor Trade products and Commercial Combined support persistent capture, rating, proof/referral/carrier decisions, exact terms acceptance, first issue and adjustment/renewal/cancellation with immutable JSON and balanced obligations. POL-02..09 and CC-01..04 are complete. POL-01 and CC-05 retain explicit Phase9/10 operational owners; queued content is not generated or delivered documentation. The prototype and untouched sales funnel remain references. The full MVP remains in progress; see REQUIREMENTS.md and08-VERIFICATION.
+Phases 1–11 are complete on the recorded local evidence. ADM-01..08 now include controlled configuration, independent sensitive approvals, local account/MFA security and audit/integration oversight. Earlier policy/operations/finance acceptance remains in the phase summaries. The MVP still needs Phase 12 reporting/discovery and Phase 13 broad acceptance and human UAT.
 
 ### Active
 
@@ -80,9 +80,9 @@ Updated by explicit user direction on 2026-09-26: prioritize delivery and remove
 
 Commit reviewed local work in manageable units. No production deployment, real payment/delivery or separate customer-facing funnel is authorised. Continue in this task; no additional user-owned tasks are needed.
 
-Last updated: 2026-09-21 — Phase8 verified; autonomous Phase9 transition.
+Last updated: 2026-09-26 — Phase 11 complete; autonomous Phase 12 transition.
 
 
 ## Current State
 
-Phase8 complete:16/16 plans; all81 currently defined plans across eight of13 phases are verified. Current acceptance passes1511 unique backend cases/383realSQL/no skips,399root and172frontend tests, all five commercial stages and both retained MotorTrade aggregates. Two additive initializations preserve139 table fingerprints; actual restart preserves three policy graphs/12 versions, five pinned exposure readings and original keys. Phase9 implements tasks, notes/messages, document rendering/delivery and incidents using08-PHASE09-HANDOFF. Human business/assistive-technology UAT, hostedCI and Docker runtime remain unperformed.
+Phase 11 complete: 6/6 plans, 123 completed plans across eleven of thirteen phases. Focused Phase 11 evidence covers 17 distinct backend cases (10 SQL), 45 API contract cases, two relevant frontend cases and saved browser journeys; no unfiltered SQL run. Phase 12 implements dashboards, search and reports. Phase 13 retains broad regression, human UAT, the Phase 10 closed-period readback and intermittent development navigation diagnostics. Retained production-like identity deployment was not performed; no live external integration or production deployment is claimed.

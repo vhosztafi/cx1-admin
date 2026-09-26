@@ -20,7 +20,7 @@
 - [x] **Phase 8: Commercial Combined back office** — Demonstrate shared workflows with a different risk structure.
 - [x] **Phase 9: Tasks, documents, communication and incidents** — Make servicing activities and demo handoffs operational.
 - [x] **Phase 10: Accounting and insurer reporting** — Reconcile policy movements through finance workflows.
-- [ ] **Phase 11: Configuration and account administration** — Expose controlled configuration and complete account functions.
+- [x] **Phase 11: Configuration and account administration** — Expose controlled configuration and complete account functions. (completed 2026-09-26)
 - [ ] **Phase 12: Dashboards, search and reports** — Provide trustworthy cross-module discovery and reporting.
 - [ ] **Phase 13: Complete demo and acceptance** — Verify prototype completeness and deliver a repeatable demonstration.
 
@@ -260,14 +260,14 @@ Cross-cutting constraints: current scope before replay; same-policy immutable pr
 **Goal:** Expose controlled configuration and complete account functions.
 **Depends on:** Phase 10
 **Requirements:** ADM-01 through ADM-08
-**Plans:** 6 plans; 0/6 complete. Direct planning under the lighter delivery agreement.
+**Plans:** 6/6 plans complete
 
 - [x] 11-01 — Versioned product and scheme administration (wave 1).
 - [x] 11-02 — Delegated authority and referral administration (wave 2).
 - [x] 11-03 — Workflow templates and organisation settings (wave 3).
 - [x] 11-04 — Internal users teams and sensitive approvals (wave 4).
 - [x] 11-05 — Account profile password sessions and local MFA (wave 5).
-- [ ] 11-06 — Audit integration oversight and concise acceptance (wave 6).
+- [x] 11-06 — Audit integration oversight and concise acceptance (wave 6).
 
 **Wave dependencies:** 01 → 02 → 04 → 05; 03 follows 01; 06 follows 03 and 05. Execute sequentially in the shared workspace.
 
@@ -331,7 +331,7 @@ Phase 1 must refine any newly discovered control into a requirement before imple
 | 8. Commercial Combined back office | 16/16 | Complete | 2026-09-21 |
 | 9. Tasks, documents, communication and incidents | 18/18 | Complete | 2026-09-23 |
 | 10. Accounting and insurer reporting | 18/18 | Complete | 2026-09-26 |
-| 11. Configuration and account administration | 0/6 | Planned | — |
+| 11. Configuration and account administration | 6/6 | Complete    | 2026-09-26 |
 | 12. Dashboards, search and reports | 0/TBD | Not started | — |
 | 13. Complete demo and acceptance | 0/TBD | Not started | — |
 

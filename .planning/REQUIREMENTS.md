@@ -104,14 +104,14 @@ Core value: complete persistent insurance and servicing journeys with consistent
 
 ### Administration and accounts
 
-- [ ] **ADM-01**: Administrators can maintain product/scheme versions, capacity providers, cover sections, effective dates and draft/published status.
-- [ ] **ADM-02**: Administrators can configure multidimensional delegated authority and referral routing with effective dates, approval evidence and audit.
-- [ ] **ADM-03**: Administrators can maintain workflow types, queues, assignment rules, document/message templates and organisation/reference/notification settings.
-- [ ] **ADM-04**: Administrators can manage internal users, teams, roles and authority, with required second-person approvals for sensitive identity changes.
-- [ ] **ADM-05**: Users can update permitted profile fields, change passwords, inspect/revoke sessions and complete functional local MFA enrolment, verification, recovery and disable/reset flows.
-- [ ] **ADM-06**: Administrators can suspend accounts or force resets; revoked sessions and disabled users lose API access.
-- [ ] **ADM-07**: Authorised users can search/filter audit history and inspect actor, timestamp, reason and appropriate before/after fields.
-- [ ] **ADM-08**: Administrators can inspect integration health, adapter scenario configuration, failed jobs and retry history without viewing secrets.
+- [x] **ADM-01**: Administrators can maintain product/scheme versions, capacity providers, cover sections, effective dates and draft/published status.
+- [x] **ADM-02**: Administrators can configure multidimensional delegated authority and referral routing with effective dates, approval evidence and audit.
+- [x] **ADM-03**: Administrators can maintain workflow types, queues, assignment rules, document/message templates and organisation/reference/notification settings.
+- [x] **ADM-04**: Administrators can manage internal users, teams, roles and authority, with required second-person approvals for sensitive identity changes.
+- [x] **ADM-05**: Users can update permitted profile fields, change passwords, inspect/revoke sessions and complete functional local MFA enrolment, verification, recovery and disable/reset flows.
+- [x] **ADM-06**: Administrators can suspend accounts or force resets; revoked sessions and disabled users lose API access.
+- [x] **ADM-07**: Authorised users can search/filter audit history and inspect actor, timestamp, reason and appropriate before/after fields.
+- [x] **ADM-08**: Administrators can inspect integration health, adapter scenario configuration, failed jobs and retry history without viewing secrets.
 
 ### Reporting and discovery
 
@@ -216,14 +216,14 @@ Every v1 requirement has one owning delivery phase; later phases may consume its
 | FIN-06 | 10 | Complete — local automated evidence |
 | FIN-07 | 10 | Complete — local automated evidence |
 | FIN-08 | 10 | Complete — local automated evidence |
-| ADM-01 | 11 | Pending |
-| ADM-02 | 11 | Pending |
-| ADM-03 | 11 | Pending |
-| ADM-04 | 11 | Pending |
-| ADM-05 | 11 | Pending |
-| ADM-06 | 11 | Pending |
-| ADM-07 | 11 | Pending |
-| ADM-08 | 11 | Pending |
+| ADM-01 | 11 | Complete |
+| ADM-02 | 11 | Complete |
+| ADM-03 | 11 | Complete |
+| ADM-04 | 11 | Complete |
+| ADM-05 | 11 | Complete |
+| ADM-06 | 11 | Complete |
+| ADM-07 | 11 | Complete |
+| ADM-08 | 11 | Complete |
 | RPT-01 | 12 | Pending |
 | RPT-02 | 12 | Pending |
 | RPT-03 | 12 | Pending |
