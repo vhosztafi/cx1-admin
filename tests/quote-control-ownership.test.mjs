@@ -5,6 +5,8 @@ const read=async path=>JSON.parse(await readFile(new URL(`../${path}`,import.met
 const ownership=await read('contracts/quote-control-ownership.json');
 const inventory=await read('docs/design/control-inventory.json');
 const apiMap=await read('docs/design/api-control-map.json');
+const reportingSource=await read('.planning/phases/12-dashboards-search-and-reports/12-SOURCE-CONTROLS.json');
+const reportingDelivery=await read('.planning/phases/12-dashboards-search-and-reports/12-DELIVERED-BINDINGS.json');
 
 test('all 364 quote candidate controls retain exact source identity and operation dependencies',()=>{
   assert.equal(ownership.sourceSha256,inventory.sourceSha256);
@@ -15,7 +17,9 @@ test('all 364 quote candidate controls retain exact source identity and operatio
     assert.ok(source,row.controlId);
     for(const field of ['method','path','label'])assert.equal(row[field],source[field]);
     const reviewed=apiMap.controls.find(control=>control.controlId===row.controlId);
-    assert.deepEqual(row.operationDependencies.map(item=>item.operationId),reviewed.operationIds);
+    const original=reportingSource.controls.find(control=>control.controlId===row.controlId);
+    assert.deepEqual(row.operationDependencies.map(item=>item.operationId),original?.operationIds??reviewed.operationIds);
+    if(original){const delivered=reportingDelivery.bindings.find(control=>control.controlId===row.controlId);assert.ok(delivered,row.controlId);assert.deepEqual(reviewed.operationIds,delivered.operationIds);}
     assert.ok(row.rationale);assert.match(row.runtimeStatus,/pending/);
   }
 });
