@@ -20,9 +20,9 @@ object ApiCi : BuildType({
         branchFilter = "+:<default>"
     }
     triggers { vcs { branchFilter = "+:<default>" } }
-    artifactRules = "artifacts/teamcity-api/api.zip => api\nartifacts/teamcity-api/api-manifest.json => api\nartifacts/teamcity-api/migrations.sql => database\nartifacts/teamcity-api/test-results/** => test-results"
+    artifactRules = "artifacts/teamcity-api/api.zip => api\nartifacts/teamcity-api/api-manifest.json => api\nartifacts/teamcity-api/migrations.sql => database"
     requirements { contains("teamcity.agent.jvm.os.name", "Windows") }
-    steps { script { name = "Test and package API"; scriptContent = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/ci/build-api.ps1" } }
+    steps { script { name = "Package API and generate migrations"; scriptContent = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/ci/build-api.ps1" } }
 })
 
 object ApiDeploy : BuildType({
