@@ -1,54 +1,59 @@
 import jetbrains.buildServer.configs.kotlin.*
-import jetbrains.buildServer.configs.kotlin.pipelines.*
+import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
-
-/*
-The settings script is an entry point for defining a TeamCity
-project hierarchy. The script should contain a single call to the
-project() function with a Project instance or an init function as
-an argument.
-
-VcsRoots, BuildTypes, Templates, and subprojects can be
-registered inside the project using the vcsRoot(), buildType(),
-template(), and subProject() methods respectively.
-
-To debug settings scripts in command-line, run the
-
-    mvnDebug org.jetbrains.teamcity:teamcity-configs-maven-plugin:generate
-
-command and attach your debugger to the port 8000.
-
-To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
--> Tool Windows -> Maven Projects), find the generate task node
-(Plugins -> teamcity-configs -> teamcity-configs:generate), the
-'Debug' option is available in the context menu for the task.
-*/
+import jetbrains.buildServer.configs.kotlin.triggers.finishBuildTrigger
 
 version = "2026.2"
 
 project {
-
-    pipeline(Cx1Admin_Cx1Admin)
+    description = "CX1 back-office API build and IIS deployment"
+    buildType(ApiCi)
+    buildType(ApiDeploy)
 }
 
-
-object Cx1Admin_Cx1Admin : Pipeline({
-    id("Cx1Admin")
-    name = "Cx1 Admin"
-
-    repositories {
-        repository(DslContext.settingsRoot)
+object ApiCi : BuildType({
+    name = "api-ci"
+    vcs {
+        root(DslContext.settingsRoot)
+        checkoutMode = CheckoutMode.ON_AGENT
+        cleanCheckout = true
+        branchFilter = "+:<default>"
     }
-
-    triggers {
-        vcs {
-        }
-    }
-
-    job(Cx1Admin_Cx1Admin_Job1)
+    triggers { vcs { branchFilter = "+:<default>" } }
+    artifactRules = "artifacts/teamcity-api/api.zip => api\nartifacts/teamcity-api/api-manifest.json => api\nartifacts/teamcity-api/migrations.sql => database\nartifacts/teamcity-api/test-results/** => test-results"
+    requirements { contains("teamcity.agent.jvm.os.name", "Windows") }
+    steps { script { name = "Test and package API"; scriptContent = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/ci/build-api.ps1" } }
 })
 
-object Cx1Admin_Cx1Admin_Job1 : Job({
-    id("Job1")
-    name = "Job 1"
+object ApiDeploy : BuildType({
+    name = "api-deploy"
+    type = BuildTypeSettings.Type.DEPLOYMENT
+    maxRunningBuilds = 1
+    vcs {
+        root(DslContext.settingsRoot)
+        checkoutMode = CheckoutMode.ON_AGENT
+        cleanCheckout = true
+        branchFilter = "+:<default>"
+    }
+    params {
+        param("env.CX1_INSTALL_ROOT", "C:\\Sites\\Cx1AdminDev")
+        param("env.CX1_APP_POOL", "Cx1AdminDev")
+        param("env.CX1_HEALTH_URL", "https://cx1-admin-api-dev.gyongyos.co.uk/health/live")
+        // Define env.CX1_ORIGIN_SECRET as a Password parameter in TeamCity.
+    }
+    requirements { contains("teamcity.agent.jvm.os.name", "Windows"); equals("env.ZENX_ROLE", "deploy") }
+    steps { script { name = "Deploy API and verify origin health"; scriptContent = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/ci/deploy-api.ps1" } }
+    dependencies {
+        dependency(ApiCi) {
+            snapshot { onDependencyFailure = FailureAction.FAIL_TO_START; onDependencyCancel = FailureAction.CANCEL }
+            artifacts { buildRule = sameChainOrLastFinished(); artifactRules = "api/api.zip => incoming\napi/api-manifest.json => incoming"; cleanDestination = true }
+        }
+    }
+    triggers {
+        finishBuildTrigger {
+            buildType = "${ApiCi.id}"
+            successfulOnly = true
+            branchFilter = "+:<default>"
+        }
+    }
 })

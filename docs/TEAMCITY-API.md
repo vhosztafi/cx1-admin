@@ -1,0 +1,20 @@
+# TeamCity API build and deployment
+
+The `.teamcity/settings.kts` settings define `api-ci` and `api-deploy` for the CX1 back-office API. They follow the API-only chain used by `tr20-oktoberfest-2026` while retaining this project's existing self-contained Windows package and IIS installation layout. The frontend Worker is deployed separately.
+
+## Import and initial rollout
+
+1. Create a separate TeamCity project for this repository. Set Versioned Settings to Kotlin, path `.teamcity`, and load settings **from VCS**. Select the intended protected deployment branch as the VCS root default branch. Do not export an empty UI-generated configuration over these files.
+2. Pause `api-deploy` for the first run. `api-ci` needs a Windows agent with PowerShell 5.1+, Git, and the .NET 10 SDK. It restores, runs both backend test projects, generates an idempotent SQL migration script for operator review, and calls `scripts/deploy/package-api.ps1`. The artifacts are a self-contained `win-x64` ZIP, SHA-256/revision manifest, migration SQL, and TRX results.
+3. The deployment agent must run **on the existing IIS server**, have `env.ZENX_ROLE=deploy`, and have rights to stop/start only the `Cx1AdminDev` pool and update `C:\Sites\Cx1AdminDev`. Set `env.CX1_ORIGIN_SECRET` as a TeamCity **Password** parameter, matching the existing IIS `Cover__OriginSecret` value. Do not place it in Git or plain build parameters.
+4. Confirm `env.CX1_INSTALL_ROOT`, `env.CX1_APP_POOL`, and `env.CX1_HEALTH_URL` in the DSL match the live installation. Run `api-ci`, inspect the ZIP and test results, then run `api-deploy` once manually. Resume deployment only after the first run and application smoke check pass.
+
+The CI VCS trigger watches only the default branch. A successful CI finish starts deployment; the snapshot and artifact dependencies bind it to the same source revision. Deployment checks both the ZIP checksum and revision before touching IIS. It accepts only a package produced from a clean checkout. It preserves the configured `web.config`, stops this application's pool, keeps the prior `app` directory under `_teamcity-backups`, swaps in the release, restarts the pool, and checks HTTPS `/health/live` with the origin header. If that check fails, it attempts to restore the prior app. Database and private `C:\ProgramData\Cx1AdminDev` keys/files are outside the release and are not copied. Backups are retained until an operator prunes them; include them in the server's private backup policy.
+
+The health check proves only API startup through the protected origin route. It does not prove database schema compatibility or business journeys. Apply and verify any new SQL migrations using the established operator procedure before merging a revision that requires them. A binary rollback also requires checking schema compatibility. `deploy/windows/README.md` covers the current manual IIS and database setup.
+
+This repository change only supplies TeamCity settings and scripts. TeamCity import, agent eligibility, protected parameter setup, first deployment, and live smoke checks must be completed on the server.
+
+## Local validation note
+
+On 30 September, the 1,400 unit tests passed and the corrected Production origin-boundary SQL integration case passed. A full solution test run also exposed an existing historical-schema integration failure: `UnderwritingStorageTests` migrates a fixture only through `QuoteMatchOwnership`, then seeds it with the current model, which expects the later `LastTotpStep` column. The CI gate deliberately runs the full solution; deployment will remain blocked until this integration fixture is repaired and the full suite passes. The SQL artifact command was run successfully with the infrastructure project as both project and startup project.

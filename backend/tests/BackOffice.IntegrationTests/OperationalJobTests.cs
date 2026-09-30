@@ -195,6 +195,7 @@ public sealed class OperationalJobTests
             using (var response = await admin.GetAsync("/api/v1/jobs/" + retryId)) {response.EnsureSuccessStatusCode(); etag = response.Headers.ETag!.ToString();}
             using (var response = await Post(admin, adminCsrf, Guid.NewGuid().ToString("N"), new {reason = "Try rejected work"}, retryPath, etag)) Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
             using var productionAdmin = production.CreateClient(new WebApplicationFactoryClientOptions { BaseAddress = new Uri("https://localhost") });
+            productionAdmin.DefaultRequestHeaders.Add("X-Cx1-Origin-Key", "test-origin-secret-for-production-boundary-123");
             var productionCsrf = await Login(productionAdmin, "system-admin", password);
             using (var response = await Post(productionAdmin, productionCsrf, Guid.NewGuid().ToString("N"), new { scenario = "success" })) Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -207,7 +208,8 @@ public sealed class OperationalJobTests
 
     internal static WebApplicationFactory<Program> Factory(string connection, string keys, string environment = "Development") => new WebApplicationFactory<Program>()
         .WithWebHostBuilder(builder => builder.UseEnvironment(environment).UseSetting("Cover:SqlConnection", connection)
-            .UseSetting("Cover:DataProtectionPath", keys).UseSetting("Cover:DiagnosticWorkerEnabled", "false"));
+            .UseSetting("Cover:DataProtectionPath", keys).UseSetting("Cover:DiagnosticWorkerEnabled", "false")
+            .UseSetting("Cover:OriginSecret", "test-origin-secret-for-production-boundary-123"));
 
     private static async Task<string> Csrf(HttpClient client)
     {
