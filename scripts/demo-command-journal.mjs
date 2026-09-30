@@ -5,8 +5,8 @@ import { randomUUID } from 'node:crypto';
 
 // Local demo orchestration only. API command receipts remain the authoritative
 // database record. Retain this file to resume interrupted multi-command seeds.
-export async function openDemoJournal(file, origin) {
- assert.ok(['localhost', '127.0.0.1'].includes(new URL(origin).hostname));
+export async function openDemoJournal(file, origin, allowedHosts = ['localhost', '127.0.0.1']) {
+ assert.ok(allowedHosts.includes(new URL(origin).hostname));
  let state;
  try { state = JSON.parse(await readFile(file, 'utf8')); }
  catch (error) { if (error.code !== 'ENOENT') throw error; state = { version: 1, origin, createdAt: new Date().toISOString(), commands: {} }; }

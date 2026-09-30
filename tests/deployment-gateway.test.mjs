@@ -31,6 +31,16 @@ test('API proxy overwrites forged keys, isolates cookies and preserves response 
  const result=await proxyApi(new Request(origin+'/api/v1/account?q=x',{headers:{Cookie:'__Host-cx1-admin-access=hidden; __Host-cover-session=ticket; unrelated=hidden','X-Cx1-Origin-Key':'forged',Authorization:'attacker','X-Forwarded-Host':'evil.test'}}),{BACKOFFICE_API_ORIGIN:'https://cx1-admin-api-dev.gyongyos.co.uk',BACKOFFICE_ORIGIN_SECRET:secret},async(url,init)=>{calls++;assert.equal(url,'https://cx1-admin-api-dev.gyongyos.co.uk/api/v1/account?q=x');assert.equal(init.headers.get('X-Cx1-Origin-Key'),secret);assert.equal(init.headers.get('Cookie'),'__Host-cover-session=ticket');assert.equal(init.headers.get('Authorization'),null);assert.equal(init.headers.get('X-Forwarded-Host'),null);return new Response('ok',{headers:{'Set-Cookie':'__Host-cover-session=new; Secure; Path=/'}})});
  assert.equal(calls,1);assert.match(result.headers.get('Set-Cookie'),/__Host-cover-session=new/);
 });
+test('API gateway requests identity encoding and forbids ETag-changing response transforms',async()=>{
+ const e=env(),signed=(await login(e)).headers.get('Set-Cookie');
+ e.CONTENT.fetch=async request=>proxyApi(request,{BACKOFFICE_API_ORIGIN:'https://cx1-admin-api-dev.gyongyos.co.uk',BACKOFFICE_ORIGIN_SECRET:'synthetic-origin-key-01234567890123456789'},async(_url,init)=>{
+  assert.equal(init.headers.get('Accept-Encoding'),'identity');
+  return new Response('{}',{headers:{ETag:'"AAAAAAAAAAE="','Content-Type':'application/json'}});
+ });
+ const response=await gate.fetch(new Request(origin+'/api/v1/quotes/aaaaaaaa-0000-4000-8000-000000000001',{headers:{Cookie:signed}}),e);
+ assert.equal(response.headers.get('ETag'),'"AAAAAAAAAAE="');
+ assert.match(response.headers.get('Cache-Control'),/no-transform/);
+});
 test('API proxy fails closed for missing secret or an unexpected origin and refuses redirects',async()=>{
  const request=new Request(origin+'/api/v1/account');const e={BACKOFFICE_API_ORIGIN:'https://cx1-admin-api-dev.gyongyos.co.uk',BACKOFFICE_ORIGIN_SECRET:'synthetic-origin-key-01234567890123456789'};
  const reject=()=>{throw Error('Unexpected network')};assert.equal((await proxyApi(request,{...e,BACKOFFICE_ORIGIN_SECRET:undefined},reject)).status,503);assert.equal((await proxyApi(request,{...e,BACKOFFICE_API_ORIGIN:'https://evil.test'},reject)).status,503);assert.equal((await proxyApi(request,e,async()=>new Response(null,{status:302,headers:{Location:'https://evil.test'}}))).status,502);

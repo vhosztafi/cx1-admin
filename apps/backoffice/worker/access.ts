@@ -177,6 +177,8 @@ const worker = {
     const asset = await env.CONTENT.fetch(request);
     const response = new Response(asset.body, asset);
     for (const [name, value] of Object.entries(headers)) response.headers.set(name, value);
+    if (url.pathname === '/api' || url.pathname.startsWith('/api/'))
+      response.headers.set('Cache-Control', 'private, no-store, no-transform, max-age=0');
     response.headers.append('Vary', 'Cookie');
     return response;
   },

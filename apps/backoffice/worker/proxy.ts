@@ -14,6 +14,9 @@ export async function proxyApi(request: Request, env: { BACKOFFICE_API_ORIGIN: s
   }
   headers.set('X-Cx1-Origin-Key', env.BACKOFFICE_ORIGIN_SECRET);
   if (incoming.protocol === 'https:') headers.set('X-Cx1-Forwarded-Proto', 'https');
+  // API ETags are optimistic-concurrency tokens. Keep the origin response
+  // uncompressed so the gateway does not turn a strong tag into W/"...".
+  headers.set('Accept-Encoding', 'identity');
   const cookies = (headers.get('Cookie') ?? '').split(';').map(s=>s.trim()).filter(s=>/^__Host-cover-(session|csrf)=/.test(s));
   headers.delete('Cookie');
   if (cookies.length) headers.set('Cookie', cookies.join('; '));
