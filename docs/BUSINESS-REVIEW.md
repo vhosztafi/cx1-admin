@@ -24,6 +24,16 @@ The script uses the existing fictional `agency-admin`, `agency-reviewer`, `servi
 
 The issued policies are bases for MTA, renewal, cancellation, finance, and operational demonstrations. Business users should start separate servicing drafts for separate scenarios so one completed action does not consume another example's current term.
 
+The staging review seed completed on 2026-10-01:
+
+- Motor Trade Combined: `https://cx1-admin-dev.gyongyos.co.uk/policies/74f0f2ce-601b-490a-abbc-a8e70258688a`
+- Motor Trade Road Risks: `https://cx1-admin-dev.gyongyos.co.uk/policies/c8623175-d43a-4fe8-a6bb-2bfdcf8722d5`
+
+The staging review seed completed on 2026-10-01:
+
+- Motor Trade Combined: `https://cx1-admin-dev.gyongyos.co.uk/policies/74f0f2ce-601b-490a-abbc-a8e70258688a`
+- Motor Trade Road Risks: `https://cx1-admin-dev.gyongyos.co.uk/policies/c8623175-d43a-4fe8-a6bb-2bfdcf8722d5`
+
 ### Worker prerequisite
 
 On the hosted API, `Cover:HostedDemoEnabled` and `Cover:QuoteLookupWorkerEnabled` must both be true. If a quote lookup remains `pending` with `workState=pending` and `attempts=0`, the lookup dispatcher is not claiming jobs. Check the effective IIS `web.config`, `appsettings.json`, `appsettings.Staging.json`, and service logs. Resume the script after the dispatcher is running; the existing lookup and command journal are retained. Do not issue policies by inserting SQL rows or bypassing the normal underwriting checks.

@@ -34,6 +34,7 @@ try {
   const author = await session('agency-admin');
   const reviewer = await session('agency-reviewer');
   const underwriter = await session('underwriter');
+  const seniorUnderwriter = await session('senior-underwriter');
   const servicing = await session('servicing');
   async function get(page, path) {
     const response = await page.request.get(origin + path);
@@ -133,25 +134,37 @@ try {
   const relationship = await command(servicing, 'review:relationship:create', `/api/v1/clients/${client.id}/relationships`,
     { agencyId: agency.id }, `/api/v1/clients/${client.id}`);
   const relationshipId = relationship.id;
+  await command(servicing, 'review:client-contact:create-v2', `/api/v1/relationships/${relationshipId}/contacts`, {
+    fullName: 'Fictional CX1 review contact', role: 'Director', isPrimary: true,
+    email: `client-review-${marker}@cover.example`,
+    marketingConsent: { state: 'not-asked', email: false, telephone: false,
+      recordedAt: `${shift(-1)}T12:00:00Z`, source: 'Fictional business review setup' },
+  }, `/api/v1/relationships/${relationshipId}`);
   const offers = (await get(underwriter, `/api/v1/quote-products?relationshipId=${relationshipId}`)).data.items
     .filter(x => x.captureEligible);
   assert.equal(offers.length, 2, 'The approved fictional agency must offer both published Motor Trade products.');
   const quotes = [];
   for (const offer of offers) {
     const productCode = offer.productCode;
+    const prefix = productCode === 'motor-trade-combined' ? 'review:motor-trade-combined-within-authority' : `review:${productCode}`;
     const proposal = structuredClone(examples[productCode]);
     proposal.termIntent.localStartDate = startDate;
     proposal.risk.business.startedOn = '2010-01-01';
-    const quote = await command(underwriter, `review:${productCode}:create`, '/api/v1/quotes',
+    if (productCode === 'motor-trade-combined') {
+      // The source rating example asks for £150k stock custody, above the
+      // seeded senior grant (£125k). This fictional issued-policy base stays
+      // within the stored authority rather than fabricating a carrier response.
+      proposal.cover.requestedSections.find(x => x.code === 'stock-custody').limit = '100000.00';
+    }
+    const quote = await command(underwriter, `${prefix}:create`, '/api/v1/quotes',
       { relationshipId, productVersionId: offer.productVersionId, proposal });
-    quotes.push({ productCode, quoteId: quote.id });
+    quotes.push({ productCode, quoteId: quote.id, prefix });
   }
   await writeFile(`${directory}/fixtures.json`, JSON.stringify({ agencyId: agency.id, clientId: client.id,
     relationshipId, quotes }, null, 2));
 
   const policies = [];
-  for (const { productCode, quoteId } of quotes) {
-    const prefix = `review:${productCode}`;
+  for (const { productCode, quoteId, prefix } of quotes) {
     const route = `/api/v1/quotes/${quoteId}`;
     let saved = (await get(underwriter, route)).data;
     if (saved.boundPolicyId) {
@@ -175,7 +188,7 @@ try {
     let underwriting = await until(underwriter, `${route}/underwriting`, x => !!x.ratingId);
     for (const purpose of underwriting.proofRequirements.filter(x => !x.satisfied)) await proof(prefix, route, purpose);
     const referrals = (await get(underwriter, `/api/v1/referrals?quoteId=${quoteId}`)).data.items;
-    if (referrals.length) await command(underwriter, `${prefix}:decisions`, `${route}/referral-decisions`, {
+    if (referrals.length) await command(seniorUnderwriter, `${prefix}:decisions`, `${route}/referral-decisions`, {
       cycleId: underwriting.context.cycleId,
       decisions: referrals.map(x => ({ referralId: x.id, etag: x.etag, outcome: 'approve',
         reason: 'Current authority and reviewed fictional proof' })),
@@ -196,10 +209,13 @@ try {
     underwriting = (await get(underwriter, `${route}/underwriting`)).data;
     const acceptedProof = await proof(prefix, route, underwriting.proofRequirements.find(x => x.code === 'acceptance-proof'));
     underwriting = (await get(underwriter, `${route}/underwriting`)).data;
-    await command(underwriter, `${prefix}:accept`, `${route}/acceptances`, {
+    termsHistory = (await get(underwriter, `${route}/terms`)).data;
+    const deliveredAt = termsHistory.deliveries.find(x => x.termsVersionId === termsVersion.id && x.state === 'delivered')?.completedAt;
+    assert.ok(deliveredAt, 'Delivered terms completion time is required before acceptance.');
+    await command(underwriter, `${prefix}:accept-v2`, `${route}/acceptances`, {
       cycleId: underwriting.context.cycleId, ratingId: underwriting.ratingId, termsVersionId: termsVersion.id,
       termsHash: underwriting.termsHash, assuranceHash: underwriting.assuranceHash,
-      accepterLabel: 'Fictional business review customer', acceptedAt: new Date().toISOString(),
+      accepterLabel: 'Fictional business review customer', acceptedAt: deliveredAt,
       channel: 'written', evidenceAssociationId: acceptedProof.id,
     }, route);
     underwriting = (await get(underwriter, `${route}/underwriting`)).data;
