@@ -35,7 +35,8 @@ export function SignIn() {
       if(result.state==='mfa-required'){setChallenge(result.challengeToken);setPassword('');setCode('');return;}
       if (result.state !== 'authenticated') { setError('Additional verification is required. Please contact your administrator.'); return; }
       // A full navigation clears any previously cached authenticated router payload.
-      window.location.replace(result.user.scope === 'agency' ? '/agency-access' : '/');
+      const returnTo = new URLSearchParams(window.location.search).get('returnTo');
+      window.location.replace(result.user.scope === 'agency' ? '/agency-access' : returnTo === '/quote-import' ? returnTo : '/');
     } catch { setError('We could not reach the back office. Check your connection and try again.'); }
     finally { submitting.current = false; setBusy(false); }
   }
