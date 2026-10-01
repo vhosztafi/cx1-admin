@@ -9,6 +9,7 @@ project {
     description = "CX1 back-office API build and IIS deployment"
     buildType(ApiCi)
     buildType(ApiDeploy)
+    buildType(ApiRecover)
 }
 
 object ApiCi : BuildType({
@@ -50,11 +51,25 @@ object ApiDeploy : BuildType({
             artifacts { buildRule = sameChainOrLastFinished(); artifactRules = "api/api.zip => incoming\napi/api-manifest.json => incoming"; cleanDestination = true }
         }
     }
-    triggers {
-        finishBuildTrigger {
-            buildType = "${ApiCi.id}"
-            successfulOnly = true
-            branchFilter = "+:<default>"
-        }
+})
+
+object ApiRecover : BuildType({
+    name = "api-recover"
+    type = BuildTypeSettings.Type.DEPLOYMENT
+    maxRunningBuilds = 1
+    vcs {
+        root(DslContext.settingsRoot)
+        checkoutMode = CheckoutMode.ON_AGENT
+        cleanCheckout = true
+        branchFilter = "+:<default>"
     }
+    params {
+        param("env.CX1_INSTALL_ROOT", "D:\\Websites\\cx1-admin-api-dev.gyongyos.co.uk")
+        param("env.CX1_APP_DIRECTORY", "www")
+        param("env.CX1_APP_POOL", "cx1-admin-api-dev.gyongyos.co.uk")
+        param("env.CX1_HEALTH_URL", "https://cx1-admin-api-dev.gyongyos.co.uk/health/live")
+        password("env.CX1_ORIGIN_SECRET", "credentialsJSON:d1dd87fc-1f36-4678-a7da-89c69d627bfb")
+    }
+    requirements { contains("teamcity.agent.jvm.os.name", "Windows"); equals("env.ZENX_ROLE", "deploy") }
+    steps { script { name = "Restore previous API release"; scriptContent = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/ci/recover-api.ps1" } }
 })
