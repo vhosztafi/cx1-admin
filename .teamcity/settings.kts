@@ -1,6 +1,7 @@
 import jetbrains.buildServer.configs.kotlin.*
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
+import jetbrains.buildServer.configs.kotlin.triggers.finishBuildTrigger
 
 version = "2026.2"
 
@@ -47,6 +48,13 @@ object ApiDeploy : BuildType({
         dependency(ApiCi) {
             snapshot { onDependencyFailure = FailureAction.FAIL_TO_START; onDependencyCancel = FailureAction.CANCEL }
             artifacts { buildRule = sameChainOrLastFinished(); artifactRules = "api/api.zip => incoming\napi/api-manifest.json => incoming"; cleanDestination = true }
+        }
+    }
+    triggers {
+        finishBuildTrigger {
+            buildType = "${ApiCi.id}"
+            successfulOnly = true
+            branchFilter = "+:<default>"
         }
     }
 })
