@@ -34,6 +34,18 @@ foreach ($path in @($app, $failed.FullName)) {
 }
 $documentedKeys = 'C:\ProgramData\Cx1AdminDev\keys'
 Write-Host "Documented key directory exists: $(Test-Path -LiteralPath $documentedKeys -PathType Container)"
+Write-Host "Agent ASPNETCORE_ENVIRONMENT: $env:ASPNETCORE_ENVIRONMENT"
+Write-Host "Agent DOTNET_ENVIRONMENT: $env:DOTNET_ENVIRONMENT"
+foreach ($candidate in @(
+    (Join-Path $app '.local\data-protection'),
+    (Join-Path $root 'keys'),
+    (Join-Path $root 'data-protection'),
+    'C:\ProgramData\cx1-admin-api-dev.gyongyos.co.uk\keys'
+)) {
+    $exists = Test-Path -LiteralPath $candidate -PathType Container
+    $count = if ($exists) { @(Get-ChildItem -LiteralPath $candidate -File -Filter '*.xml').Count } else { 0 }
+    Write-Host "Key candidate: $candidate | exists=$exists | XML files=$count"
+}
 $events = Get-WinEvent -FilterHashtable @{ LogName='Application'; StartTime=(Get-Date).AddHours(-4) } -ErrorAction SilentlyContinue |
     Where-Object { $_.ProviderName -match 'IIS|ASP.NET Core|\.NET Runtime|Application Error' -and
         $_.Message -match 'cx1-admin-api-dev\.gyongyos\.co\.uk|BackOffice\.Api' } |
