@@ -39,7 +39,7 @@ object ApiDeploy : BuildType({
         param("env.CX1_INSTALL_ROOT", "C:\\Sites\\Cx1AdminDev")
         param("env.CX1_APP_POOL", "Cx1AdminDev")
         param("env.CX1_HEALTH_URL", "https://cx1-admin-api-dev.gyongyos.co.uk/health/live")
-        // Define env.CX1_ORIGIN_SECRET as a Password parameter in TeamCity.
+        password("env.CX1_ORIGIN_SECRET", "credentialsJSON:d1dd87fc-1f36-4678-a7da-89c69d627bfb")
     }
     requirements { contains("teamcity.agent.jvm.os.name", "Windows"); equals("env.ZENX_ROLE", "deploy") }
     steps { script { name = "Deploy API and verify origin health"; scriptContent = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/ci/deploy-api.ps1" } }
