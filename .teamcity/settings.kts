@@ -10,6 +10,7 @@ project {
     buildType(ApiCi)
     buildType(ApiDeploy)
     buildType(ApiRecover)
+    buildType(ApiInspect)
 }
 
 object ApiCi : BuildType({
@@ -72,4 +73,21 @@ object ApiRecover : BuildType({
     }
     requirements { contains("teamcity.agent.jvm.os.name", "Windows"); equals("env.ZENX_ROLE", "deploy") }
     steps { script { name = "Restore previous API release"; scriptContent = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/ci/recover-api.ps1" } }
+})
+
+object ApiInspect : BuildType({
+    name = "api-inspect-iis"
+    vcs {
+        root(DslContext.settingsRoot)
+        checkoutMode = CheckoutMode.ON_AGENT
+        cleanCheckout = true
+        branchFilter = "+:<default>"
+    }
+    params {
+        param("env.CX1_INSTALL_ROOT", "D:\\Websites\\cx1-admin-api-dev.gyongyos.co.uk")
+        param("env.CX1_APP_DIRECTORY", "www")
+        param("env.CX1_APP_POOL", "cx1-admin-api-dev.gyongyos.co.uk")
+    }
+    requirements { contains("teamcity.agent.jvm.os.name", "Windows"); equals("env.ZENX_ROLE", "deploy") }
+    steps { script { name = "Inspect IIS API folders and recent events"; scriptContent = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/ci/inspect-api-iis.ps1" } }
 })
