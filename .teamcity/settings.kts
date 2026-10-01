@@ -36,7 +36,8 @@ object ApiDeploy : BuildType({
         branchFilter = "+:<default>"
     }
     params {
-        param("env.CX1_INSTALL_ROOT", "C:\\Sites\\Cx1AdminDev")
+        param("env.CX1_INSTALL_ROOT", "D:\\Websites\\cx1-admin-api-dev.gyongyos.co.uk")
+        param("env.CX1_APP_DIRECTORY", "www")
         param("env.CX1_APP_POOL", "Cx1AdminDev")
         param("env.CX1_HEALTH_URL", "https://cx1-admin-api-dev.gyongyos.co.uk/health/live")
         password("env.CX1_ORIGIN_SECRET", "credentialsJSON:d1dd87fc-1f36-4678-a7da-89c69d627bfb")

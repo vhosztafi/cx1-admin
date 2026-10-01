@@ -15,9 +15,11 @@ Push-Location $repo
 try { $revision = (& git rev-parse HEAD).Trim(); if ($LASTEXITCODE -ne 0) { throw 'Cannot determine checkout revision' } }
 finally { Pop-Location }
 if ($revision -ne $manifest.revision) { throw 'Artifact and deployment checkout revisions differ' }
-if ([string]::IsNullOrWhiteSpace($env:CX1_INSTALL_ROOT) -or [string]::IsNullOrWhiteSpace($env:CX1_APP_POOL)) { throw 'Set CX1_INSTALL_ROOT and CX1_APP_POOL' }
+if ([string]::IsNullOrWhiteSpace($env:CX1_INSTALL_ROOT) -or [string]::IsNullOrWhiteSpace($env:CX1_APP_DIRECTORY) -or [string]::IsNullOrWhiteSpace($env:CX1_APP_POOL)) { throw 'Set CX1_INSTALL_ROOT, CX1_APP_DIRECTORY, and CX1_APP_POOL' }
 $root = [IO.Path]::GetFullPath($env:CX1_INSTALL_ROOT)
 if ($root -eq [IO.Path]::GetPathRoot($root) -or $root.StartsWith($repo + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) { throw 'Installation root must be an explicit server directory outside checkout' }
+if ($env:CX1_APP_DIRECTORY -notmatch '^[^\\/:*?"<>|.][^\\/:*?"<>|]*$' -or $env:CX1_APP_DIRECTORY -eq '..') { throw 'CX1_APP_DIRECTORY must be a single directory name' }
+$app = Join-Path $root $env:CX1_APP_DIRECTORY
 if ($ValidateOnly) { Write-Host "Deployment preflight passed for $revision; server untouched."; return }
 if ([string]::IsNullOrWhiteSpace($env:CX1_ORIGIN_SECRET) -or [string]::IsNullOrWhiteSpace($env:CX1_HEALTH_URL)) { throw 'Set secured CX1_ORIGIN_SECRET and CX1_HEALTH_URL' }
 $uri = [uri]$env:CX1_HEALTH_URL
@@ -25,7 +27,6 @@ if ($uri.Scheme -ne 'https' -or $uri.AbsolutePath -ne '/health/live') { throw 'H
 Import-Module WebAdministration
 if (-not (Test-Path -LiteralPath $root -PathType Container)) { throw 'Existing IIS installation root is missing' }
 if (-not (Test-Path "IIS:\AppPools\$env:CX1_APP_POOL")) { throw 'IIS application pool is missing' }
-$app = Join-Path $root 'app'
 if (-not (Test-Path -LiteralPath (Join-Path $app 'web.config') -PathType Leaf)) { throw 'Existing configured web.config is missing' }
 $stamp = [guid]::NewGuid().ToString('N')
 $stage = Join-Path $root "_teamcity-stage-$stamp"
