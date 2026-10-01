@@ -13,6 +13,18 @@ foreach ($path in @($app, $failed.FullName)) {
     Write-Host "Directory: $path"
     Write-Host "Executable present: $(Test-Path -LiteralPath (Join-Path $path 'BackOffice.Api.exe') -PathType Leaf)"
     Write-Host "Web config present: $(Test-Path -LiteralPath (Join-Path $path 'web.config') -PathType Leaf)"
+    $webConfig = Join-Path $path 'web.config'
+    if (Test-Path -LiteralPath $webConfig -PathType Leaf) {
+        [xml]$config = Get-Content -LiteralPath $webConfig -Raw
+        $variables = @($config.SelectNodes('//aspNetCore/environmentVariables/environmentVariable'))
+        Write-Host ("Configured environment names: " + (($variables | ForEach-Object { $_.GetAttribute('name') } | Sort-Object) -join ', '))
+        $keysPath = $variables | Where-Object { $_.GetAttribute('name') -eq 'Cover__DataProtectionPath' } | Select-Object -First 1
+        if ($keysPath) {
+            $keysDirectory = [IO.Path]::GetFullPath($keysPath.GetAttribute('value'))
+            Write-Host "Data Protection path: $keysDirectory"
+            Write-Host "Data Protection directory exists: $(Test-Path -LiteralPath $keysDirectory -PathType Container)"
+        }
+    }
     Write-Host ("Top-level files: " + ((Get-ChildItem -LiteralPath $path -File | Select-Object -ExpandProperty Name | Sort-Object) -join ', '))
     $acl = Get-Acl -LiteralPath $path
     foreach ($rule in $acl.Access) {
@@ -20,6 +32,8 @@ foreach ($path in @($app, $failed.FullName)) {
             $rule.IdentityReference, $rule.FileSystemRights, $rule.IsInherited, $rule.InheritanceFlags)
     }
 }
+$documentedKeys = 'C:\ProgramData\Cx1AdminDev\keys'
+Write-Host "Documented key directory exists: $(Test-Path -LiteralPath $documentedKeys -PathType Container)"
 $events = Get-WinEvent -FilterHashtable @{ LogName='Application'; StartTime=(Get-Date).AddHours(-4) } -ErrorAction SilentlyContinue |
     Where-Object { $_.ProviderName -match 'IIS|ASP.NET Core|\.NET Runtime|Application Error' -and
         $_.Message -match 'cx1-admin-api-dev\.gyongyos\.co\.uk|BackOffice\.Api' } |
