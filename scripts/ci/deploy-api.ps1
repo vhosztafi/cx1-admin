@@ -28,6 +28,7 @@ Import-Module WebAdministration
 if (-not (Test-Path -LiteralPath $root -PathType Container)) { throw 'Existing IIS installation root is missing' }
 if (-not (Test-Path "IIS:\AppPools\$env:CX1_APP_POOL")) { throw 'IIS application pool is missing' }
 if (-not (Test-Path -LiteralPath (Join-Path $app 'web.config') -PathType Leaf)) { throw 'Existing configured web.config is missing' }
+if (-not (Test-Path -LiteralPath (Join-Path $app 'appsettings.json') -PathType Leaf)) { throw 'Existing private appsettings.json is missing' }
 $stamp = [guid]::NewGuid().ToString('N')
 $stage = Join-Path $root "_teamcity-stage-$stamp"
 $backupRoot = Join-Path $root '_teamcity-backups'
@@ -41,6 +42,8 @@ try {
     $inner = Get-Content -LiteralPath (Join-Path $stage 'manifest.json') -Raw | ConvertFrom-Json
     if ($inner.revision.Trim() -ne $revision -or $inner.workingTreeChanges -ne $false) { throw 'Package revision or clean-checkout check failed' }
     Copy-Item -LiteralPath (Join-Path $app 'web.config') -Destination (Join-Path $release 'web.config') -Force
+    Get-ChildItem -LiteralPath $app -File -Filter 'appsettings*.json' |
+        ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $release $_.Name) -Force }
     Stop-WebAppPool -Name $env:CX1_APP_POOL -ErrorAction Stop
     $deadline = (Get-Date).AddSeconds(30)
     while ((Get-WebAppPoolState -Name $env:CX1_APP_POOL).Value -ne 'Stopped' -and (Get-Date) -lt $deadline) { Start-Sleep -Milliseconds 500 }
@@ -64,12 +67,15 @@ try {
     if ($swapped) {
         try {
             if ((Get-WebAppPoolState -Name $env:CX1_APP_POOL).Value -ne 'Stopped') { Stop-WebAppPool -Name $env:CX1_APP_POOL }
+            $deadline = (Get-Date).AddSeconds(30)
+            while ((Get-WebAppPoolState -Name $env:CX1_APP_POOL).Value -ne 'Stopped' -and (Get-Date) -lt $deadline) { Start-Sleep -Milliseconds 500 }
+            if ((Get-WebAppPoolState -Name $env:CX1_APP_POOL).Value -ne 'Stopped') { throw 'Application pool did not stop for restoration' }
             $failed = Join-Path $root "_teamcity-failed-$stamp"
             Move-Item -LiteralPath $app -Destination $failed
             Move-Item -LiteralPath $backup -Destination $app
             Start-WebAppPool -Name $env:CX1_APP_POOL
             Write-Warning "Previous application restored; failed release retained at $failed"
-        } catch { Write-Warning 'Automatic application restoration failed; inspect IIS and retained directories immediately.' }
+        } catch { Write-Warning "Automatic application restoration failed: $($_.Exception.Message). Inspect IIS and retained directories immediately." }
     } elseif (Test-Path -LiteralPath $app -PathType Container) {
         try {
             if ((Get-WebAppPoolState -Name $env:CX1_APP_POOL).Value -eq 'Stopped') { Start-WebAppPool -Name $env:CX1_APP_POOL }
