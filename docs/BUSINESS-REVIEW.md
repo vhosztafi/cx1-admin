@@ -6,6 +6,10 @@ The fictional review data belongs to the `cx1-admin-dev` staging back office. Th
 
 Sign in to `https://cx1-admin-dev.gyongyos.co.uk/` as a servicing or underwriting user. Open **Quotes → New Quote**, search for the fictional CX1 Review Traders client, select its active Fictional CX1 Review Agency relationship, and choose either available Motor Trade product. **Create quote draft** must open a saved `/quotes/{id}` record. Other seeded demo agencies are drafts and are not eligible for quote capture.
 
+For the seeded **Fictional Demo Traders 07** client (`CN-00000007`), select the **Fictional CX1 Review Agency** relationship. This relationship was added for business review on 2026-10-01 and offers Motor Trade Combined and Motor Trade Road Risks. The original Fictional Kingsway Agency relationship remains visible but its agency is still in draft, so it cannot offer quote products. A direct entry link is `https://cx1-admin-dev.gyongyos.co.uk/quotes/new?clientId=32000000-0000-4000-8000-000000000007&relationshipId=daf740a6-f134-4d29-bccb-2c0c57959dee`.
+
+For the seeded **Fictional Demo Traders 07** client (`CN-00000007`), select the **Fictional CX1 Review Agency** relationship. This relationship was added for business review on 2026-10-01 and offers Motor Trade Combined and Motor Trade Road Risks. The original Fictional Kingsway Agency relationship remains visible but its agency is still in draft, so it cannot offer quote products. A direct entry link is `https://cx1-admin-dev.gyongyos.co.uk/quotes/new?clientId=32000000-0000-4000-8000-000000000007&relationshipId=daf740a6-f134-4d29-bccb-2c0c57959dee`.
+
 The hosted Worker must preserve the API's strong ETag on read and write responses. API traffic requests identity encoding and is served with `Cache-Control: no-transform`. A weak `W/"..."` tag cannot be used as `If-Match` and makes successful creation appear unconfirmed in the browser.
 
 ## Issued policy examples

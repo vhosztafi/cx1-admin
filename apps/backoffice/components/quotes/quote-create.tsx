@@ -85,7 +85,7 @@ export function QuoteCreate({ actorId, initialClient, initialRelationship, match
         {!products.data ? <LoadFeedback error={products.error} retry={products.refresh} /> : <fieldset disabled={frozen} className="quote-selection"><legend className="sr-only">Quote product</legend>
           <div className="quote-products">{products.data.items.map(item => <label className={`quote-product ${productId === item.productVersionId ? 'quote-product-selected' : ''}`} key={item.productVersionId}>
             <input type="radio" name="product" value={item.productVersionId} checked={productId === item.productVersionId} disabled={!item.captureEligible} onChange={() => setProductId(item.productVersionId)} />
-            <span><strong>{item.displayName}</strong><small>{item.versionLabel} · {item.captureEligible ? 'Available' : 'Unavailable for this relationship'}</small></span></label>)}
+            <span><strong>{item.displayName}</strong><small>{item.versionLabel} · {item.captureEligible ? 'Available' : item.unavailableReason ?? 'Unavailable for this relationship'}</small></span></label>)}
             {['Commercial Combined', 'Fleet'].map(name => <div className="quote-product quote-product-unavailable" key={name}><span aria-hidden="true">○</span><span><strong>{name}</strong><small>Not available yet</small></span></div>)}
           </div>{products.data.items.length === 0 && <p className="client-help">No capture products are available for this relationship.</p>}
         </fieldset>}
