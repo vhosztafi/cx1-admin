@@ -2,14 +2,14 @@
 
 ## Architecture
 
-Browser → `https://cx1-admin-dev.gyongyos.co.uk` (Cloudflare Worker password gate) → individual back-office login → Worker proxy → `https://cx1-admin-api-dev.gyongyos.co.uk` (IIS) → `.\sql2022`, database `Cx1_Dev`.
+Browser → `https://cx1-admin-dev.gyongyos.co.uk` (Cloudflare Worker password gate) → individual back-office login → Worker proxy → `https://cx1-admin-api-dev.gyongyos.co.uk` (IIS) → `.`, database `Cx1_Dev`.
 
 The Worker protects all pages, assets and `/api` paths. Its password is a Cloudflare secret, never browser JavaScript. It issues a Secure, HttpOnly host cookie, throttles password attempts and disables caching. A separate random origin secret authenticates Worker-to-API requests; direct API visits, including health/login, return 404 without it. Individual application roles, MFA, CSRF and session controls remain enforced. Rotate the site password to invalidate site-gate cookies.
 
 ## Required on your shared server
 
 - 64-bit Windows Server version supported by .NET 10, IIS, and the ASP.NET Core Module V2 from the .NET 10 Hosting Bundle. This package includes the .NET runtime but IIS still needs its hosting module. Install/repair the bundle in a maintenance window if it affects shared services; do not run `iisreset` for this app.
-- SQL Server 2022 instance `.\sql2022`; migration operator with permission to create/migrate `Cx1_Dev`. Runtime uses the dedicated `IIS APPPOOL\Cx1AdminDev` account and only this database.
+- SQL Server 2022 instance `.`; migration operator with permission to create/migrate `Cx1_Dev`. Runtime uses the dedicated `IIS APPPOOL\Cx1AdminDev` account and only this database.
 - An HTTPS certificate covering the API hostname, plus an appropriate Cloudflare DNS record pointing to your server, using Full (strict) TLS. Alternatively use Cloudflare Tunnel with a loopback IIS binding (see below).
 - Persistent private storage for keys and documents, with backups covering the database, files and keys together. DPAPI keys belong to the IIS pool identity and server; do not copy workstation keys into this deployment or change the pool identity casually.
 - A strong initial password for the fictional application accounts. This is separate from the site-gate password and origin secret.
@@ -52,6 +52,8 @@ The Tunnel installer enables `Cover__TrustGatewayHttps`. The API accepts the gat
 Keep the same app-pool identity, data directory, keys and documents. Back up SQL/files/keys together first. Stop only this site/pool, keep the previous app folder, copy the new published `app` contents into a separate version folder and preserve the configured `web.config`. Apply explicit migrations with the operator account, point the site's physical path to the new folder, then start and smoke-test it. Never overwrite private data with package files. A binary rollback is safe only if its schema compatibility is known; otherwise restore the matched backup in a dedicated recovery procedure. Do not run the fresh-site installer over an existing installation.
 
 ## Worker deployment and remaining infrastructure
+
+Pushes to `master` affecting the back-office Worker run `.github/workflows/deploy-staging-worker.yml`. The workflow builds an isolated source snapshot and deploys `cx1-admin-dev` when the GitHub repository secret `CLOUDFLARE_API_TOKEN` is configured. Use a token scoped to edit Workers in the Cloudflare account identified by `apps/backoffice/wrangler.jsonc`. Without that secret, the build runs but deployment is skipped. The existing Cloudflare Worker secrets `SITE_PASSWORD` and `BACKOFFICE_ORIGIN_SECRET` stay in Cloudflare and must not be committed. This workflow deploys the Worker only; IIS API releases remain a separate server operation.
 
 Worker sources/config live under `apps/backoffice/worker` and `apps/backoffice/wrangler.jsonc`. Build with `node scripts/deploy/build-worker.mjs`. Set Cloudflare secrets `SITE_PASSWORD` and `BACKOFFICE_ORIGIN_SECRET`; deployment fails closed when secrets are absent. The API origin is fixed to the requested hostname. `workers.dev` and preview URLs are disabled; static assets run through the Worker gate first.
 

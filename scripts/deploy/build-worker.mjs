@@ -14,7 +14,9 @@ for (const file of new Set([...files, 'package.json','pnpm-lock.yaml','pnpm-work
   if (!file || file.endsWith('tsbuildinfo') || !fs.statSync(path.join(root,file)).isFile()) continue;
   const target = path.join(stage,file); fs.mkdirSync(path.dirname(target),{recursive:true}); fs.copyFileSync(path.join(root,file),target);
 }
-const installArgs = ['install', '--offline', '--frozen-lockfile', '--store-dir', path.join(root,'.pnpm-store')];
+// A developer build reuses the local offline store; CI starts with an empty
+// workspace and must be allowed to fetch the lockfile's exact packages.
+const installArgs = ['install', ...(process.env.CI ? [] : ['--offline']), '--frozen-lockfile', '--store-dir', path.join(root,'.pnpm-store')];
 const install = spawnSync('pnpm', installArgs, {cwd:stage,stdio:'inherit',shell:process.platform==='win32'});
 if (install.status !== 0) process.exit(install.status ?? 1);
 const cwd = path.join(stage,'apps/backoffice');
