@@ -79504,6 +79504,295 @@
         "x-runtime-status": "phase-7-05-implemented"
       }
     },
+    "/drafts/{draftId}/funnel": {
+      "put": {
+        "operationId": "saveMotorTradeMtaFunnel",
+        "summary": "save Motor Trade Mta Funnel",
+        "description": "Save Motor Trade adjustment answers and typed servicing proposal atomically under the current actor, held policy scope, draft ETag and editing lease. Invalidates dependent rating and proof. Does not change in-force cover. Responses are no-store.",
+        "tags": [
+          "drafts"
+        ],
+        "x-permission": "policy-draft-write",
+        "x-idempotency": "required",
+        "security": [
+          {
+            "Session": [],
+            "Csrf": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "draftId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 16,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "X-Edit-Lease",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded.",
+            "headers": {
+              "ETag": {
+                "description": "Opaque resource version for subsequent conditional writes.",
+                "schema": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "Cache-Control": {
+                "description": "Personal policy and servicing information is never cacheable.",
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicingDraft"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "401": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "403": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "404": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "409": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "412": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "422": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "428": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "429": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          },
+          "503": {
+            "description": "Safe problem response; codes and status semantics are defined in API-CONVENTIONS.md.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                },
+                "description": "Policy data is not cacheable."
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServicingFunnelSave"
+              }
+            }
+          }
+        },
+        "x-runtime-status": "implemented"
+      }
+    },
     "/drafts/{draftId}/editor": {
       "get": {
         "operationId": "getPolicyDraftEditor",
@@ -150662,6 +150951,119 @@
                 "format": "uuid"
               },
               "kind": {
+                "const": "risk-details"
+              },
+              "operation": {
+                "const": "update"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "tradePlates": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "id": {
+                          "$ref": "#/components/schemas/ServicingCaptureId"
+                        },
+                        "number": {
+                          "type": "string",
+                          "pattern": "^[A-Z0-9 ]{2,12}$"
+                        }
+                      },
+                      "required": [
+                        "id"
+                      ]
+                    },
+                    "minItems": 0,
+                    "maxItems": 1000
+                  },
+                  "previousInsurance": {
+                    "$ref": "#/components/schemas/ServicingCapturePreviousInsurance"
+                  },
+                  "declarations": {
+                    "$ref": "#/components/schemas/ServicingCaptureResponses"
+                  },
+                  "materialFacts": {
+                    "type": "string",
+                    "maxLength": 8000
+                  },
+                  "responses": {
+                    "$ref": "#/components/schemas/ServicingCaptureResponses"
+                  },
+                  "heldTradePlates": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "id": {
+                          "$ref": "#/components/schemas/ServicingCaptureId"
+                        },
+                        "number": {
+                          "type": "string",
+                          "pattern": "^[A-Z0-9 ]{2,12}$"
+                        }
+                      },
+                      "required": [
+                        "id"
+                      ]
+                    },
+                    "minItems": 0,
+                    "maxItems": 1000
+                  }
+                },
+                "required": []
+              },
+              "payloadMode": {
+                "const": "replace"
+              }
+            },
+            "required": [
+              "changeId",
+              "riskItemId",
+              "kind",
+              "operation",
+              "payload"
+            ],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "payloadMode": {
+                      "const": "replace"
+                    }
+                  },
+                  "required": [
+                    "payloadMode"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "operation": {
+                      "const": "update"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "changeId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "riskItemId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "kind": {
                 "const": "commercial-location"
               },
               "operation": {
@@ -162484,6 +162886,13 @@
             "type": "string",
             "format": "date-time"
           },
+          "funnelStateJson": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 1048576
+          },
           "lease": {
             "anyOf": [
               {
@@ -162572,6 +162981,18 @@
                   "motor-trade-combined",
                   "commercial-combined"
                 ]
+              },
+              "clientName": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "\\S"
+              },
+              "agencyName": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200,
+                "pattern": "\\S"
               }
             },
             "required": [
@@ -162592,6 +163013,23 @@
           "createdAt",
           "updatedAt",
           "lease"
+        ]
+      },
+      "ServicingFunnelSave": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "proposal": {
+            "$ref": "#/components/schemas/ServicingProposal"
+          },
+          "funnelStateJson": {
+            "type": "string",
+            "maxLength": 1048576
+          }
+        },
+        "required": [
+          "proposal",
+          "funnelStateJson"
         ]
       },
       "ServicingEditorCapture": {

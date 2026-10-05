@@ -14,6 +14,7 @@ public static class ServicingEndpoints
         app.MapGet("/api/v1/drafts/{draftId:guid}/editor", ReadEditor).RequireAuthorization("policy-read");
         app.MapPost("/api/v1/terms/{termId:guid}/drafts", Create).RequireAuthorization("policy-draft-write");
         app.MapPut("/api/v1/drafts/{draftId:guid}/proposal", (Guid draftId, HttpContext c, ServicingDraftService s) => Write(draftId, "save", c, s)).RequireAuthorization("policy-draft-write");
+        app.MapPut("/api/v1/drafts/{draftId:guid}/funnel",SaveFunnel).RequireAuthorization("policy-draft-write");
         app.MapPost("/api/v1/drafts/{draftId:guid}/abandon", (Guid draftId, HttpContext c, ServicingDraftService s) => Write(draftId, "abandon", c, s)).RequireAuthorization("policy-draft-write");
         app.MapPost("/api/v1/drafts/{draftId:guid}/lease", (Guid draftId, HttpContext c, ServicingDraftService s) => Write(draftId, "acquire", c, s)).RequireAuthorization("policy-draft-write");
         app.MapPut("/api/v1/drafts/{draftId:guid}/lease", (Guid draftId, HttpContext c, ServicingDraftService s) => Write(draftId, "renew", c, s)).RequireAuthorization("policy-draft-write");
@@ -89,6 +90,20 @@ public static class ServicingEndpoints
             return Outcome(context, await service.LeaseAsync(actor, draftId, version, mode, null, mode == "takeover" ? Text(root, "reason", 2000) : null, key, Guid.NewGuid(), token));
         }
         catch (Exception error) when (QuoteEndpoints.Known(error)) { return QuoteEndpoints.Failure(context, error); }
+    }
+
+    private static async Task<IResult> SaveFunnel(Guid draftId,HttpContext context,ServicingDraftService service)
+    {
+        context.Response.Headers.CacheControl="no-store";
+        try{
+            QuoteEndpoints.Id(draftId);QuoteHttpInput.NoQuery(context.Request);
+            var key=QuoteHttpInput.Key(context.Request);var version=QuoteHttpInput.Version(context.Request);var fence=Fence(context.Request);
+            using var document=await QuoteHttpInput.Read(context.Request,context.RequestAborted,2*ServicingProposalInput.MaximumBytes);var root=document.RootElement;
+            QuoteHttpInput.Keys(root,"proposal","funnelStateJson");
+            if(!root.TryGetProperty("proposal",out var proposal)||proposal.ValueKind!=JsonValueKind.Object)throw new QuoteHttpException(422,"servicing-proposal-required");
+            var raw=Text(root,"funnelStateJson",2*1024*1024);
+            return Outcome(context,await service.SaveAsync(LocalIdentityService.Actor(context.User),draftId,version,fence,proposal.GetRawText(),key,Guid.NewGuid(),context.RequestAborted,raw));
+        }catch(Exception error)when(QuoteEndpoints.Known(error)){return QuoteEndpoints.Failure(context,error);}
     }
 
     private static IResult Outcome(HttpContext context, BackOffice.Infrastructure.Platform.CommandOutcome outcome)

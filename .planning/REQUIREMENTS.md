@@ -26,10 +26,10 @@
 
 ### Motor Trade quote entry and funnel
 
-- [ ] **QUO-07**: Staff select or create the client, select agency and broker contact, and select an eligible Motor Trade product before risk capture from every entry point.
-- [ ] **QUO-08**: Staff enter the existing cx1-implementation funnel with selected identity, product and saved draft context prefilled.
-- [ ] **QUO-09**: Staff save and resume funnel answers and return to the correct back-office quote without fixed demo identities.
-- [ ] **QUO-10**: Funnel return preserves typed answers and repeatable command identity while enforcing origin, actor and relationship authorization.
+- [x] **QUO-07**: Staff select or create the client, select agency and broker contact, and select an eligible Motor Trade product before risk capture from every entry point.
+- [x] **QUO-08**: Staff enter the existing cx1-implementation funnel with selected identity, product and saved draft context prefilled.
+- [x] **QUO-09**: Staff save and resume funnel answers and return to the correct back-office quote without fixed demo identities.
+- [x] **QUO-10**: Funnel return preserves typed answers and repeatable command identity while enforcing origin, actor and relationship authorization.
 
 ### Quote records underwriting and issue
 
@@ -39,9 +39,9 @@
 
 ### Motor Trade MTA funnel and review
 
-- [ ] **POL-10**: Staff start an MTA from a policy with base issued version, requested-by and effective date clearly visible.
-- [ ] **POL-11**: Staff edit prefilled Motor Trade risk in cx1-implementation and return saved proposed changes to the same MTA.
-- [ ] **POL-12**: Staff review grouped before/after changes through Changes, Review & rate and Documents tabs.
+- [x] **POL-10**: Staff start an MTA from a policy with base issued version, requested-by and effective date clearly visible.
+- [x] **POL-11**: Staff edit prefilled Motor Trade risk in cx1-implementation and return saved proposed changes to the same MTA.
+- [x] **POL-12**: Staff review grouped before/after changes through Changes, Review & rate and Documents tabs.
 - [ ] **POL-13**: Staff see actionable validation, rating, referral, acceptance and issue blockers; edits invalidate dependent proofs.
 - [ ] **POL-14**: Saving or abandoning an MTA preserves in-force cover; issue respects leases, concurrency, effective dates and atomic finance.
 

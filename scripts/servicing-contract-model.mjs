@@ -20,15 +20,19 @@ export function servicingDefinitions(quote) {
   payloads[key]=payload;
  }
  payloads.policyholder=structuredClone(quote.properties.insured);
+ const riskDetails=structuredClone(defs.RoadRisk);
+ for(const key of ['business','drivers','vehicles','premises','specifiedVehicleIds','specifiedVehiclesRequested'])delete riskDetails.properties[key];
+ riskDetails.required=[];
+ payloads['risk-details']=riskDetails;
  defs.ServicingEffectiveIntent=o({localDate:date,localTime:{type:'string',pattern:'^(?:[01][0-9]|2[0-3]):[0-5][0-9]$'},timeZone:{const:'Europe/London'},utcOffsetMinutes:bounded(0,60)},['localDate','localTime','timeZone']);
  defs.ServicingEffectiveIntent.properties.utcOffsetMinutes={type:'integer',enum:[0,60]};
  defs.ServicingChange={oneOf:Object.entries(payloads).flatMap(([target,payload])=>{
   const common={changeId:id,riskItemId:id,kind:{const:target}};
   const effective=target==='cover'?{effectiveIntent:r('ServicingEffectiveIntent')}:{};
   const vehicle=target==='vehicle'?{specifiedVehicle:o({selected:{type:'boolean'},required:{type:'boolean'}})}:{};
-  const write=o({...common,operation:e('add','update'),payload,payloadMode:{const:'replace'},...effective,...vehicle},[...Object.keys(common),'operation','payload']);
+  const write=o({...common,operation:target==='risk-details'?{const:'update'}:e('add','update'),payload,payloadMode:{const:'replace'},...effective,...vehicle},[...Object.keys(common),'operation','payload']);
   write.allOf=[{if:{properties:{payloadMode:{const:'replace'}},required:['payloadMode']},then:{properties:{operation:{const:'update'}}}}];
-  return [write,o({...common,operation:{const:'remove'},...effective,...vehicle},[...Object.keys(common),'operation'])];
+  return target==='risk-details'?[write]:[write,o({...common,operation:{const:'remove'},...effective,...vehicle},[...Object.keys(common),'operation'])];
  })};
  const commercial=JSON.parse(readFileSync(new URL('../contracts/schemas/commercial-combined.schema.json',import.meta.url),'utf8'));
  const prefix='CommercialServicing';
@@ -88,12 +92,16 @@ export function servicingDefinitions(quote) {
  ]};
  defs.ServicingDraftCreate=o({kind,baseVersionId:id,commonEffectiveIntent:r('ServicingEffectiveIntent'),reason});
  defs.ServicingDraft=o({id,policyId:id,baseTermId:id,baseVersionId:id,revisionId:id,kind,state:e('draft','rating','referral','quoted','accepted','issued','abandoned','lapsed'),proposal:r('ServicingProposal'),createdAt:instant,updatedAt:instant});
+ defs.ServicingDraft.properties.funnelStateJson={type:['string','null'],maxLength:1048576};
+ defs.ServicingFunnelSave=o({proposal:r('ServicingProposal'),funnelStateJson:{type:'string',maxLength:1048576}});
  defs.ServicingDraft.properties.lease={anyOf:[o({...defs.ServicingLease.properties,active:{type:'boolean'}}),{type:'null'}]};
  defs.ServicingDraft.required.push('lease');
  // Optional for retained pre-upgrade command receipts; current reads include it.
  defs.ServicingDraft.properties.context=o({policyReference:t(40),preparedBy:o({id,label:t(200)})});
  defs.ServicingDraft.properties.context.properties.baseTermPremium=money;
  defs.ServicingDraft.properties.context.properties.productCode=e('motor-trade-road-risks','motor-trade-combined','commercial-combined');
+ defs.ServicingDraft.properties.context.properties.clientName=t(200);
+ defs.ServicingDraft.properties.context.properties.agencyName=t(200);
  const capture=structuredClone(quote); delete capture.$schema; delete capture.$id; delete capture.$defs;
  const commercialCapture=scoped(commercial);delete commercialCapture.$schema;delete commercialCapture.$id;delete commercialCapture.$defs;
  defs.ServicingEditorCapture={oneOf:[capture,commercialCapture]};

@@ -2,7 +2,7 @@ import { quoteFetch, validQuoteEtag } from './quotes';
 import type { QuoteObject, QuoteProposal, QuoteView } from './quotes';
 
 export type ServicingEffectiveIntent = { localDate: string; localTime: string; timeZone: 'Europe/London'; utcOffsetMinutes?: 0 | 60 };
-export type ServicingChange = { changeId: string; riskItemId: string; kind: 'driver' | 'vehicle' | 'premises' | 'business' | 'cover' | 'policyholder';
+export type ServicingChange = { changeId: string; riskItemId: string; kind: 'driver' | 'vehicle' | 'premises' | 'business' | 'cover' | 'policyholder' | 'risk-details';
   operation: 'add' | 'update' | 'remove'; payload?: QuoteObject; payloadMode?: 'replace'; effectiveIntent?: ServicingEffectiveIntent;
   specifiedVehicle?: { selected: boolean; required: boolean } };
 export type ServicingProposal = { schemaVersion: '1.0'; baseVersionId: string; reason: string; requestedBy: { kind: 'internal' | 'insured' | 'broker'; name?: string };
@@ -13,8 +13,8 @@ export type ServicingEditor<T = QuoteProposal> = { draftId: string; revisionId: 
   assessment: { base: T; proposed: T; changes: ServicingDifference[]; readinessIssues: { code: string; path: string; questionId: string | null }[];
     slices: { effectiveAt: string; proposed: T; changeIds: string[] }[] } };
 export type ServicingDraft<T = ServicingProposal> = { id: string; policyId: string; baseTermId: string; baseVersionId: string; revisionId: string; kind: string; state: string;
-  proposal: T; createdAt: string; updatedAt: string;
-  context?: { policyReference: string; productCode?: string; baseTermPremium?: string; preparedBy: { id: string; label: string } };
+  proposal: T; createdAt: string; updatedAt: string;funnelStateJson?:string|null;
+  context?: { policyReference: string;clientName?:string;agencyName?:string; productCode?: string; baseTermPremium?: string; preparedBy: { id: string; label: string } };
   lease: null | { id: string; holderId: string; generation: number; leaseToken: string; expiresAt: string; active: boolean } };
 export type ServicingCommand = Readonly<{ url: string; method: 'POST' | 'PUT' | 'DELETE'; body?: string; etag: string; key: string; fence?: string }>;
 export function servicingCommand(url: string, method: ServicingCommand['method'], etag: string, body?: unknown, fence?: string): ServicingCommand {

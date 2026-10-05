@@ -140,6 +140,10 @@ export function proposalToFunnel(proposal: QuoteProposal, catalogue: FunnelCatal
   for(const key of ['vehicles','specifiedVehicles'])if(Array.isArray(raw[key]))for(const item of raw[key]){
     if(!object(item))continue;const saved=Array.isArray(risk?.vehicles)?risk.vehicles.find(row=>object(row)&&row.id===item.guid):undefined;
     if(object(saved)&&typeof saved.ownerDriverId==='string')item.ownerGuid=saved.ownerDriverId;
+    if(key==='specifiedVehicles'&&Array.isArray(item.vehicleModifications)){
+      item.modifications=item.vehicleModifications.map(row=>object(row)?{...row,modificationID:row.modificationId}:row);
+      delete item.vehicleModifications;
+    }
   }
   if(proposal.insured?.entityType && raw.proposerCompanyTypeId===undefined){
     const labels:Record<string,string>={'sole-trader':'sole','partnership':'partnership'};
@@ -177,7 +181,7 @@ export function funnelToProposal(state: FunnelState, base: QuoteProposal, catalo
   if(Object.keys(risk).length)proposal.risk=risk;
   if(object(proposal.insured) && object(proposal.insured.declaredCompanyType)) {
     const entity:Record<string,string>={'1':'sole-trader','2':'limited-company','3':'limited-company','4':'partnership'};
-    const selected=entity[String(proposal.insured.declaredCompanyType.value)];if(selected)proposal.insured.entityType=selected;
+    const selected=entity[String(proposal.insured.declaredCompanyType.value)];if(selected)proposal.insured.entityType=base.insured?.entityType==='llp'&&selected==='partnership'?'llp':selected;
   }
   const term = object(proposal.termIntent) ? proposal.termIntent : {};
   term.timeZone = 'Europe/London';

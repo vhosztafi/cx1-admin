@@ -22,6 +22,8 @@ public sealed partial class BackOfficeDbContext
         var revision = Record<ServicingRevision>(model, "ServicingRevision");
         revision.ToTable(t => t.UseSqlOutputClause(false)); Text(revision, ("SchemaVersion", 30));
         UnderwritingJson(revision, "ProposalJson"); Hash(revision, "ContentHash");
+        revision.Property(x=>x.FunnelStateJson).HasColumnType("nvarchar(max)");
+        Check(revision,"FunnelState","[FunnelStateJson] IS NULL OR (ISJSON([FunnelStateJson],OBJECT)=1 AND DATALENGTH([FunnelStateJson])<=2097152)");
         revision.HasAlternateKey(x => new { x.Id, x.DraftId });
         revision.HasIndex(x => new { x.DraftId, x.Sequence }).IsUnique();
         revision.HasOne<ServicingDraft>().WithMany().HasForeignKey(x => x.DraftId).OnDelete(DeleteBehavior.NoAction);

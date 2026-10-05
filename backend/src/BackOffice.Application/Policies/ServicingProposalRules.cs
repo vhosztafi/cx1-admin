@@ -127,6 +127,12 @@ public static class ServicingProposalRules
         var kind = change["kind"]!.GetValue<string>(); var operation = change["operation"]!.GetValue<string>(); var id = Id(change, "riskItemId");
         var risk = capture["risk"]!.AsObject(); var payload = change["payload"] as JsonObject;
         var replace = change["payloadMode"]?.GetValue<string>() == "replace";
+        if(kind=="risk-details")
+        {
+            if(id!=policy||operation!="update")Fail("invalid-singleton-operation",path);
+            if(replace)foreach(var key in risk.Select(pair=>pair.Key).Where(key=>key is not ("business" or "drivers" or "vehicles" or "premises" or "specifiedVehicleIds" or "specifiedVehiclesRequested")).ToArray())risk.Remove(key);
+            Merge(risk,payload!);return;
+        }
         if (kind == "vehicle" && change["specifiedVehicle"] is { } selection)
         {
             var selected = selection["selected"]!.GetValue<bool>();

@@ -43,6 +43,9 @@ export function addServicingContracts({schemas,ref,operation,paths}) {
  route('put',`${root}/lease`,'renewDraftLease','policy-draft-write',undefined,'ServicingDraft');
  route('delete',`${root}/lease`,'releaseDraftLease','policy-draft-write',undefined,'ServicingDraft');
  route('put',`${root}/proposal`,'savePolicyDraft','policy-draft-write','ServicingProposal','ServicingDraft');
+ route('put',`${root}/funnel`,'saveMotorTradeMtaFunnel','policy-draft-write','ServicingFunnelSave','ServicingDraft');
+ paths[`${root}/funnel`].put['x-runtime-status']='implemented';
+ paths[`${root}/funnel`].put.description='Save Motor Trade adjustment answers and typed servicing proposal atomically under the current actor, held policy scope, draft ETag and editing lease. Invalidates dependent rating and proof. Does not change in-force cover. Responses are no-store.';
  route('post',`${root}/abandon`,'abandonPolicyDraft','policy-draft-write','ServicingReason','ServicingDraft');
  for(const [path,method] of [['/terms/{termId}/drafts','get'],['/terms/{termId}/drafts','post'],[root,'get'],[`${root}/lease`,'post'],[`${root}/lease`,'put'],[`${root}/lease`,'delete'],[`${root}/proposal`,'put'],[`${root}/abandon`,'post']]) {
   const op=paths[path][method];

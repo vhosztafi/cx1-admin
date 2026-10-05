@@ -21,9 +21,9 @@ See PROJECT.md and MILESTONES.md; complete v1.0 requirements and roadmap are in 
 
 ## Current position
 
-Phase: 19
+Phase: 20
 Plan: 01
-Status: Implementing MTA funnel and review; phases 15/16/18 final verification remains
+Status: Implementing policy records/history; phases 15/16/18/19 final verification remains
 Last activity: 2026-10-05
 
 ## Deferred Items

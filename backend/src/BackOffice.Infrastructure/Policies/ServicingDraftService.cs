@@ -101,17 +101,19 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
             }, token);
     }
 
-    public Task<CommandOutcome> SaveAsync(ActorContext actor, Guid draftId, byte[] version, Guid leaseToken, string json, string key, Guid correlation, CancellationToken token = default)
-        => Mutate(actor, draftId, version, new { leaseToken, json }, "save", key, correlation, async (db, draft, ct) =>
+    public Task<CommandOutcome> SaveAsync(ActorContext actor, Guid draftId, byte[] version, Guid leaseToken, string json, string key, Guid correlation, CancellationToken token = default, string? funnelStateJson = null)
+        => Mutate(actor, draftId, version, funnelStateJson is null ? (object)new { leaseToken, json } : new { leaseToken, json, funnelStateJson }, "save", key, correlation, async (db, draft, ct) =>
         {
             await DemandLease(db, draft.Id, actor.UserId, leaseToken, ct);
+            if(funnelStateJson is not null){if(draft.Kind!="adjustment")throw new QuoteOperationException(422,"funnel-mta-required");QuoteFunnelState.Validate(funnelStateJson);}
             var proposal = ServicingProposalInput.Parse(json, draft.BaseVersionId);
             var assessment = await Assess(db, actor, draft, proposal, ct);
+            if(funnelStateJson is not null && assessment.Base.GetProperty("productCode").GetString() is not ("motor-trade-road-risks" or "motor-trade-combined"))throw new QuoteOperationException(422,"funnel-motor-trade-required");
             if (assessment.Base.GetProperty("productCode").GetString() == CommercialCaptureRules.ProductCode &&
                 !await db.Set<PolicyTerm>().AnyAsync(x => x.Id == draft.BaseTermId && x.CurrentVersionId == draft.BaseVersionId, ct))
                 throw new QuoteOperationException(409, "servicing-base-stale");
             await ServicingRatingService.InvalidateAsync(db, draft, "Proposal revision changed", time.GetUtcNow(), ct);
-            await Append(db, draft, proposal, actor.UserId, ct);
+            await Append(db, draft, proposal, actor.UserId, ct,funnelStateJson);
         }, token);
 
     public Task<CommandOutcome> AbandonAsync(ActorContext actor, Guid draftId, byte[] version, Guid leaseToken, string reason, string key, Guid correlation, CancellationToken token = default)
@@ -200,10 +202,10 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
         return lease;
     }
 
-    internal async Task Append(BackOfficeDbContext db, ServicingDraft draft, CanonicalServicingProposal proposal, Guid actor, CancellationToken ct)
+    internal async Task Append(BackOfficeDbContext db, ServicingDraft draft, CanonicalServicingProposal proposal, Guid actor, CancellationToken ct,string? funnelStateJson=null)
     {
         var number = (await db.Set<ServicingRevision>().Where(x => x.DraftId == draft.Id).MaxAsync(x => (int?)x.Sequence, ct) ?? 0) + 1;
-        var revision = new ServicingRevision { DraftId = draft.Id, Sequence = number, ProposalJson = proposal.Json, ContentHash = proposal.ContentHash, CreatedBy = actor, CreatedAt = time.GetUtcNow() };
+        var revision = new ServicingRevision { DraftId = draft.Id, Sequence = number, ProposalJson = proposal.Json, FunnelStateJson=funnelStateJson, ContentHash = proposal.ContentHash, CreatedBy = actor, CreatedAt = time.GetUtcNow() };
         db.Add(revision); await db.SaveChangesAsync(ct); draft.CurrentRevisionId = revision.Id;
     }
 
@@ -239,6 +241,7 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
         var revision = await db.Set<ServicingRevision>().AsNoTracking().SingleAsync(x => x.Id == draft.CurrentRevisionId, ct);
         var lease = await db.Set<ServicingLease>().AsNoTracking().SingleOrDefaultAsync(x => x.DraftId == draft.Id, ct);
         var policyReference = await db.Set<Policy>().Where(x => x.Id == draft.PolicyId).Select(x => x.Reference).SingleAsync(ct);
+        var identity=await (from policy in db.Set<Policy>() join client in db.Set<ClientAccount>() on policy.ClientId equals client.Id join agency in db.Set<Agency>() on policy.AgencyId equals agency.Id where policy.Id==draft.PolicyId select new{clientName=client.LegalName,agencyName=agency.LegalName}).SingleAsync(ct);
         var preparedByLabel = await db.Set<StaffUser>().Where(x => x.Id == draft.CreatedBy).Select(x => x.DisplayName).SingleAsync(ct);
         var snapshotJson = await db.Set<PolicyVersion>().Where(x => x.Id == draft.BaseVersionId && x.PolicyId == draft.PolicyId).Select(x => x.SnapshotJson).SingleAsync(ct);
         using var snapshot = JsonDocument.Parse(snapshotJson);
@@ -247,8 +250,8 @@ public sealed class ServicingDraftService(IDbContextFactory<BackOfficeDbContext>
         // The fence is never sufficient authority: every command binds it to the
         // authenticated current holder and freshly checked policy permission.
         return new(JsonSerializer.Serialize(new { draft.Id, draft.PolicyId, draft.BaseTermId, draft.BaseVersionId, revisionId = revision.Id, draft.Kind, state,
-            proposal = JsonSerializer.Deserialize<JsonElement>(revision.ProposalJson), draft.CreatedAt, draft.UpdatedAt,
-            context = new { policyReference, productCode = snapshot.RootElement.GetProperty("productCode").GetString(), baseTermPremium, preparedBy = new { id = draft.CreatedBy, label = preparedByLabel } },
+            proposal = JsonSerializer.Deserialize<JsonElement>(revision.ProposalJson), revision.FunnelStateJson, draft.CreatedAt, draft.UpdatedAt,
+            context = new { policyReference, identity.clientName,identity.agencyName,productCode = snapshot.RootElement.GetProperty("productCode").GetString(), baseTermPremium, preparedBy = new { id = draft.CreatedBy, label = preparedByLabel } },
             lease = lease is null ? null : new { lease.Id, lease.HolderId, lease.Generation, leaseToken = lease.Token, lease.ExpiresAt, lease.Active } }, Json), Etag(draft.RowVersion));
     }
 

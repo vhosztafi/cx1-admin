@@ -59,6 +59,13 @@ export function projectServicingCapture(base: QuoteProposal, proposal: Servicing
       result.risk.specifiedVehiclesRequested = declaration.required;
     }
     const payload = structuredClone(change.payload ?? {});
+    if(change.kind==='risk-details'){
+      if(change.operation!=='update'||!sameServicingId(change.riskItemId,policyId))throw new Error('Risk declarations do not belong to this policy.');
+      const retained=['business','drivers','vehicles','premises','specifiedVehicleIds','specifiedVehiclesRequested'];
+      if(Object.keys(payload).some(key=>retained.includes(key)))throw new Error('Risk declarations cannot replace independently owned risk records.');
+      if(change.payloadMode==='replace')for(const key of Object.keys(result.risk))if(!retained.includes(key))delete result.risk[key];
+      merge(result.risk,payload);continue;
+    }
     if (change.kind === 'business' || change.kind === 'policyholder' || change.kind === 'cover' && sameServicingId(change.riskItemId, policyId)) {
       if (change.operation !== 'update' || !sameServicingId(change.riskItemId, change.kind === 'policyholder' ? clientId : policyId)) throw new Error('This change does not belong to the selected policy.');
       const target = change.kind === 'business' ? (result.risk.business ??= {}) as QuoteObject : change.kind === 'policyholder' ? result.insured : result.cover;

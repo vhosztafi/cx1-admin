@@ -18,6 +18,7 @@ public sealed class ServicingRevision : StoredRecord
     public int Sequence { get; set; }
     public string SchemaVersion { get; set; } = "1.0";
     public string ProposalJson { get; set; } = "{}";
+    public string? FunnelStateJson { get; set; }
     public byte[] ContentHash { get; set; } = [];
 }
 
