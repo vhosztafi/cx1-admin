@@ -3,7 +3,7 @@ import {useState} from 'react';
 import Link from 'next/link';
 import {MidSubmissions} from '../operations/mid-submissions';
 import {DriverTasks} from '../operations/driver-tasks';
-import {Panel} from '../primitives';
+import {Panel,DataTable,Status} from '../primitives';
 import {LoadFeedback,useQuoteResource} from '../quotes/shared';
 import {QuoteProposalDetails} from '../quotes/quote-history';
 import type {PolicyView} from '../../lib/policies-api';
@@ -15,10 +15,14 @@ export function PolicyRiskHistory({policy,kind,questionLabels}:{policy:PolicyVie
  const list=policy.snapshot.risk[kind];
  const items=Array.isArray(list)?list.filter((value):value is QuoteObject=>!!value&&typeof value==='object'&&!Array.isArray(value)):[];
  const history=useQuoteResource<ItemHistory>(selected?`/api/v1/policies/${policy.id}/risk/${kind}/${selected}/history`:null);
+ const label=(value:unknown)=>typeof value==='object'&&value!==null&&'label' in value?String(value.label):typeof value==='string'?value:'Not recorded';
+ const current=items.find(item=>item.id===selected);
+ const title=(item:QuoteObject)=>String(item.fullName||item.registration||[item.firstName,item.surname].filter(Boolean).join(' ')||'Unnamed record');
  return <Panel title={kind==='drivers'?'Driver records':'Vehicle register'} note="Select an item to follow its stable identity through issued versions"><div className="quote-rail-body">
-  {items.length?<div className="quote-row-actions">{items.map((item,index)=>typeof item.id==='string'?<button className="button" key={item.id} data-risk-item-id={item.id} aria-pressed={selected===item.id} onClick={()=>setSelected(item.id as string)}>
-   {kind==='drivers'?'Open driver record':'Open vehicle record'}: {String(item.fullName||item.registration||[item.firstName,item.surname].filter(Boolean).join(' ')||index+1)}
-  </button>:null)}</div>:<p>No {kind} recorded in this version.</p>}
+  {items.length?<DataTable caption={kind==='drivers'?'Named drivers at selected policy version':'Vehicle register at selected policy version'} columns={kind==='drivers'?['Driver','Date of birth','Relationship','Use','Record']:['Registration','Make / model','Declared value','Ownership','Record']}>
+   {items.map(item=>typeof item.id==='string'?<tr key={item.id}><th scope="row">{title(item)}</th><td>{kind==='drivers'?label(item.dateOfBirth):[label(item.make),label(item.model)].join(' · ')}</td><td>{kind==='drivers'?label(item.relationship):typeof item.value==='string'?`£${item.value}`:'Not recorded'}</td><td>{kind==='drivers'?label(item.usage):label(item.declaredOwnerType??item.ownership)}</td><td><button className="button" data-risk-item-id={item.id} aria-pressed={selected===item.id} onClick={()=>setSelected(item.id as string)}>{kind==='drivers'?'Open driver record':'Open vehicle record'}: {title(item)}</button></td></tr>:null)}
+  </DataTable>:<p>No {kind} recorded in this version.</p>}
+  {current&&<section className="quote-saved-banner" aria-label={kind==='drivers'?'Selected driver':'Selected vehicle'}><div><span className="quote-step-label">{kind==='drivers'?'Driver':'Vehicle'}</span><h3>{title(current)}</h3><p>Policy {policy.reference} · Term {policy.termNumber} · Version {policy.versionSequence}</p><p>Effective {new Date(policy.effectiveAt).toLocaleString('en-GB',{timeZone:'Europe/London'})} · Recorded {new Date(policy.issuedAt).toLocaleString('en-GB',{timeZone:'Europe/London'})} · London</p></div><Status tone="info">{policy.coverageState} policy version</Status></section>}
   {selected?<section aria-label="Risk item history"><h3>{kind==='drivers'?'Driver':'Vehicle'} history</h3>{!history.data?<LoadFeedback error={history.error} retry={history.refresh}/>:history.data.versions.map(item=><details key={item.versionId} open={item.versionId===policy.versionId}><summary>Version {item.versionSequence} · Effective {new Date(item.effectiveAt).toLocaleString('en-GB',{timeZone:'Europe/London'})} · London{item.item?'':' · Not present'}</summary>
    <p>Recorded {new Date(item.processedAt).toLocaleString('en-GB',{timeZone:'Europe/London'})} · London</p>
    <p>{item.actorLabel} · {item.kind} · {item.reason}</p><Link href={`/policies/${policy.id}?termId=${item.termId}&versionId=${item.versionId}&tab=Transactions`}>Open originating transaction</Link>

@@ -47,9 +47,9 @@
 
 ### Motor Trade policy records and history
 
-- [ ] **POL-15**: Staff use prototype Motor Trade policy headers, tabs and contextual actions.
-- [ ] **POL-16**: Staff inspect linked driver and vehicle records and their relevant policy context.
-- [ ] **POL-17**: Staff inspect issued history and as-at views with explicit term, effective time and processing time.
+- [x] **POL-15**: Staff use prototype Motor Trade policy headers, tabs and contextual actions.
+- [x] **POL-16**: Staff inspect linked driver and vehicle records and their relevant policy context.
+- [x] **POL-17**: Staff inspect issued history and as-at views with explicit term, effective time and processing time.
 
 ### Renewal cancellation and issued confirmation
 
@@ -108,9 +108,9 @@
 | POL-12 | Phase 19 | Pending |
 | POL-13 | Phase 19 | Pending |
 | POL-14 | Phase 19 | Pending |
-| POL-15 | Phase 20 | Pending |
-| POL-16 | Phase 20 | Pending |
-| POL-17 | Phase 20 | Pending |
+| POL-15 | Phase 20 | Complete |
+| POL-16 | Phase 20 | Complete |
+| POL-17 | Phase 20 | Complete |
 | POL-18 | Phase 21 | Pending |
 | POL-19 | Phase 21 | Pending |
 | POL-20 | Phase 21 | Pending |

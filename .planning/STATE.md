@@ -21,9 +21,9 @@ See PROJECT.md and MILESTONES.md; complete v1.0 requirements and roadmap are in 
 
 ## Current position
 
-Phase: 20
+Phase: 21
 Plan: 01
-Status: Implementing policy records/history; phases 15/16/18/19 final verification remains
+Status: Implementing lifecycle journeys; phases 15/16/18/19 final verification remains
 Last activity: 2026-10-05
 
 ## Deferred Items
