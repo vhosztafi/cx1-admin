@@ -16,7 +16,8 @@ import { ServicingTerms } from './servicingterms';
 import { ServicingIssue } from './servicingissue';
 
 type Run = (path: string, body?: unknown, file?: File) => void;
-export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, blocked, dirty, canReview, editor, pendingChanged, saved, kind = 'adjustment' }: {
+export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, blocked, dirty, canReview, editor, pendingChanged, saved, kind = 'adjustment',section='all' }: {
+  section?:'all'|'review'|'documents';
   kind?: 'adjustment' | 'renewal'; draftId: string; revisionId: string; etag: string; fence: string | null; editable: boolean; blocked: boolean; dirty: boolean; canReview: boolean;
   editor: ServicingEditor<QuoteCaptureProposal> | null; pendingChanged: (pending: boolean) => void; saved: () => Promise<void>;
 }) {
@@ -65,7 +66,7 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
           }
         } catch {setError('The submission result is unconfirmed. Retain this action and check the saved submission or retry.');return;}
       }
-      if (!uncertainQuoteFailure(failure)) { pending.current = null; pendingChanged(false); setPendingState(false); }
+      if (!pendingState&&!uncertainQuoteFailure(failure)) { pending.current = null; pendingChanged(false); setPendingState(false); }
       setError(pending.current ? 'The result is unconfirmed. Retry this same action before making other changes.' : failure instanceof QuoteError ? 'This action was refused. Refresh the draft and check your editing lease, proof and authority.' : failure instanceof Error ? failure.message : 'Check this action.');
     } finally { sendingRef.current = false; setSending(false); }
   }
@@ -80,14 +81,15 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
     finally {sendingRef.current=false;setSending(false);}
   }
   const run: Run = (path, body, upload) => { void execute(path, body, upload); };
-  return <Panel title="Supporting information" note="Saved documents and underwriting review"><div className="quote-rail-body servicing-proof" data-servicing-draft-etag={etag}>
+  return <Panel title={section==='review'?'Underwriting, terms & issue':section==='documents'?'Documents & supporting proof':'Supporting information'} note="Saved documents and underwriting review"><div className="quote-rail-body servicing-proof" data-servicing-draft-etag={etag}>
     <p className="client-help">Demo screening checks file type and size. Use fictional documents. Underwriting review separately confirms whether their content satisfies the rated change.</p>
     {dirty && <p role="status">Save and rate your local changes before attaching or reviewing proof.</p>}
     {!editable && <p>Acquire the editing lease to change supporting information.</p>}
     {error && <p role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}
     {pendingState && <button className="button button-primary" disabled={sending} onClick={() => void execute()}>{submissionPending?'Retry same submission':'Retry same proof action'}</button>}
     {pendingState&&submissionPending&&<button className="button" disabled={sending} onClick={()=>void checkSubmission()}>Check saved submission</button>}
-    {kind === 'adjustment' && <ServicingSubmission draftId={draftId} revisionId={revisionId} cycleId={cycleId??null} etag={etag} active={active&&!!editor&&editor.assessment.readinessIssues.length===0} paused={paused} submit={reason=>run('/submit',{cycleId,revisionId,reason})} />}
+    <div hidden={section==='documents'}>{kind === 'adjustment' && <ServicingSubmission draftId={draftId} revisionId={revisionId} cycleId={cycleId??null} etag={etag} active={active&&!!editor&&editor.assessment.readinessIssues.length===0} paused={paused} submit={reason=>run('/submit',{cycleId,revisionId,reason})} />}</div>
+    <div hidden={section==='review'}>
     <fieldset className="quote-reference-fields" disabled={!active}><legend>Upload a document</legend>
       <label>Supporting document<input aria-label="Supporting document" type="file" accept=".pdf,.png,.jpg,.jpeg,.txt" onChange={event => setFile(event.target.files?.[0])} /></label>
       <button className="button" disabled={!file} onClick={() => run('/evidence/uploads', undefined, file)}>Upload document</button>
@@ -109,10 +111,11 @@ export function ServicingEvidence({ draftId, revisionId, etag, fence, editable, 
     {associations.data && <>{associations.data.items.length === 0 && <p>No proof attached on this page.</p>}{associations.data.items.map(item => <ProofCard key={item.id} item={item} base={base} etag={etag} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} active={active && associations.current && selectedCycle === cycleId} paused={paused} canReview={canReview} run={run} />)}
       <PageButtons cursor={associationCursor} next={associations.data.nextCursor} disabled={pendingState} change={cursor => setAssociationPage({ etag, cursor })} />
     </>}
+    </div><div hidden={section==='documents'}>
     <ServicingReferrals draftId={draftId} etag={etag} cycleId={cycleId ?? null} active={active && canReview} paused={paused} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} evidence={associations.current && selectedCycle === cycleId ? associations.data?.items ?? [] : []} editor={editor} run={run} />
     {<ServicingTerms kind={kind} draftId={draftId} revisionId={revisionId} cycleId={cycleId ?? null} etag={etag} active={active} paused={paused} requirements={requirements.data?.requirements.map(x => x.requirement) ?? []} evidence={associations.current && selectedCycle === cycleId ? associations.data?.items ?? [] : []} run={run} />}
     {cycleId && <ServicingIssue productCode={editor?.assessment.base.productCode==='commercial-combined'?'commercial-combined':'motor-trade'} kind={kind} scope={{draftId,revisionId,cycleId,etag,fence:fence ?? ''}} active={active && canReview} paused={paused} pendingChanged={value=>{setIssuePending(value);pendingChanged(value);}} saved={saved}/>}
-  </div></Panel>;
+  </div></div></Panel>;
 }
 
 function AttachProof({ requirement, satisfied, editor, files, disabled, run }: { requirement: ProofRequirement; satisfied: boolean; editor: ServicingEditor<QuoteCaptureProposal> | null; files: ProofFile[]; disabled: boolean; run: Run }) {

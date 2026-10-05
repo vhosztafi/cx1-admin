@@ -1,5 +1,6 @@
 'use client';
 import {useEffect,useState} from 'react';
+import Link from 'next/link';
 import {Panel,Status,DataTable} from '../primitives';
 import {quoteFetch} from '../../lib/quotes';
 import {formatCancellationMoney} from '../../lib/cancellation-review';
@@ -34,6 +35,7 @@ export function CancellationIssued({draftId}:{draftId:string}) {
       <p>{view.coverageState==='cancellation-scheduled'?'Cancellation is scheduled. Cover continues until its effective time.':'Cover has ended at the cancellation effective time.'}</p>
       <p>Posted debtor movement: {formatCancellationMoney(view.netAmount)}. Cash paid: {formatCancellationMoney(view.cashPaid)}.</p>
       <p><a href={`/policies/${view.policyId}?termId=${view.termId}&versionId=${view.versionId}&tab=Transactions`}>View cancellation transaction</a></p>
+      <div className="quote-row-actions"><Link className="button" href={`/policies/${view.policyId}?termId=${view.termId}&versionId=${view.versionId}&tab=Documents`}>View cancellation documents</Link><Link className="button" href={`/policies/${view.policyId}?tab=Finance`}>View posted finance</Link><Link className="button" href={`/policies/${view.policyId}?tab=Tasks`}>View follow-up tasks</Link></div>
       <DataTable caption="Cancellation follow-up status" columns={['Action','Status']}>
         {view.consequences.map(item=><tr key={item.id}><th scope="row" style={{width:'45%',overflowWrap:'normal',wordBreak:'normal'}}>{names[item.kind]??item.kind}</th>
           <td><span style={{whiteSpace:'nowrap'}}>{item.state}</span><p>{followUpDescription(item)}</p></td></tr>)}

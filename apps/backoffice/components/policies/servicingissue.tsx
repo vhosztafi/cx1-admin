@@ -35,7 +35,7 @@ export function ServicingIssue({kind='adjustment',productCode='motor-trade',scop
       await saved();
       pending.current=null;setUncertain(false);pendingChanged(false);
     } catch(failure) {
-      const retain=!!pending.current && uncertainQuoteFailure(failure);
+      const retain=!!pending.current && (uncertain||uncertainQuoteFailure(failure));
       setUncertain(retain);
       if(!retain){pending.current=null;pendingChanged(false);}
       setError(retain?'The issue result is unconfirmed. Retry the same action before making further changes.':'Issue was refused. Refresh the draft and review the saved acceptance, editing lease and your current authority.');
@@ -44,12 +44,12 @@ export function ServicingIssue({kind='adjustment',productCode='motor-trade',scop
   return <section aria-label={renewal ? "Issue policy renewal" : "Issue policy adjustment"} className="servicing-terms">
     <h3>{renewal ? "Issue renewal" : "Issue adjustment"}</h3>
     {receipt && <article aria-label={renewal ? "Renewal issue receipt" : "Adjustment issue receipt"} className="quote-driver-card"><Status tone="success">{renewal ? "Renewal issued" : "Adjustment issued"}</Status>
-      <p>{receipt.policyReference} · Issued {new Date(receipt.processedAt).toLocaleString('en-GB')}</p>
+      <p>{receipt.policyReference} · Issued {new Date(receipt.processedAt).toLocaleString('en-GB',{timeZone:'Europe/London'})} · London</p>
       <p>Amount due £{receipt.amountDue} · Credit £{receipt.amountCredit} · Posting date {receipt.postingDate}</p>
       {issuedView && <><p>Transaction {issuedView.transactionSequence} · Latest issued version {issuedView.versionSequence}</p>
         <p>{renewal ? "Renewal" : "Adjustment"} premium £{issuedView.financials.premium} · {renewal ? "New" : "Revised"} term premium £{issuedView.snapshot.premium.termPremium}</p>
         <p>Payments collected by this action: £0.00. The charge or credit is recorded for settlement.</p></>}
-      {view?.terms?.document.effectiveDates.map(value=><p key={value}>Changes effective {new Date(value).toLocaleString('en-GB')}</p>)}
+      {view?.terms?.document.effectiveDates.map(value=><p key={value}>Changes effective {new Date(value).toLocaleString('en-GB',{timeZone:'Europe/London'})} · London</p>)}
       <p>{receipt.versionIds.length} policy {receipt.versionIds.length===1?'version':'versions'} saved. Document requests are queued.{receipt.midIntentIds.length ? ' MID updates are queued.' : ''}</p>
       <a href={`/policies/${receipt.policyId}`}>View current policy</a>
       <p><a href={`/policies/${receipt.policyId}?termId=${receipt.termId}&versionId=${receipt.versionId}&tab=Transactions`}>View issued transaction</a></p>

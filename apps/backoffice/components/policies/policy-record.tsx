@@ -30,7 +30,7 @@ import { PolicyFinance } from './policy-finance';
 const date = (value: string) => new Date(value).toLocaleString('en-GB', { timeZone: 'Europe/London', dateStyle: 'medium', timeStyle: 'short' });
 const tabs = ['Overview', 'Risk details', 'Cover', 'Drivers', 'Vehicles', 'Tasks', 'Documents', 'Transactions', 'Finance', 'Notes', 'Messages', 'Claims'] as const;
 
-export function PolicyRecord({ policyId, questionLabels,selection,initialTab,initialIncident=false,initialCutoffs='' }: { policyId: string; questionLabels: Record<string, string>;selection?:{termId:string;versionId:string};initialTab?:'Transactions'|'Documents'|'Notes'|'Messages'|'Tasks'|'Claims';initialIncident?:boolean;initialCutoffs?:string }) {
+export function PolicyRecord({ policyId, questionLabels,selection,initialTab,initialIncident=false,initialCutoffs='' }: { policyId: string; questionLabels: Record<string, string>;selection?:{termId:string;versionId:string};initialTab?:'Transactions'|'Documents'|'Notes'|'Messages'|'Tasks'|'Claims'|'Finance';initialIncident?:boolean;initialCutoffs?:string }) {
   const [versionSelection,setVersionSelection]=useState(selection);
   const [draftKind,setDraftKind]=useState('adjustment'),[servicingOpen,setServicingOpen]=useState(false);
   useEffect(()=>{if(servicingOpen)document.getElementById('servicing-drafts')?.scrollIntoView({block:'start'});},[servicingOpen,draftKind]);
