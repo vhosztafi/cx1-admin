@@ -31,13 +31,14 @@ Staff can complete a quote-to-policy-to-servicing journey and trust that its pol
 - ✓ Scoped search, live dashboards, eleven reports, saved favourites and safe CSV exports. — v1.0, local evidence.
 - ✓ 949-control traceability, accumulated SQL/browser evidence, concise demo and developer handover. — v1.0, local evidence.
 
+- ✓ Source-derived Motor Trade/shared UI, contextual client/agency-before-quote entry and existing source-funnel quote/MTA save/resume. — v1.1, local evidence.
+- ✓ Saved quote/MTA/renewal/cancellation issue, immutable replay, atomic finance and reloadable confirmations. — v1.1, local evidence.
+- ✓ Completed matching/onboarding, generated PDF/demo delivery, claims/capacity outcomes, two-person refund/payment and real account security journeys. — v1.1, local evidence.
+
 ### Active
 
 None. The approved v1.1 scope is locally complete; future scope has not been selected.
 
-- ✓ Source-derived Motor Trade/shared UI, contextual client/agency-before-quote entry and existing source-funnel quote/MTA save/resume. — v1.1, local evidence.
-- ✓ Saved quote/MTA/renewal/cancellation issue, immutable replay, atomic finance and reloadable confirmations. — v1.1, local evidence.
-- ✓ Completed matching/onboarding, generated PDF/demo delivery, claims/capacity outcomes, two-person refund/payment and real account security journeys. — v1.1, local evidence.
 
 ### Out of Scope
 
