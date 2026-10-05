@@ -82,12 +82,22 @@ public static class AgencyEndpoints
         if(state.Length>0)query=query.Where(x=>x.State==state);if(manager.Length>0){var id=Guid.Parse(manager);query=query.Where(x=>x.RelationshipManagerId==id);}
         var total=await query.CountAsync(context.RequestAborted);var rows=await query.OrderBy(x=>x.Reference).ThenBy(x=>x.Id).Skip(page.Offset).Take(page.Size).ToListAsync(context.RequestAborted);
         var ids=rows.Select(x=>x.Id).ToArray();var managers=await db.Set<StaffUser>().Where(x=>rows.Select(r=>r.RelationshipManagerId).Contains(x.Id)).ToDictionaryAsync(x=>x.Id,x=>x.DisplayName,context.RequestAborted);
-        var products=await(from grant in db.Set<AgencyDraftProduct>() join v in db.Set<ProductVersion>() on grant.ProductVersionId equals v.Id join p in db.Set<Product>() on v.ProductId equals p.Id where ids.Contains(grant.AgencyId) select new{grant.AgencyId,p.Code}).ToListAsync(context.RequestAborted);
+        var today=AgencyActionCounts.LondonDate(time.GetUtcNow());
+        var draftIds=rows.Where(x=>x.State is "draft" or "abandoned").Select(x=>x.Id).ToArray();
+        var products=await(from grant in db.Set<AgencyDraftProduct>() join v in db.Set<ProductVersion>() on grant.ProductVersionId equals v.Id join p in db.Set<Product>() on v.ProductId equals p.Id where draftIds.Contains(grant.AgencyId) select new{grant.AgencyId,p.Code}).ToListAsync(context.RequestAborted);
+        var publishedIds=rows.Where(x=>x.State is "active" or "suspended").Select(x=>x.Id).ToArray();
+        var published=await(from terms in db.Set<AgencyTermsVersion>()
+            join grant in db.Set<AgencyProduct>() on terms.Id equals grant.AgencyTermsVersionId
+            join version in db.Set<ProductVersion>() on grant.ProductVersionId equals version.Id
+            join product in db.Set<Product>() on version.ProductId equals product.Id
+            where publishedIds.Contains(terms.AgencyId) && terms.EffectiveFrom<=today && grant.EffectiveFrom<=today &&
+                !db.Set<AgencyTermsVersion>().Any(other=>other.AgencyId==terms.AgencyId && other.EffectiveFrom<=today && (other.EffectiveFrom>terms.EffectiveFrom || other.EffectiveFrom==terms.EffectiveFrom && other.Version>terms.Version))
+            select new{terms.AgencyId,product.Code}).Distinct().ToListAsync(context.RequestAborted);
+        products.AddRange(published);
         var activity=await db.Set<AgencyActivity>().Where(x=>ids.Contains(x.AgencyId)).GroupBy(x=>x.AgencyId).Select(g=>new{Id=g.Key,Last=g.Max(x=>x.OccurredAt)}).ToDictionaryAsync(x=>x.Id,x=>x.Last,context.RequestAborted);
         var drafts=await db.Set<AgencyOnboarding>().AsNoTracking().Where(x=>ids.Contains(x.AgencyId)).Select(x=>new{x.AgencyId,x.Details}).ToListAsync(context.RequestAborted);
         var userCounts=await BrokerUsers(db).Where(x=>ids.Contains(x.AgencyId!.Value)).GroupBy(x=>x.AgencyId!.Value).Select(g=>new{Id=g.Key,Total=g.Count(),Invited=g.Count(x=>x.State=="invited")}).ToDictionaryAsync(x=>x.Id,context.RequestAborted);
         var contacts=drafts.ToDictionary(x=>x.AgencyId,x=>MainContactName(x.Details));
-        var today=AgencyActionCounts.LondonDate(time.GetUtcNow());
         var actions=await AgencyActionProjection.Read(db,ids,today,context.RequestAborted);
         await transaction.CommitAsync(context.RequestAborted);
         return Results.Json(new{items=rows.Select(x=>new{x.Id,x.Reference,legalName=x.LegalName.Length>0?x.LegalName:null,x.State,x.OnboardingStep,openActionCount=actions.GetValueOrDefault(x.Id,AgencyActionCounts.Empty).OpenActions,dueFollowUpCount=actions.GetValueOrDefault(x.Id,AgencyActionCounts.Empty).DueFollowUps,asOfDate=today,userCount=userCounts.GetValueOrDefault(x.Id)?.Total??0,invitedUserCount=userCounts.GetValueOrDefault(x.Id)?.Invited??0,x.RelationshipManagerId,mainContactName=contacts.GetValueOrDefault(x.Id),relationshipManagerName=x.RelationshipManagerId is Guid m?managers.GetValueOrDefault(m):null,productCodes=products.Where(p=>p.AgencyId==x.Id).Select(p=>p.Code),lastActivityAt=activity.TryGetValue(x.Id,out var at)?(DateTimeOffset?)at:null}),totalCount=total,nextCursor=paging.Next(page,page.Offset+rows.Count<total)},Json);

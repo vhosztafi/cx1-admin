@@ -21,9 +21,9 @@ See PROJECT.md and MILESTONES.md; complete v1.0 requirements and roadmap are in 
 
 ## Current position
 
-Phase: 16
+Phase: 17
 Plan: Not started
-Status: Executing approved scope; phase 15 portfolio facts follow-up remains
+Status: Implementing funnel integration; phases 15/16 final read-model verification remains
 Last activity: 2026-10-05
 
 ## Deferred Items
