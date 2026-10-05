@@ -17,8 +17,8 @@ export function DocumentPack({subjectId,actorId,selection,remove,saved}:{subject
       <fieldset className="quote-reference-fields" disabled={!!request}><legend>Review selected files and recipients</legend>
         {selection.map(item=><article key={item.version.id} className="quote-driver-card"><p>{item.version.originalName} · version {item.version.number}</p><div className="quote-row-actions"><button type="button" className="button" onClick={()=>setPreview(item.version.id)}>Preview selected file</button><button type="button" className="button" onClick={()=>remove(item.version.id)}>Remove from pack</button></div></article>)}
         <ChoiceList<{id:string;label:string;email:string}> url={`/api/v1/records/${subjectId}/document-delivery-recipients/${relationship}`} label="Pack recipients" selected={recipients} change={setRecipients} maximum={50} describe={item=>`${item.label} · ${item.email}`}/>
-        <label>Pack subject<input required maxLength={300} value={subject} onChange={event=>setSubject(event.target.value)}/></label>
-        <label>Pack message<textarea required rows={4} maxLength={8000} value={body} onChange={event=>setBody(event.target.value)}/></label>
+        <label>Pack subject<input aria-label="Pack subject" required maxLength={300} value={subject} onChange={event=>setSubject(event.target.value)}/></label>
+        <label>Pack message<textarea aria-label="Pack message" required rows={4} maxLength={8000} value={body} onChange={event=>setBody(event.target.value)}/></label>
         <button className="button button-primary" type="submit" disabled={!recipients.length}>Review and send pack</button>
       </fieldset>
     </form>{error&&<p role="alert">{error}</p>}{preview&&<DocumentPreview versionId={preview} close={()=>setPreview(undefined)}/>}

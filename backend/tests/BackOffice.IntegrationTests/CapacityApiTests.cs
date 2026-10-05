@@ -19,6 +19,16 @@ public sealed partial class UnderwritingRuntimeTests
         await WithDatabase(async (db, password) =>
         {
             var (f, escalation, submission) = await CapacityRequest(db, password, "query-proof");
+            var historyReads = new CapacityReadModel(f.Factory, f.Clock);
+            var historyVersion = await historyReads.MessagesVersionAsync(f.Underwriter, escalation.Id);
+            await db.Set<StaffUser>().Where(x => x.Id == f.Underwriter.UserId)
+                .ExecuteUpdateAsync(setters => setters.SetProperty(x => x.UpdatedAt, x => x.UpdatedAt));
+            Assert.Equal(historyVersion, await historyReads.MessagesVersionAsync(f.Underwriter, escalation.Id));
+            Assert.NotEmpty((await historyReads.MessagesAsync(f.Underwriter, escalation.Id, historyVersion, 0, 20)).Items);
+            await db.Database.ExecuteSqlInterpolatedAsync($"UPDATE CapacityEscalation SET UpdatedAt=UpdatedAt WHERE Id={escalation.Id}");
+            Assert.NotEqual(historyVersion, await historyReads.MessagesVersionAsync(f.Underwriter, escalation.Id));
+            Assert.Equal(409, (await Assert.ThrowsAsync<BackOffice.Infrastructure.Quotes.QuoteOperationException>(() =>
+                historyReads.MessagesAsync(f.Underwriter, escalation.Id, historyVersion, 0, 20))).Status);
             using var host = new WebApplicationFactory<Program>().WithWebHostBuilder(builder => builder.UseEnvironment("Development")
                 .UseSetting("Cover:SqlConnection", db.Database.GetConnectionString()).UseSetting("Cover:QuoteRatingWorkerEnabled", "false")
                 .UseSetting("Cover:CapacityWorkerEnabled", "false")

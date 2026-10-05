@@ -72,7 +72,7 @@ export function RenewalPreparation({draftId,policyId,editor,etag,fence,editable,
       if(command.method==='PUT'){setFactsEdited(false);setAssociation('');}
       pending.current=null;pendingChanged(false);setPendingState(false);setNotice(command.file?'Evidence uploaded. Save the supplied experience to associate these bytes.':'Renewal information saved.');
     }catch(failure){
-      if(!uncertainQuoteFailure(failure)){pending.current=null;pendingChanged(false);setPendingState(false);}
+      if(!pendingState&&!uncertainQuoteFailure(failure)){pending.current=null;pendingChanged(false);setPendingState(false);}
       setError(pending.current?'The result is unconfirmed. Retry the same action before continuing.':failure instanceof QuoteError?'The renewal action could not be applied. Refresh the draft and check its editing lease.':failure instanceof Error?failure.message:'Unable to save renewal information.');
     }finally{sendingRef.current=false;setSending(false);}
   }

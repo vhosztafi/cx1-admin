@@ -1,5 +1,10 @@
-# Motor Trade MTA funnel verification
+---
+phase: 19-motor-trade-mta-funnel-and-review
+status: passed
+requirements_completed: [POL-10, POL-11, POL-12, POL-13, POL-14]
+verified: 2026-10-05
+---
 
-Capture, resume, lease renewal, identity/term preservation and immutable command recovery passed against the additive local fixture. Tests and fixture identifiers are recorded in 19-01-SUMMARY.md. The bridge validates exact approved origin, source window and nonce; source messages carry no credentials. Backend projection rejects foreign policy targets and independently owned risk replacement.
+Source-captured MTA supplemental declaration saved under lease while preserving raw resume state and unchanged issued base. Actual current rating/proof/acceptance and UI issue exact replay created one issued version and balanced finance. Two Motor Trade SQL issue scenarios additionally verify two dated versions, rollback boundaries, concurrency, authority and replay.
 
-Implementation follow-up: phase 24 must verify full MTA rating/terms/acceptance/issue, current proof invalidation, dated slices/finance and supplemental prototype-only declarations. No human UAT, hosted deployment or complete milestone verification is claimed.
+Evidence: prior implementation summary plus Phase 24 saved browser, focused contract and SQL results. Full cross-section evidence and limits are recorded in 24-VERIFICATION.md and docs/design/PROTOTYPE-ALIGNMENT-v1.1.md.

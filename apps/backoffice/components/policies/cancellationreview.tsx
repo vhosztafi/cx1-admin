@@ -40,7 +40,7 @@ export function CancellationReview({draftId,etag,fence,editable,blocked,dirty,ca
       if(!pending.current){pending.current=cancellationCommand(draftId,etag,fence!,path!,body,upload);pendingChanged(true);}
       await sendCancellation(pending.current);await saved();pending.current=null;setUncertain(false);pendingChanged(false);setConfirmedHash(null);setNotice('Cancellation action saved.');
     }catch(failure){
-      if(!uncertainQuoteFailure(failure)){pending.current=null;pendingChanged(false);setUncertain(false);setRead(null);}
+      if(!uncertain&&!uncertainQuoteFailure(failure)){pending.current=null;pendingChanged(false);setUncertain(false);setRead(null);}
       else setUncertain(true);
       setError(pending.current?'The result is unconfirmed. Retry the same action before continuing.':'The action could not be applied. Refresh the draft and check current authority and editing ownership.');
     }finally{sendingRef.current=false;setSending(false);}

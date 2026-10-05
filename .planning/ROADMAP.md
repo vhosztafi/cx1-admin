@@ -8,16 +8,16 @@
 ## Phases
 
 - [x] **Phase 14: Prototype baseline and shared shell** — Match the prototype shell and establish an evidence-based section comparison. (completed 2026-10-05)
-- [ ] **Phase 15: Clients contacts and matching** — Match client account, contacts, matching and support workflows.
-- [ ] **Phase 16: Agency records and onboarding** — Match agency navigation, onboarding and agreement workflows.
-- [ ] **Phase 17: Motor Trade quote entry and funnel** — Start Motor Trade quotes with selected client, agency and contact and capture in cx1-implementation.
-- [ ] **Phase 18: Quote records underwriting and issue** — Match quote review, referrals, acceptance and issue.
-- [ ] **Phase 19: Motor Trade MTA funnel and review** — Edit MTAs in the existing funnel and review grouped changes in the back office.
-- [ ] **Phase 20: Motor Trade policy records and history** — Match policy, driver, vehicle and effective-date views.
-- [ ] **Phase 21: Renewal cancellation and issued confirmation** — Match lifecycle journeys and transaction confirmations.
-- [ ] **Phase 22: Tasks documents communications and incidents** — Match operational screens and contextual servicing actions.
-- [ ] **Phase 23: Accounting reporting dashboard and search** — Match shared operational discovery and finance screens.
-- [ ] **Phase 24: Administration account and milestone verification** — Match remaining shared screens and verify complete Motor Trade journeys.
+- [x] **Phase 15: Clients contacts and matching** — Match client account, contacts, matching and support workflows.
+- [x] **Phase 16: Agency records and onboarding** — Match agency navigation, onboarding and agreement workflows.
+- [x] **Phase 17: Motor Trade quote entry and funnel** — Start Motor Trade quotes with selected client, agency and contact and capture in cx1-implementation.
+- [x] **Phase 18: Quote records underwriting and issue** — Match quote review, referrals, acceptance and issue.
+- [x] **Phase 19: Motor Trade MTA funnel and review** — Edit MTAs in the existing funnel and review grouped changes in the back office.
+- [x] **Phase 20: Motor Trade policy records and history** — Match policy, driver, vehicle and effective-date views.
+- [x] **Phase 21: Renewal cancellation and issued confirmation** — Match lifecycle journeys and transaction confirmations.
+- [x] **Phase 22: Tasks documents communications and incidents** — Match operational screens and contextual servicing actions.
+- [x] **Phase 23: Accounting reporting dashboard and search** — Match shared operational discovery and finance screens.
+- [x] **Phase 24: Administration account and milestone verification** — Match remaining shared screens and verify complete Motor Trade journeys.
 
 ### Phase 14: Prototype baseline and shared shell
 
@@ -43,7 +43,7 @@
 2. Staff manage contacts and support flags in the prototype layout with agency-safe disclosure.
 3. Staff resolve matches through the prototype evidence and decision workflow.
 
-**Plans:** TBD
+**Plans:** 1/1 plans complete
 
 ### Phase 16: Agency records and onboarding
 
@@ -56,7 +56,7 @@
 2. Staff save and resume the six-stage onboarding journey with visible activation requirements.
 3. Staff manage invitations, suspension and internal sharing reference through contextual actions.
 
-**Plans:** TBD
+**Plans:** 1/1 plans complete
 
 ### Phase 17: Motor Trade quote entry and funnel
 
@@ -70,7 +70,7 @@
 3. Staff save and resume funnel answers and return to the correct back-office quote without fixed demo identities.
 4. Funnel return preserves typed answers and repeatable command identity while enforcing origin, actor and relationship authorization.
 
-**Plans:** TBD
+**Plans:** 1/1 plans complete
 
 ### Phase 18: Quote records underwriting and issue
 
@@ -83,7 +83,7 @@
 2. Staff see rating, outstanding requirements, referral authority and decisions in the prototype workflow.
 3. Staff send terms, record acceptance and issue from clear enabled/blocked actions tied to the current revision.
 
-**Plans:** TBD
+**Plans:** 1/1 plans complete
 
 ### Phase 19: Motor Trade MTA funnel and review
 
@@ -98,7 +98,7 @@
 4. Staff see actionable validation, rating, referral, acceptance and issue blockers; edits invalidate dependent proofs.
 5. Saving or abandoning an MTA preserves in-force cover; issue respects leases, concurrency, effective dates and atomic finance.
 
-**Plans:** TBD
+**Plans:** 1/1 plans complete
 
 ### Phase 20: Motor Trade policy records and history
 
@@ -111,7 +111,7 @@
 2. Staff inspect linked driver and vehicle records and their relevant policy context.
 3. Staff inspect issued history and as-at views with explicit term, effective time and processing time.
 
-**Plans:** TBD
+**Plans:** 1/1 plans complete
 
 ### Phase 21: Renewal cancellation and issued confirmation
 
@@ -124,7 +124,7 @@
 2. Staff review cancellation dates, notice and financial breakdown before issue.
 3. Staff see issued transaction confirmations with policy, documents and next-action links.
 
-**Plans:** TBD
+**Plans:** 1/1 plans complete
 
 ### Phase 22: Tasks documents communications and incidents
 
@@ -138,7 +138,7 @@
 3. Staff log Motor Trade incidents and review claims-provider handoff summaries.
 4. Staff review and record capacity-provider escalation threads and outcomes.
 
-**Plans:** TBD
+**Plans:** 1/1 plans complete
 
 ### Phase 23: Accounting reporting dashboard and search
 
@@ -151,7 +151,7 @@
 2. Staff use prototype reports, filters, saved favourites and exports on authorized persisted data.
 3. Staff use prototype dashboard cards, queues and global search with working source links.
 
-**Plans:** TBD
+**Plans:** 1/1 plans complete
 
 ### Phase 24: Administration account and milestone verification
 
@@ -165,20 +165,20 @@
 3. Each in-scope section has recorded visual and interaction checks against the supplied prototype.
 4. Saved Motor Trade quote-to-issue and funnel-MTA-to-issue journeys retain identity, policy history and finance consistency.
 
-**Plans:** TBD
+**Plans:** 1/1 plans complete
 
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |---|---|---|---|---|
-| 14. Prototype baseline and shared shell | v1.1 | 1/1 | Complete    | 2026-10-05 |
-| 15. Clients contacts and matching | v1.1 | 1/1 | Verification follow-up in 18/20/24 | — |
-| 16. Agency records and onboarding | v1.1 | 1/1 | Verification follow-up in 23/24 | — |
+| 14. Prototype baseline and shared shell | v1.1 | 1/1 | Complete | 2026-10-05 |
+| 15. Clients contacts and matching | v1.1 | 1/1 | Complete | 2026-10-05 |
+| 16. Agency records and onboarding | v1.1 | 1/1 | Complete | 2026-10-05 |
 | 17. Motor Trade quote entry and funnel | v1.1 | 1/1 | Complete | 2026-10-05 |
-| 18. Quote records underwriting and issue | v1.1 | 1/1 | Lifecycle verification follow-up in 24 | — |
-| 19. Motor Trade MTA funnel and review | v1.1 | 1/1 | Lifecycle verification follow-up in 24 | — |
+| 18. Quote records underwriting and issue | v1.1 | 1/1 | Complete | 2026-10-05 |
+| 19. Motor Trade MTA funnel and review | v1.1 | 1/1 | Complete | 2026-10-05 |
 | 20. Motor Trade policy records and history | v1.1 | 1/1 | Complete | 2026-10-05 |
-| 21. Renewal cancellation and issued confirmation | v1.1 | 1/1 | Issue verification follow-up in 24 | — |
-| 22. Tasks documents communications and incidents | v1.1 | 1/1 | Provider/delivery verification follow-up in 24 | — |
-| 23. Accounting reporting dashboard and search | v1.1 | 1/1 | Finance outcome verification follow-up in 24 | — |
-| 24. Administration account and milestone verification | v1.1 | 0/TBD | Pending | — |
+| 21. Renewal cancellation and issued confirmation | v1.1 | 1/1 | Complete | 2026-10-05 |
+| 22. Tasks documents communications and incidents | v1.1 | 1/1 | Complete | 2026-10-05 |
+| 23. Accounting reporting dashboard and search | v1.1 | 1/1 | Complete | 2026-10-05 |
+| 24. Administration account and milestone verification | v1.1 | 1/1 | Complete | 2026-10-05 |

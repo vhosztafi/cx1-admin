@@ -55,13 +55,12 @@ public static class CapacityEndpoints
         }
         catch (Exception error) when (QuoteEndpoints.Known(error)) { return QuoteEndpoints.Failure(context, error); }
     }
-    private static async Task<IResult> Messages(Guid escalationId, HttpContext context, CapacityReadModel reads, QuoteReferralReadModel referrals, PartyPaging paging)
+    private static async Task<IResult> Messages(Guid escalationId, HttpContext context, CapacityReadModel reads, PartyPaging paging)
     {
         try
         {
             QuoteEndpoints.Id(escalationId); var actor = LocalIdentityService.Actor(context.User);
-            var quoteId = await reads.QuoteForEscalationAsync(actor, escalationId, context.RequestAborted);
-            var version = await referrals.VersionAsync(actor, quoteId, context.RequestAborted);
+            var version = await reads.MessagesVersionAsync(actor, escalationId, context.RequestAborted);
             var page = paging.ReadBound(context, actor, "capacity-messages", version) ?? throw new QuoteHttpException(400, "invalid-query");
             var rows = await reads.MessagesAsync(actor, escalationId, version, page.Offset, page.Size, context.RequestAborted);
             var result = new Dictionary<string, object> { ["items"] = rows.Items }; if (paging.Next(page, rows.More) is { } next) result["nextCursor"] = next;

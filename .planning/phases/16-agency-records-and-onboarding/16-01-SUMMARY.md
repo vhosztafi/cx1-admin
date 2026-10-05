@@ -1,7 +1,8 @@
 ---
 phase: 16-agency-records-and-onboarding
 plan: 01
-status: implemented-with-follow-up
+requirements_completed: [AGY-06, AGY-07, AGY-08]
+status: complete
 requirements: [AGY-06, AGY-07, AGY-08]
 ---
 
@@ -10,3 +11,10 @@ Agency directory order/copy and record header contextual actions now follow the 
 TypeScript, focused ESLint and API build pass. Local fictional directory and active record checked: Motor Trade products appear in the header; read-only underwriter sees preview but no administration controls. Local screenshot output/playwright/v1.1/agency-overview.png. No live invitations sent or approval/mutation tests invented.
 
 Follow-up in 23/24: source operational 90-day summary, account balance facts and final administrator/onboarding interaction evidence. Source example values are not substituted for these saved read models. Phase remains pending final verification.
+
+
+## Phase 24 verification closure — 2026-10-05
+
+Six real onboarding stages, incomplete activation validation, save/exit/resume at step six and current administrator entry points verified. Shared boundary table loads. Phase 23 saved 90-day summary and broker balances close the remaining read-model follow-up.
+
+The earlier follow-up is now closed by recorded local engineering evidence. Historical limitations above describe the earlier verification point. See docs/design/PROTOTYPE-ALIGNMENT-v1.1.md and 24-VERIFICATION.md for exact evidence and boundaries; no human UAT or hosted deployment is claimed.

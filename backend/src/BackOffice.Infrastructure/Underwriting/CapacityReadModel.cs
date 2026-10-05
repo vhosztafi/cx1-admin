@@ -100,13 +100,32 @@ public sealed partial class CapacityReadModel(IDbContextFactory<BackOfficeDbCont
         await AddCaseDetails(db, row, owned.Quote, referral, result, token);
         await tx.CommitAsync(token); return result;
     }
+    public async Task<string> MessagesVersionAsync(ActorContext actor, Guid id, CancellationToken token = default)
+    {
+        await using var db = await factory.CreateDbContextAsync(token);
+        await using var tx = await db.Database.BeginTransactionAsync(token);
+        var row = await db.Set<CapacityEscalation>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == id, token)
+            ?? throw new QuoteOperationException(404, "capacity-escalation-not-found");
+        await Authorize(db, actor, row.QuoteId, token);
+        var version = await MessagesVersion(db, id, token);
+        await tx.CommitAsync(token); return version;
+    }
+    private static Task<string> MessagesVersion(BackOfficeDbContext db, Guid id, CancellationToken token) =>
+        db.Database.SqlQuery<string>($"""
+            SELECT CONVERT(varchar(64),HASHBYTES('SHA2_256',(
+                SELECT E.Id,E.RowVersion,(
+                    SELECT M.Id,M.Sequence,M.ContentHash,M.ApplicationState
+                    FROM CapacityMessage M WHERE M.EscalationId=E.Id ORDER BY M.Sequence FOR JSON PATH
+                ) AS Messages FROM CapacityEscalation E WHERE E.Id={id} FOR JSON PATH
+            )),2) AS [Value]
+            """).SingleAsync(token);
     public async Task<(object[] Items, bool More)> MessagesAsync(ActorContext actor, Guid id, string expectedVersion, int offset, int size, CancellationToken token = default)
     {
         if (size is < 1 or > 100 || offset < 0) throw new QuoteOperationException(400, "invalid-query");
         await using var db = await factory.CreateDbContextAsync(token); await using var tx = await db.Database.BeginTransactionAsync(token);
         var row = await db.Set<CapacityEscalation>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == id, token) ?? throw new QuoteOperationException(404, "capacity-escalation-not-found");
         await Authorize(db, actor, row.QuoteId, token);
-        if (expectedVersion != await QuoteDiscovery.VersionAsync(db, token)) throw new QuoteOperationException(409, "underwriting-history-changed");
+        if (expectedVersion != await MessagesVersion(db, id, token)) throw new QuoteOperationException(409, "underwriting-history-changed");
         var rows = await db.Set<CapacityMessage>().AsNoTracking().Where(x => x.EscalationId == id).OrderByDescending(x => x.Sequence).Skip(offset).Take(size + 1).ToArrayAsync(token);
         var items = new List<object>(); foreach (var message in rows.Take(size)) items.Add(await Message(db, message, token));
         await tx.CommitAsync(token); return (items.ToArray(), rows.Length > size);
