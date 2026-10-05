@@ -1,15 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: Functional Back Office MVP
-status: completed
-last_updated: "2026-09-26T12:29:19.798Z"
+milestone: v1.1
+milestone_name: Prototype Alignment and Funnel Servicing
+status: planning
+last_updated: "2026-10-05T08:38:57.098Z"
+last_activity: 2026-10-05
 progress:
-  total_phases: 13
-  completed_phases: 13
-  total_plans: 131
-  completed_plans: 131
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -20,9 +21,10 @@ See PROJECT.md and MILESTONES.md; complete v1.0 requirements and roadmap are in 
 
 ## Current position
 
-v1.0 closed 2026-09-26 with accepted verification limits. All 131 plan/summary pairs present. Audit 82/83 requirements on local evidence. No next milestone is active. Next command: $gsd-new-milestone.
-
-Post-milestone development deployment requested: protected Cloudflare frontend is live at cx1-admin-dev.gyongyos.co.uk; Windows API package prepared for IIS / .\sql2022 / Cx1_Dev. API server installation and DNS/Tunnel routing remain pending. See deploy/STATUS.md and deploy/windows/README.md. This deployment does not resolve the archived business/human verification debt.
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-10-05 — Milestone v1.1 started
 
 ## Deferred Items
 

@@ -8,6 +8,12 @@ A functional back office for an MGA, reproducing the supplied Cover prototype's 
 
 Staff can complete a quote-to-policy-to-servicing journey and trust that its policy versions, decisions, documents and financial movements remain consistent after reload or restart.
 
+## Current Milestone: v1.1 Prototype Alignment and Funnel Servicing
+
+**Goal:** Reproduce the supplied prototype section by section and use the existing Motor Trade funnel for quote/MTA risk capture.
+
+**Authority:** User approved the complete proposed scope on 2026-10-05, confirmed cx1-implementation, and excluded CC completely. Advance automatically through planning, implementation and focused verification without routine approval stops. User authorization supersedes older funnel transport/integration exclusions for this explicit host integration; canonical legacy questions/semantics remain unchanged. No production deployment is inferred.
+
 ## Latest Milestone: v1.0 Functional Back Office MVP — closed 2026-09-26
 
 **Goal:** Implement all available or implied back-office prototype capabilities in manageable, tested phases, with explicit data and API design before implementation.
@@ -27,11 +33,12 @@ Staff can complete a quote-to-policy-to-servicing journey and trust that its pol
 
 ### Active
 
-No next implementation milestone is defined. Carry forward the explicitly accepted verification/debt items below when prioritising future work.
+v1.1 approved 2026-10-05: match the supplied prototype section by section for Motor Trade and shared back-office screens; reuse the existing cx1-implementation funnel for new quotes and MTAs. See REQUIREMENTS.md.
 
 ### Out of Scope
 
-- Changes to or live integration with `frontend-code/`; use only for questions, field semantics and data gathering.
+- Commercial Combined changes, capture, servicing and acceptance are excluded from v1.1 by explicit user instruction. Retain existing CC data and code; do not expand or audit CC.
+- `frontend-code/` is a historical snapshot. The authorized live Motor Trade funnel repository is `F:/Scratches/AscendX/cx1-implementation`.
 - New customer-facing sales funnels, including Commercial Combined.
 - A separate broker portal application. The prototype explicitly describes `pPortal()` as an internal data-sharing reference.
 - Real rating, money movement, email delivery, MID submissions, claims-provider connections or production external lookups; use recorded demo adapters.
@@ -91,7 +98,7 @@ v1.0 is archived and locally tagged after completion of 13 phases and 131 plans.
 
 ## Next Milestone Goals
 
-Not selected. Use $gsd-new-milestone to define fresh requirements and prioritise business feedback or individual module improvements. Continue numbering after Phase 13; do not automatically repeat prior acceptance runbooks.
+v1.1 Prototype Alignment and Funnel Servicing: phases 14–24. Match the supplied prototype UI, UX and functionality for Motor Trade/shared sections; integrate Motor Trade quote and MTA capture with cx1-implementation. Backend/core changes are authorized where needed.
 
 ## Accepted Debt
 
@@ -101,4 +108,4 @@ Not selected. Use $gsd-new-milestone to define fresh requirements and prioritise
 - Report limits and legacy summary metadata documented in the archived audit.
 
 ---
-Last updated: 2026-09-26 after v1.0 close.
+Last updated: 2026-10-05 after v1.1 scope approval.
