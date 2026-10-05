@@ -172,7 +172,7 @@
 | Phase | Milestone | Plans Complete | Status | Completed |
 |---|---|---|---|---|
 | 14. Prototype baseline and shared shell | v1.1 | 1/1 | Complete    | 2026-10-05 |
-| 15. Clients contacts and matching | v1.1 | 0/TBD | Pending | — |
+| 15. Clients contacts and matching | v1.1 | 1/1 | Verification follow-up in 18/20/24 | — |
 | 16. Agency records and onboarding | v1.1 | 0/TBD | Pending | — |
 | 17. Motor Trade quote entry and funnel | v1.1 | 0/TBD | Pending | — |
 | 18. Quote records underwriting and issue | v1.1 | 0/TBD | Pending | — |

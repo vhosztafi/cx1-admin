@@ -47,9 +47,15 @@ public static partial class ClientEndpoints
         var primaries=await scope.Contacts(db).Where(x=>ids.Contains(x.ClientId) && x.IsPrimary).Select(x=>new {x.ClientId,x.DeclaredFullName}).ToListAsync(context.RequestAborted);
         var quoteCounts=actor.HasCapability("quote-read") ? await db.Set<Quote>().AsNoTracking().Where(x=>ids.Contains(x.ClientId) && x.CurrentRevisionId!=null).GroupBy(x=>x.ClientId).Select(x=>new {Id=x.Key,Count=x.Count()}).ToDictionaryAsync(x=>x.Id,x=>x.Count,context.RequestAborted) : new Dictionary<Guid,int>();
         var policyCounts=actor.HasCapability("policy-read") ? await db.Set<Policy>().AsNoTracking().Where(x=>ids.Contains(x.ClientId) && x.CurrentTermId!=null).GroupBy(x=>x.ClientId).Select(x=>new {Id=x.Key,Count=x.Count()}).ToDictionaryAsync(x=>x.Id,x=>x.Count,context.RequestAborted) : new Dictionary<Guid,int>();
+        var proposals=actor.HasCapability("quote-read") ? await (from q in db.Set<Quote>().AsNoTracking()
+            join revision in db.Set<QuoteRevision>().AsNoTracking() on q.CurrentRevisionId equals revision.Id
+            join product in db.Set<Product>().AsNoTracking() on q.ProductId equals product.Id
+            where ids.Contains(q.ClientId) && (product.Code=="motor-trade-road-risks" || product.Code=="motor-trade-combined")
+            select new {q.ClientId,revision.ProposalJson}).ToListAsync(context.RequestAborted) : [];
+        var activities=proposals.GroupBy(x=>x.ClientId).ToDictionary(x=>x.Key,x=>x.SelectMany(p=>TradeActivities(p.ProposalJson)).Distinct(StringComparer.Ordinal).Order().ToArray());
         return Results.Json(new {items=rows.Select(x => new {x.Id,x.Reference,x.LegalName,x.EntityType,x.CompanyNumber,
             primaryContactName=agencies.Count(a=>a.ClientId==x.Id)==1 ? primaries.SingleOrDefault(c=>c.ClientId==x.Id)?.DeclaredFullName : null,
-            Address=Address(x),x.CreatedAt,x.IdentityState,agencies=agencies.Where(a => a.ClientId==x.Id).OrderBy(a => a.Name).Select(a => new {a.Id,a.Name,a.Reference}),records=actor.HasCapability("quote-read") ? (object)new {state="available",quoteCount=quoteCounts.GetValueOrDefault(x.Id),policyCount=policyCounts.GetValueOrDefault(x.Id)} : new {state="unavailable"}}),
+            Address=Address(x),x.CreatedAt,x.IdentityState,tradeActivities=actor.HasCapability("quote-read") ? activities.GetValueOrDefault(x.Id,[]) : null,agencies=agencies.Where(a => a.ClientId==x.Id).OrderBy(a => a.Name).Select(a => new {a.Id,a.Name,a.Reference}),records=actor.HasCapability("quote-read") ? (object)new {state="available",quoteCount=quoteCounts.GetValueOrDefault(x.Id),policyCount=policyCounts.GetValueOrDefault(x.Id)} : new {state="unavailable"}}),
             totalCount=total,nextCursor=paging.Next(page,page.Offset+rows.Count<total)},Json);
     }
 
@@ -167,6 +173,15 @@ public static partial class ClientEndpoints
     }
 
     private static PartyScope Scope(HttpContext context)=>new(LocalIdentityService.Actor(context.User));
+    private static string[] TradeActivities(string json)
+    {
+        using var document=JsonDocument.Parse(json);
+        var value=document.RootElement;
+        foreach(var key in new[]{"risk","business","activities"}) if(!value.TryGetProperty(key,out value)) return [];
+        if(value.ValueKind!=JsonValueKind.Array) return [];
+        return value.EnumerateArray().Where(x=>x.TryGetProperty("code",out var code) && code.ValueKind==JsonValueKind.Object && code.TryGetProperty("label",out var label) && label.ValueKind==JsonValueKind.String)
+            .Select(x=>x.GetProperty("code").GetProperty("label").GetString()!).ToArray();
+    }
     private static AddressWrite Address(ClientAccount row)=>JsonSerializer.Deserialize<AddressWrite>(row.Address,Json)!;
     private static object View(ClientAccount row)=>new {row.Id,row.Reference,row.LegalName,row.EntityType,row.CompanyNumber,Address=Address(row),row.CreatedAt,row.IdentityState};
     private static object RelationshipView(ClientAgencyRelationship row,Agency agency)=>new {row.Id,row.ClientId,row.AgencyId,row.State,agencyName=agency.LegalName,agencyReference=agency.Reference};

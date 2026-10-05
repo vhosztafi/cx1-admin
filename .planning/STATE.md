@@ -21,9 +21,9 @@ See PROJECT.md and MILESTONES.md; complete v1.0 requirements and roadmap are in 
 
 ## Current position
 
-Phase: 15
+Phase: 16
 Plan: Not started
-Status: Defining requirements
+Status: Executing approved scope; phase 15 portfolio facts follow-up remains
 Last activity: 2026-10-05
 
 ## Deferred Items

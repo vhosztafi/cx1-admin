@@ -14,9 +14,11 @@ function contactError(error: unknown) {
     error.status === 409 ? 'Check the current primary contact. Make another active contact primary before ending or demoting a primary contact. Ended contacts cannot be edited.' : error.message;
 }
 export function Contacts({clientId,canWrite,canSupport,onSummary,generation}:{clientId:string;canWrite:boolean;canSupport:boolean;onSummary:(value:string)=>void;generation:number}) {
-  const [selected,setSelected] = useState<Relationship | null>(null); const [locked,setLocked] = useState(false);
+  const [selection,setSelected] = useState<Relationship | null>(); const [locked,setLocked] = useState(false);
   const [history,setHistory] = useState(['']); const cursor = history.at(-1)!;
   const relationships = useClientResource<Page<Relationship>>(`/api/v1/clients/${clientId}/relationships?pageSize=15${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`,generation);
+  const page = relationships.data;
+  const selected = selection === undefined && page && !page.nextCursor && !cursor && page.items.length === 1 && page.items[0].state === 'active' ? page.items[0] : selection;
   useEffect(() => {if (!selected) onSummary('Choose an agency relationship');},[selected,onSummary]);
   return <><Panel title="Agency relationship" note="Choose the relationship whose contacts you want to service">
     {!relationships.data ? <LoadFeedback error={relationships.error} retry={relationships.refresh} /> : !relationships.data.items.length ? <EmptyState title="No agency relationships">Add an agency relationship on the Overview tab before adding contacts.</EmptyState> : <div className="operations-toolbar"><label>Selected agency relationship<select disabled={locked} value={selected?.id ?? ''} onChange={event => setSelected(relationships.data!.items.find(x => x.id === event.target.value) ?? null)}><option value="">Choose an agency relationship</option>{selected && !relationships.data.items.some(x => x.id === selected.id) && <option value={selected.id}>{selected.agencyName} · {selected.agencyReference}</option>}{relationships.data.items.map(row => <option key={row.id} value={row.id}>{row.agencyName} · {row.agencyReference} · {row.state}</option>)}</select></label></div>}
