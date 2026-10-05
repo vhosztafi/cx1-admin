@@ -32,6 +32,26 @@ Repeated broad SQL gates and extended runbooks delayed implementation; the Phase
 
 795 commits before archival over 13 elapsed calendar days. Model mix, token cost and session count were not reliably measured.
 
+## Milestone: v1.1 — Prototype Alignment and Funnel Servicing
+
+**Completed locally:** 2026-10-05 · 11 phases, 11 plans, 38 requirements.
+
+### What was built
+
+Source-aligned Motor Trade/shared sections; selected party before capture; existing source funnel for quote/MTA; saved lifecycle, operations, finance and account security outcomes.
+
+### What worked
+
+Section-sized commits, explicit source comparison and retained fictional journeys kept the implementation reviewable. Lost-response/denial/exact replay checks protected saved decisions and finance. Visual inspection found a correspondence paging conflict that control-only assertions missed.
+
+### Lessons
+
+Wait for saved content before screenshot assertions. Check actual provider outcomes and correspondence, not only the parent state. Bind history cursors to their source rather than global database activity. Use complete fictional proposal prefill explicitly and describe it accurately; never label it a blank-funnel user test. Preserve inherited acceptance debt without converting it into a pass.
+
+### Cost observations
+
+Inline autonomous work; no agent fan-out. Eleven implementation commits plus milestone setup before archival; model/token/session costs were not measured. Generated migrations dominate line counts.
+
 ## Cross-Milestone Trends
 
-Only one milestone has completed; no multi-milestone trend is claimed. Next cycle should retain the user-approved lightweight delivery agreement.
+Two milestones are locally complete. The second used focused changes, saved-data journeys and source comparisons rather than repeating the broad baseline; preserve that lightweight agreement.

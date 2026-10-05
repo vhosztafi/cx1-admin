@@ -8,9 +8,9 @@ A functional back office for an MGA, reproducing the supplied Cover prototype's 
 
 Staff can complete a quote-to-policy-to-servicing journey and trust that its policy versions, decisions, documents and financial movements remain consistent after reload or restart.
 
-## Current Milestone: v1.1 Prototype Alignment and Funnel Servicing
+## Latest Completed Milestone: v1.1 Prototype Alignment and Funnel Servicing
 
-**Goal:** Reproduce the supplied prototype section by section and use the existing Motor Trade funnel for quote/MTA risk capture.
+**Delivered:** Prototype section alignment for Motor Trade/shared screens and existing cx1-implementation quote/MTA funnel capture, locally verified across all 11 phases and 38 requirements. See milestones/v1.1-REQUIREMENTS.md and docs/design/PROTOTYPE-ALIGNMENT-v1.1.md.
 
 **Authority:** User approved the complete proposed scope on 2026-10-05, confirmed cx1-implementation, and excluded CC completely. Advance automatically through planning, implementation and focused verification without routine approval stops. User authorization supersedes older funnel transport/integration exclusions for this explicit host integration; canonical legacy questions/semantics remain unchanged. No production deployment is inferred.
 
@@ -33,7 +33,11 @@ Staff can complete a quote-to-policy-to-servicing journey and trust that its pol
 
 ### Active
 
-v1.1 approved 2026-10-05: match the supplied prototype section by section for Motor Trade and shared back-office screens; reuse the existing cx1-implementation funnel for new quotes and MTAs. See REQUIREMENTS.md.
+None. The approved v1.1 scope is locally complete; future scope has not been selected.
+
+- ✓ Source-derived Motor Trade/shared UI, contextual client/agency-before-quote entry and existing source-funnel quote/MTA save/resume. — v1.1, local evidence.
+- ✓ Saved quote/MTA/renewal/cancellation issue, immutable replay, atomic finance and reloadable confirmations. — v1.1, local evidence.
+- ✓ Completed matching/onboarding, generated PDF/demo delivery, claims/capacity outcomes, two-person refund/payment and real account security journeys. — v1.1, local evidence.
 
 ### Out of Scope
 
@@ -76,6 +80,9 @@ v1.1 approved 2026-10-05: match the supplied prototype section by section for Mo
 | Focused research before requirements | User selected research | Accepted |
 | Focused verification after 26 September | Repeated full SQL gates delayed delivery | Good — retain broad baseline, test changed behaviour |
 | Close v1.0 with explicit verification debt | User selected closure after audit | Accepted — no fabricated human or database restart pass |
+| Reuse cx1-implementation for Motor Trade quote and MTA | Explicit approved prototype feedback | Implemented — scoped identity, raw state, typed projection and exact fenced retries |
+| Align source UI with persistent prerequisites | Prototype actions must perform saved operations | Verified locally — lifecycle, documents, providers, finance and account security |
+| Scope capacity correspondence paging to its history | Global database updates caused false conflicts | Verified — unrelated updates tolerated; changed history rejected |
 
 ## Evolution
 
@@ -94,11 +101,11 @@ Milestone review: 2026-09-26 — 82/83 requirements locally verified; remaining 
 
 ## Current State
 
-v1.0 is archived and locally tagged after completion of 13 phases and 131 plans. Closed as a local MVP with accepted verification limits following the user’s explicit complete-milestone command after the audit. ACC-02 remains partially verified: application restart passed, dedicated SQL engine restart unperformed. Human business and assistive reviews remain pending. Acceptance of debt does not turn these into test passes.
+v1.1 is locally complete: 11 phases, 11 plans and 38 approved requirements, following the 13-phase v1.0 baseline. Saved browser and focused SQL/contract checks support the delivered behavior. Hosted connection approval is recorded; deployment/push is not performed. v1.0 is archived and locally tagged after completion of 13 phases and 131 plans. Closed as a local MVP with accepted verification limits following the user’s explicit complete-milestone command after the audit. ACC-02 remains partially verified: application restart passed, dedicated SQL engine restart unperformed. Human business and assistive reviews remain pending. Acceptance of debt does not turn these into test passes.
 
 ## Next Milestone Goals
 
-v1.1 Prototype Alignment and Funnel Servicing: phases 14–24. Match the supplied prototype UI, UX and functionality for Motor Trade/shared sections; integrate Motor Trade quote and MTA capture with cx1-implementation. Backend/core changes are authorized where needed.
+No further milestone has been scoped. Preserve the completed v1.1 implementation and accepted historical debt when planning future work.
 
 ## Accepted Debt
 
@@ -108,4 +115,4 @@ v1.1 Prototype Alignment and Funnel Servicing: phases 14–24. Match the supplie
 - Report limits and legacy summary metadata documented in the archived audit.
 
 ---
-Last updated: 2026-10-05 after v1.1 scope approval.
+Last updated: 2026-10-05 after verified v1.1 completion.

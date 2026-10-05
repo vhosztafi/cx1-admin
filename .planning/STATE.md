@@ -1,10 +1,10 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.1
-milestone_name: milestone
-status: Milestone verified
-last_updated: "2026-10-05T14:04:08.941Z"
-last_activity: 2026-10-05
+milestone_name: Prototype Alignment and Funnel Servicing
+status: Awaiting next milestone
+last_updated: "2026-10-05T14:05:12.686Z"
+last_activity: 2026-10-05 — Milestone v1.1 completed and archived
 progress:
   total_phases: 11
   completed_phases: 11
@@ -17,14 +17,14 @@ progress:
 
 ## Project reference
 
-See PROJECT.md and MILESTONES.md; complete v1.0 requirements and roadmap are in milestones/. Core value remains consistent persistent insurance and servicing journeys.
+See PROJECT.md and MILESTONES.md; complete v1.0/v1.1 requirements and roadmaps are in milestones/. Core value remains consistent persistent insurance and servicing journeys.
 
 ## Current position
 
-Phase: 24
-Plan: 01
-Status: All 11 phases and 38 requirements locally verified; ready for archive
-Last activity: 2026-10-05
+Phase: Milestone v1.1 complete
+Plan: —
+Status: Awaiting next milestone
+Last activity: 2026-10-05 — Milestone v1.1 completed and archived
 
 ## Deferred Items
 
@@ -40,3 +40,7 @@ Additional audit debt: old CC PDF continuation layout, intermittent development 
 ## Continuity
 
 Phase directories and UI evidence remain in place. Retained database/keys/files and old preview are preserved; current isolated preview is documented in docs/HANDOVER.md. Unrelated next-env.d.ts, tsconfig.json, .idea, generated AGENTS.md/CLAUDE.md and output are excluded from milestone commits. No production deployment or remote push.
+
+## Operator Next Steps
+
+- Start the next milestone with /gsd-new-milestone
