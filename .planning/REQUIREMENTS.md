@@ -8,9 +8,9 @@
 
 ### Prototype baseline and shared shell
 
-- [ ] **UX-01**: Staff see prototype typography, colours, sidebar, header, density and responsive layout.
-- [ ] **UX-02**: Staff use consistent record headers, tabs, badges and contextual action rails.
-- [ ] **UX-03**: Every Motor Trade/shared prototype section has a source-to-screen comparison and tracked gaps.
+- [x] **UX-01**: Staff see prototype typography, colours, sidebar, header, density and responsive layout.
+- [x] **UX-02**: Staff use consistent record headers, tabs, badges and contextual action rails.
+- [x] **UX-03**: Every Motor Trade/shared prototype section has a source-to-screen comparison and tracked gaps.
 
 ### Clients contacts and matching
 
@@ -87,9 +87,9 @@
 
 | Requirement | Phase | Status |
 |---|---|---|
-| UX-01 | Phase 14 | Pending |
-| UX-02 | Phase 14 | Pending |
-| UX-03 | Phase 14 | Pending |
+| UX-01 | Phase 14 | Complete |
+| UX-02 | Phase 14 | Complete |
+| UX-03 | Phase 14 | Complete |
 | CLI-05 | Phase 15 | Pending |
 | CLI-06 | Phase 15 | Pending |
 | CLI-07 | Phase 15 | Pending |

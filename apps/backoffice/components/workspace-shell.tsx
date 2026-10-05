@@ -12,7 +12,7 @@ function Navigation({ close, canQuote }: { close?: () => void; canQuote: boolean
   const pathname = usePathname();
   return <><div className="sidebar-brand"><Link href="/" onClick={close} className="brand-word">Cover</Link><span className="brand-subtitle">Motor Trade MGA</span></div>
     <nav className="navigation" aria-label="Main navigation">{navigation.map(([label, href]) => <Link key={href} href={href} prefetch={false} onClick={close} aria-current={pathname === href || (href !== '/' && pathname.startsWith(`${href}/`)) || (href === '/clients' && (pathname === '/matches' || pathname.startsWith('/matches/'))) ? 'page' : undefined} className={label === 'Accounting' ? 'nav-divider' : ''}>{label}</Link>)}</nav>
-    <div className="sidebar-footer">{canQuote && <Link href="/quotes/new" onClick={close} className="button button-primary">New Quote</Link>}<p className="demo-label">DEMO DATA · v1.0</p></div></>;
+    <div className="sidebar-footer">{canQuote && <Link href="/quotes/new" onClick={close} className="button button-primary">New Quote</Link>}<p className="demo-label">DEMO DATA · v1.1</p></div></>;
 }
 
 export function WorkspaceShell({ actor, children }: { actor: Actor; children: React.ReactNode }) {
@@ -38,7 +38,7 @@ export function WorkspaceShell({ actor, children }: { actor: Actor; children: Re
       <div className="drawer-content"><button className="drawer-close button" onClick={() => drawer.current?.close()} aria-label="Close navigation">Close ×</button><Navigation canQuote={canCaptureQuotes(actor.roles)} close={() => drawer.current?.close()} /></div>
     </dialog>
     <div className="workspace-body"><header className="topbar"><button className="button mobile-menu" aria-label="Open navigation" onClick={() => drawer.current?.showModal()}>☰</button>
-      <form action="/search" className="search-box"><input name="q" aria-label="Search clients, policies, quotes and registrations" placeholder="Search clients, policies, quotes, registrations" maxLength={200}/><button type="submit" className="button">Search</button></form>
+      <form action="/search" className="search-box"><input name="q" aria-label="Search clients, policies, quotes and registrations" placeholder="Search clients, policies, quotes, registrations" maxLength={200}/><select name="kind" aria-label="Search record type"><option value="all">All records</option><option value="client">Client</option><option value="policy">Policy number</option><option value="quote">Quote number</option><option value="policy">Vehicle registration</option><option value="agency">Agency</option></select><button type="submit" className="sr-only">Search</button></form>
       <Link href="/search" className="advanced-search">Advanced Search</Link>
       <div className="topbar-account"><Link href="/alerts" className="button alerts-button">Alerts</Link>
         <details className="account-menu"><summary><span className="avatar">{initials}</span><span className="user-label"><strong>{actor.displayName}</strong><small>{actor.roles.map(role => role.replaceAll('-', ' ')).join(', ')}</small></span><span className="caret" aria-hidden="true">▾</span></summary>
