@@ -9,8 +9,8 @@ public sealed class QuoteHttpException(int status, string code) : Exception("The
     public int Status { get; } = status;
     public string Code { get; } = code;
 }
-public sealed record QuoteCreateInput(Guid RelationshipId, Guid ProductVersionId, Guid? MatchSubmissionId, string? Proposal);
-public sealed record QuoteSaveInput(string Proposal, string? Reason);
+public sealed record QuoteCreateInput(Guid RelationshipId, Guid ProductVersionId, Guid? MatchSubmissionId, string? Proposal, string? BrokerContactKey = null);
+public sealed record QuoteSaveInput(string Proposal, string? Reason, string? FunnelStateJson = null);
 
 // HTTP transport boundary only. The held-authority service performs product,
 // catalogue, capture shape and ownership validation after this bounded parse.
@@ -29,16 +29,22 @@ public static class QuoteHttpInput
     {
         using var document = await Read(request, token);
         var root = document.RootElement;
-        Keys(root, "relationshipId", "productVersionId", "matchSubmissionId", "proposal");
+        Keys(root, "relationshipId", "productVersionId", "matchSubmissionId", "proposal", "brokerContactKey");
         var relationship = Id(root, "relationshipId"); var product = Id(root, "productVersionId");
         Guid? match = root.TryGetProperty("matchSubmissionId", out _) ? Id(root, "matchSubmissionId") : null;
-        return new(relationship, product, match, Proposal(root, required: false));
+        string? contact = null;
+        if(root.TryGetProperty("brokerContactKey",out var selected))
+        {
+            if(selected.ValueKind!=JsonValueKind.String || selected.GetString() is not {Length: >0 and <=50} key || (key!="main-contact" && (!Guid.TryParseExact(key,"D",out var contactId) || contactId==Guid.Empty))) throw new QuoteHttpException(422,"invalid-broker-contact");
+            contact=selected.GetString();
+        }
+        return new(relationship, product, match, Proposal(root, required: false),contact);
     }
 
     public static async Task<QuoteSaveInput> SaveAsync(HttpRequest request, CancellationToken token = default)
     {
-        using var document = await Read(request, token); var root = document.RootElement;
-        Keys(root, "proposal", "reason");
+        using var document = await Read(request, token, 2 * QuoteCanonicalJson.MaximumBytes); var root = document.RootElement;
+        Keys(root, "proposal", "reason", "funnelStateJson");
         var proposal = Proposal(root, required: true)!;
         string? reason = null;
         if (root.TryGetProperty("reason", out var value))
@@ -47,7 +53,14 @@ public static class QuoteHttpInput
                 throw new QuoteHttpException(422, "invalid-reason");
             reason = value.GetString();
         }
-        return new(proposal, reason);
+        string? funnel = null;
+        if(root.TryGetProperty("funnelStateJson",out var source))
+        {
+            if(source.ValueKind!=JsonValueKind.String) throw new QuoteHttpException(422,"invalid-funnel-state");
+            funnel=source.GetString();
+            BackOffice.Infrastructure.Quotes.QuoteFunnelState.Validate(funnel);
+        }
+        return new(proposal, reason, funnel);
     }
 
     public static void NoQuery(HttpRequest request)

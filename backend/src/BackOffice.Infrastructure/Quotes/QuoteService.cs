@@ -21,10 +21,11 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
     private readonly SqlCommandBoundary commands = new(factory, time);
 
     public Task<CommandOutcome> CreateAsync(ActorContext actor, Guid relationshipId, Guid productVersionId,
-        string? proposal, string key, Guid correlationId, CancellationToken token = default, Guid? matchSubmissionId = null)
+        string? proposal, string key, Guid correlationId, CancellationToken token = default, Guid? matchSubmissionId = null, string? brokerContactKey = null)
     {
         QuoteRelationshipScope? scope = null; EligibleQuoteCapture? selection = null; MatchSubmission? intake = null;
         object request = matchSubmissionId is null ? new { relationshipId, productVersionId, proposal } : new { relationshipId, productVersionId, proposal, matchSubmissionId };
+        if(brokerContactKey is not null) request=new {relationshipId,productVersionId,proposal,matchSubmissionId,brokerContactKey};
         return commands.ExecuteAuthorizedAsync(new(actor.UserId, "/api/v1/quotes", key, correlationId),
             request, "quote.create-command",
             async (db, ct) =>
@@ -39,6 +40,12 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
                 var now = time.GetUtcNow();
                 var quote = new Quote { AgencyId = scope!.Agency.Id, ClientId = scope.Client.Id, RelationshipId = scope.Relationship.Id,
                     ProductId = selection.Product.Id, CreatedBy = actor.UserId, CreatedAt = now, UpdatedAt = now };
+                if(brokerContactKey is not null)
+                {
+                    var contact=(await QuoteBrokerContacts.ListAsync(db,scope.Agency.Id,ct)).SingleOrDefault(x=>x.Key==brokerContactKey);
+                    if(contact is null) throw new QuoteOperationException(422,"broker-contact-unavailable");
+                    quote.BrokerContactJson=JsonSerializer.Serialize(contact,new JsonSerializerOptions(JsonSerializerDefaults.Web));
+                }
                 db.Add(quote); await db.SaveChangesAsync(ct);
                 await Append(db, quote, selection, prepared, 1, null, actor.UserId, now, ct);
                 await QuoteMatching.AttachOrReviewAsync(db, quote, scope, intake, actor.UserId, now, ct);
@@ -47,15 +54,18 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
     }
 
     public Task<CommandOutcome> SaveAsync(ActorContext actor, Guid quoteId, byte[] expectedVersion, string proposal,
-        string? reason, string key, Guid correlationId, CancellationToken token = default)
+        string? reason, string key, Guid correlationId, CancellationToken token = default, string? funnelStateJson = null)
     {
         ArgumentNullException.ThrowIfNull(proposal); // Omission initializes creates only; a save must never clear a draft implicitly.
+        if(funnelStateJson is not null) QuoteFunnelState.Validate(funnelStateJson);
         if (expectedVersion.Length != 8) throw new QuoteOperationException(400, "invalid-quote-version");
         if (reason is not null && (string.IsNullOrWhiteSpace(reason) || reason.Length > 1000))
             throw new QuoteValidationException([new("invalid-reason", "/reason")]);
         OwnedQuoteScope? owned = null; QuoteRevision? current = null; EligibleQuoteCapture? selection = null;
+        object request=new { quoteId, expectedVersion = Convert.ToBase64String(expectedVersion), proposal, reason };
+        if(funnelStateJson is not null) request=new {quoteId,expectedVersion=Convert.ToBase64String(expectedVersion),proposal,reason,funnelStateJson};
         return commands.ExecuteAuthorizedAsync(new(actor.UserId, $"/api/v1/quotes/{quoteId:D}/proposal", key, correlationId),
-            new { quoteId, expectedVersion = Convert.ToBase64String(expectedVersion), proposal, reason }, "quote.save-command",
+            request, "quote.save-command",
             async (db, ct) =>
             {
                 owned = await QuoteScope.ForQuoteAsync(db, actor, quoteId, QuoteAccess.Capture, ct);
@@ -79,8 +89,8 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
                         await db.SaveChangesAsync(ct);
                     }
                 }
-                if (QuoteRules.IsUnchanged(current!.ContentHash, prepared)) return Outcome(quote, 200);
-                await Append(db, quote, selection, prepared, checked(current.Number + 1), reason, actor.UserId, time.GetUtcNow(), ct);
+                if (QuoteRules.IsUnchanged(current!.ContentHash, prepared) && (funnelStateJson is null || funnelStateJson==current.FunnelStateJson)) return Outcome(quote, 200);
+                await Append(db, quote, selection, prepared, checked(current.Number + 1), reason, actor.UserId, time.GetUtcNow(), ct,funnelStateJson);
                 return Outcome(quote, 200);
             }, token);
     }
@@ -144,7 +154,7 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
     }
 
     internal static async Task Append(BackOfficeDbContext db, Quote quote, EligibleQuoteCapture selection, PreparedQuoteCapture prepared,
-        int number, string? reason, Guid actor, DateTimeOffset now, CancellationToken token)
+        int number, string? reason, Guid actor, DateTimeOffset now, CancellationToken token, string? funnelStateJson = null)
     {
         ProductCoverRules.EnsureProposal(selection.ProductVersion.Definition, selection.Product.Code, prepared.Input.Json);
         var revision = new QuoteRevision { ClientId = quote.ClientId, RelationshipId = quote.RelationshipId, QuoteId = quote.Id, AgencyId = quote.AgencyId, ProductId = quote.ProductId, Number = number,
@@ -152,7 +162,7 @@ public sealed class QuoteService(IDbContextFactory<BackOfficeDbContext> factory,
             SchemaVersion = selection.Pins.SchemaVersion, QuestionSetVersion = selection.Pins.QuestionSetVersion,
             ReferenceVersionsJson = JsonSerializer.Serialize(new { referenceVersion = selection.Pins.ReferenceVersion,
                 captureSettingId = selection.CaptureSettingId, distributionSettingId = selection.DistributionSettingId }),
-            ProposalJson = prepared.Input.Json, TermIntentJson = prepared.TermIntentJson, ContentHash = Convert.FromHexString(prepared.Input.ContentHash),
+            ProposalJson = prepared.Input.Json, FunnelStateJson = funnelStateJson, TermIntentJson = prepared.TermIntentJson, ContentHash = Convert.FromHexString(prepared.Input.ContentHash),
             Reason = reason, CreatedBy = actor, SavedBy = actor, CreatedAt = now, SavedAt = now };
         db.Add(revision); await db.SaveChangesAsync(token);
         await db.Set<QuoteRegistration>().Where(x => x.QuoteId == quote.Id).ExecuteDeleteAsync(token);

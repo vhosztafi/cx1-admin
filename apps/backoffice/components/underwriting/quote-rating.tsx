@@ -46,7 +46,7 @@ export function QuoteRating({ quote, actorId, refresh, questionLabels, openUnder
   </div><aside className="underwriting-rail" aria-label="Quote next actions"><Panel title="Next actions"><div className="quote-rail-body underwriting-action-list">
     <button className="button" onClick={openUnderwriting}>Review referrals</button>
     {(['rate', 'submit', 'return-to-draft', 'underwriting/refresh'] as const).map(name => <button key={name} className={`button ${name === 'rate' && allow[name] ? 'button-primary' : ''}`} disabled={!coherent || !allow[name]} onClick={() => setAction(name)}>{name === 'rate' && current.ratingId ? 'Re-rate quote' : actionLabels[name]}</button>)}
-    {quote.capabilities.canSave && <Link className="button" href={`/quotes/${quote.id}/edit`}>Edit quote draft</Link>}
+    {quote.capabilities.canSave && <Link className="button" href={`/quotes/${quote.id}/funnel`}>Edit risk in Motor Trade funnel</Link>}
     <p className="client-help">Available actions follow current access and saved quote checks. Refresh choices require a complete term and approved published versions. Return to draft before editing progressed risk.</p>
     <button className="button" onClick={openQuotation}>Prepare quotation / send quote to agency</button><button className="button" disabled>Issue policy</button><p className="client-help">Policy issue is not available yet. Quotation preparation, delivery and acceptance are on the Quotation tab.</p>
     <button className="button" onClick={refresh}>Reload saved quote</button>

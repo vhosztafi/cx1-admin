@@ -28,11 +28,15 @@ import type {CommercialCatalogue, CommercialQuoteView} from '../../lib/commercia
 import dynamic from 'next/dynamic';
 const CommercialWizard = dynamic(() => import('./commercial-wizard').then(module => module.CommercialWizard));
 
-export function QuoteWizard({ actorId, quoteId, catalogue, commercialCatalogue }: { actorId: string; quoteId: string; catalogue: QuoteFormCatalogue; commercialCatalogue: CommercialCatalogue }) {
+export function QuoteWizard({ actorId, quoteId, commercialCatalogue }: { actorId: string; quoteId: string; catalogue: QuoteFormCatalogue; commercialCatalogue: CommercialCatalogue }) {
   const record = useQuoteResource<QuoteView | CommercialQuoteView>(`/api/v1/quotes/${quoteId}`);
   if (!record.data || !validQuoteEtag(record.etag)) return <Panel title="Edit quote"><LoadFeedback error={record.error ?? (record.data ? 'The saved version could not be confirmed.' : undefined)} retry={record.refresh} /></Panel>;
   if (record.data.productCode === 'commercial-combined') return <CommercialWizard actorId={actorId} initial={record.data} initialEtag={record.etag} catalogue={commercialCatalogue} />;
-  return <Editor actorId={actorId} initial={record.data} initialEtag={record.etag} catalogue={catalogue} />;
+  return <MotorTradeCaptureRedirect quoteId={quoteId}/>;
+}
+function MotorTradeCaptureRedirect({quoteId}:{quoteId:string}) {
+  const router=useRouter();useEffect(()=>{router.replace(`/quotes/${quoteId}/funnel`);},[router,quoteId]);
+  return <Panel title="Motor Trade capture"><p>Opening the saved quote in the Motor Trade funnel…</p><Link className="button" href={`/quotes/${quoteId}/funnel`}>Continue risk capture</Link></Panel>;
 }
 
 const identityFields = [
@@ -54,7 +58,8 @@ const comparisonFields = [...identityFields.map(([path, label]) => ({ path, labe
   ...splitFields.map(([name, label]) => ({ path: `risk.business.declaredActivitySplit.${name}`, label: `${label} (basis points)` }))];
 const display = (value: QuoteValue | undefined, sourceLabels: Record<string, string> = {}): string => value === undefined ? 'Not recorded' : Array.isArray(value) ? value.map(item => display(item, sourceLabels)).join('; ') : typeof value === 'object' ? typeof value.id === 'string' && ('turnoverBasisPoints' in value) ? `${display(value.code, sourceLabels)} · ${value.turnoverBasisPoints === undefined ? 'Share not recorded' : `${Number(value.turnoverBasisPoints) / 100}%`}` : typeof value.label === 'string' ? value.label : Array.isArray(value.answers) ? value.answers.map(answer => { const item = answer as Record<string, QuoteValue>; const labels: Record<string, string> = { 'MTS-01-Q01': 'Quotation data consent', 'MTS-01-Q02': 'Marketing consent', 'MTS-01-Q03': 'Contact methods', 'MTS-03-Q04': 'Trade association membership', 'MTS-03-Q05': 'Trade association name', 'MTS-03-Q06': 'VAT registered', 'MTS-03-Q07': 'VAT number', 'MTS-03-Q08': 'Vehicles handled per year', 'MTS-03-Q09': 'MIPD vehicle limit' }; return `${labels[String(item.questionId)] ?? sourceLabels[String(item.questionId)] ?? 'Other saved answer'}: ${display(item.value, sourceLabels)}`; }).join('; ') : Object.entries(value).filter(([key]) => key !== 'id').map(([key, item]) => `${key.replace(/([A-Z])/g, ' $1')}: ${display(item, sourceLabels)}`).join('; ') : String(value);
 
-function Editor({ actorId, initial, initialEtag, catalogue }: { actorId: string; initial: QuoteView; initialEtag: string; catalogue: QuoteFormCatalogue }) {
+// Retained for historical capture tooling; normal Motor Trade entry uses the funnel.
+export function Editor({ actorId, initial, initialEtag, catalogue }: { actorId: string; initial: QuoteView; initialEtag: string; catalogue: QuoteFormCatalogue }) {
   const router = useRouter();
   const [saved, setSaved] = useState(initial); const [etag, setEtag] = useState(initialEtag); const [proposal, setProposal] = useState(initial.proposal);
   const savedDriverOptions = useMemo(() => driverOptionStates(saved.proposal, catalogue.driverOptions?.version === catalogue.version ? catalogue.driverOptions : undefined), [saved.proposal, catalogue.driverOptions, catalogue.version]);

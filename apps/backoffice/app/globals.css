@@ -215,6 +215,8 @@ h1, h2, p { margin: 0; }
 .agency-review { padding:18px; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px 20px; }
 .agency-review dt { color:#677184; font-size:12px; margin-bottom:4px; }
 .agency-review dd { margin:0; overflow-wrap:anywhere; }
+.agency-identity { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.quote-funnel-frame { display:block; width:100%; min-height:calc(100vh - 190px); border:1px solid var(--border); background:white; border-radius:10px; }
 .agency-terms-version { border-top:1px solid #e4e6ec; margin-top:18px; }
 .agency-terms-version > h3 { margin:18px 18px 0; font-size:14px; font-weight:600; }
 .agency-checklist { list-style:none; padding:16px; display:grid; gap:12px; }

@@ -4,7 +4,7 @@ import { csrfToken } from '../../lib/auth';
 import { ClientError, clientFetch, uncertainFailure, type Agency, type Page, type Relationship } from '../../lib/clients';
 import { LoadFeedback, useClientResource } from './shared';
 
-export function AddRelationship({ clientId, etag, onSaved, onReload, onClose }: { clientId: string; etag?: string | null; onSaved: () => void; onReload: () => void; onClose: () => void }) {
+export function AddRelationship({ clientId, etag, onSaved, onReload, onClose }: { clientId: string; etag?: string | null; onSaved: (relationship:Relationship) => void; onReload: () => void; onClose: () => void }) {
   const [history,setHistory] = useState(['']); const cursor = history.at(-1)!;
   const agencies = useClientResource<Page<Agency>>(`/api/v1/relationship-agencies?pageSize=15${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`);
   const [agencyId,setAgencyId] = useState(''); const [busy,setBusy] = useState(false); const locked = useRef(false);
@@ -15,10 +15,10 @@ export function AddRelationship({ clientId, etag, onSaved, onReload, onClose }: 
     if (receipt.current?.agencyId !== agencyId) receipt.current = { agencyId, key: crypto.randomUUID() };
     locked.current = true; setBusy(true); setError('');
     try {
-      await clientFetch<Relationship>(`/api/v1/clients/${clientId}/relationships`, { method: 'POST', headers: {
+      const result=await clientFetch<Relationship>(`/api/v1/clients/${clientId}/relationships`, { method: 'POST', headers: {
         'Content-Type':'application/json','X-CSRF-Token':await csrfToken(),'Idempotency-Key':receipt.current.key,...(etag && {'If-Match':etag}),
       }, body: JSON.stringify({agencyId:receipt.current.agencyId}) });
-      receipt.current = null; onSaved();
+      receipt.current = null; onSaved(result.data);
     } catch (failure) {
       setError(failure instanceof Error ? failure.message : 'The result could not be confirmed. Retry the same action.');
       setUncertain(uncertainFailure(failure)); setStale(failure instanceof ClientError && [412,428].includes(failure.status));

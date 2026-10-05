@@ -7,8 +7,10 @@ export function addQuoteContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
   const hash={type:'string',pattern:'^[a-f0-9]{64}$'};
   s.QuoteCaptureProposal={oneOf:[{$ref:'./schemas/quote-draft.schema.json'},r('CommercialCaptureDraft')]};
   s.QuoteIdentityResult=o({id});
-  s.QuoteCreateRequest=o({relationshipId:id,productVersionId:id,matchSubmissionId:id,proposal:r('QuoteCaptureProposal')},['relationshipId','productVersionId']);
-  s.QuoteSaveRequest=o({proposal:r('QuoteCaptureProposal'),reason:t(1000)},['proposal']);
+  const brokerKey={oneOf:[{const:'main-contact'},id]};
+  s.QuoteBrokerContact=o({key:brokerKey,name:t(200),email:{anyOf:[t(254),{type:'null'}]}});
+  s.QuoteCreateRequest=o({relationshipId:id,productVersionId:id,matchSubmissionId:id,proposal:r('QuoteCaptureProposal'),brokerContactKey:brokerKey},['relationshipId','productVersionId']);
+  s.QuoteSaveRequest=o({proposal:r('QuoteCaptureProposal'),reason:t(1000),funnelStateJson:t(1048576)},['proposal']);
   s.QuoteCloneRequest=o({sourceRevisionId:id,relationshipId:id,confirmedTermsId:id,reason:{...t(1000),pattern:'\\S'}},['sourceRevisionId','relationshipId','reason']);
   s.QuoteCloneTerms=o({sourceRevisionId:id,relationshipId:id,agencyTermsVersionId:id,version:{type:'integer',minimum:1},effectiveFrom:{type:'string',format:'date'},confirmationRequired:b});
   s.QuoteCaptureSummary=o({id,reference:t(40),relationshipId:id,clientId:id,agencyId:id,clientName:t(),agencyName:t(),productCode:product,state,revisionId:id,revisionNumber:{type:'integer',minimum:1},updatedAt:instant});
@@ -16,7 +18,7 @@ export function addQuoteContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
   s.QuoteReadiness=o({quoteId:id,revisionId:id,ready:b,issues:a(o({path:t(500),code:t(100),message:t(1000),category:e('capture','evidence','eligibility','matching','configuration'),severity:e('error','warning'),questionId:t(200),relatedPath:t(500)},['path','code','message','category','severity']))});
   s.QuoteCaptureRevision=o({id,quoteId:id,clientId:id,relationshipId:id,number:{type:'integer',minimum:1},productVersionId:id,agencyTermsVersionId:id,questionSetVersion:t(100),referenceDataVersion:t(100),proposal:r('QuoteCaptureProposal'),proposalHash:hash,savedAt:instant,savedByLabel:t(),reason:t(1000)},['id','quoteId','clientId','relationshipId','number','productVersionId','agencyTermsVersionId','questionSetVersion','referenceDataVersion','proposal','proposalHash','savedAt','savedByLabel']);
   s.QuoteCaptureVersions=o({schemaVersion:t(100),questionSetVersion:t(100),referenceDataVersion:t(100)});
-  s.QuoteCaptureView=o({...s.QuoteCaptureSummary.properties,productVersionId:id,captureVersions:r('QuoteCaptureVersions'),proposal:r('QuoteCaptureProposal'),captureClosed:b,matchReviewId:{anyOf:[id,{type:'null'}]},captureClosedAt:{anyOf:[instant,{type:'null'}]},captureClosedReason:{anyOf:[t(1000),{type:'null'}]},capabilities:o({canSave:b,canClone:b,canWithdraw:b,canAttachEvidence:b}),readiness:r('QuoteReadiness')});
+  s.QuoteCaptureView=o({...s.QuoteCaptureSummary.properties,productVersionId:id,captureVersions:r('QuoteCaptureVersions'),proposal:r('QuoteCaptureProposal'),funnelStateJson:{anyOf:[t(1048576),{type:'null'}]},brokerContactJson:{anyOf:[t(1000),{type:'null'}]},captureClosed:b,matchReviewId:{anyOf:[id,{type:'null'}]},captureClosedAt:{anyOf:[instant,{type:'null'}]},captureClosedReason:{anyOf:[t(1000),{type:'null'}]},capabilities:o({canSave:b,canClone:b,canWithdraw:b,canAttachEvidence:b}),readiness:r('QuoteReadiness')});
   s.QuoteCaptureProduct=o({productVersionId:id,productCode:product,displayName:t(),versionLabel:t(100),questionSetVersion:t(100),referenceDataVersion:t(100),captureEligible:b,unavailableReason:t(1000)},['productVersionId','productCode','displayName','versionLabel','questionSetVersion','referenceDataVersion','captureEligible']);
   const replace=(method,path,...args)=>{delete paths[path]?.[method];op(method,path,...args);};
   const replaceList=(path,...args)=>{delete paths[path]?.get;list(path,...args);};
@@ -34,6 +36,10 @@ export function addQuoteContracts({schemas:s,ref:r,text:t,enumeration:e,object:o
   op('get','/quotes/{quoteId}/revisions/{revisionId}','getQuoteRevision','quote-read',{output:r('QuoteCaptureRevision')});
   op('get','/quote-products','listQuoteProducts','quote-read',{query:[['relationshipId',id]],output:o({items:a(r('QuoteCaptureProduct'))})});
   paths['/quote-products'].get.parameters.find(parameter=>parameter.name==='relationshipId').required=true;
+  op('get','/quote-broker-contacts','listQuoteBrokerContacts','quote-read',{query:[['relationshipId',id]],output:o({items:a(r('QuoteBrokerContact'))})});
+  paths['/quote-broker-contacts'].get.parameters.find(parameter=>parameter.name==='relationshipId').required=true;
+  paths['/quote-broker-contacts'].get['x-runtime-status']='implemented-capture-selection';
+  paths['/quote-broker-contacts'].get.description+=' Returns saved agency main contact and active agency broker users under current relationship authority. No fabricated contacts.';
   // Retain the already reviewed compare route and operation identity.
   const comparison=paths['/quotes/{quoteId}/compare'].get;
   for(const parameter of comparison.parameters.filter(parameter=>parameter.in==='query'))parameter.required=true;

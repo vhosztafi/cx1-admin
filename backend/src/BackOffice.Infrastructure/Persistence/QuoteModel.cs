@@ -32,12 +32,14 @@ public sealed partial class BackOfficeDbContext
         Check(quote, "Number", "[Number] BETWEEN 1 AND 9999999999");
         Check(quote, "State", "[State] IN ('draft','rating-pending','rated','referred','approved','sent','accepted','declined','bound','withdrawn')");
         Check(quote, "Creator", "[CreatedBy] IS NOT NULL");
+        Check(quote, "BrokerContactJson", "[BrokerContactJson] IS NULL OR ISJSON([BrokerContactJson], OBJECT)=1");
         Check(quote, "CaptureClosure", "([CaptureClosedAt] IS NULL AND [CaptureClosedReason] IS NULL) OR ([CaptureClosedAt] IS NOT NULL AND [CaptureClosedAt]>=[CreatedAt] AND [CaptureClosedReason] IS NOT NULL AND LEN(TRIM([CaptureClosedReason]))>0)");
 
         var revision = Record<QuoteRevision>(model, "QuoteRevision");
         revision.ToTable(t => t.UseSqlOutputClause(false));
         Text(revision, ("SchemaVersion", 30), ("QuestionSetVersion", 100), ("Reason", 1000));
         Hash(revision, "ContentHash");
+        Check(revision, "FunnelStateJson", "[FunnelStateJson] IS NULL OR (ISJSON([FunnelStateJson], OBJECT)=1 AND DATALENGTH([FunnelStateJson])<=2097152)");
         revision.HasAlternateKey(x => new { x.Id, x.QuoteId });
         revision.HasIndex(x => new { x.QuoteId, x.Number }).IsUnique();
         revision.HasOne<Quote>().WithMany().HasForeignKey(x => new { x.QuoteId, x.AgencyId, x.ProductId })

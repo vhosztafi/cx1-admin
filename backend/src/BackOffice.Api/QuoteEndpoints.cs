@@ -16,6 +16,22 @@ public static class QuoteEndpoints
         app.MapGet("/api/v1/quotes/{quoteId:guid}", Get).RequireAuthorization("quote-read");
         app.MapGet("/api/v1/quotes/{quoteId:guid}/readiness", Readiness).RequireAuthorization("quote-read");
         app.MapGet("/api/v1/quote-products", Products).RequireAuthorization("quote-read");
+        app.MapGet("/api/v1/quote-broker-contacts", BrokerContacts).RequireAuthorization("quote-read");
+    }
+
+    private static async Task<IResult> BrokerContacts(HttpContext context, Microsoft.EntityFrameworkCore.IDbContextFactory<BackOffice.Infrastructure.Persistence.BackOfficeDbContext> factory)
+    {
+        try
+        {
+            var relationship=QuoteHttpInput.ProductRelationship(context.Request);
+            await using var db=await factory.CreateDbContextAsync(context.RequestAborted);
+            await using var transaction=await db.Database.BeginTransactionAsync(context.RequestAborted);
+            var scope=await QuoteScope.ForRelationshipAsync(db,LocalIdentityService.Actor(context.User),relationship,QuoteAccess.Read,context.RequestAborted);
+            var contacts=await QuoteBrokerContacts.ListAsync(db,scope.Agency.Id,context.RequestAborted);
+            await transaction.CommitAsync(context.RequestAborted);
+            return Results.Ok(new {items=contacts});
+        }
+        catch(Exception error)when(Known(error)){return Failure(context,error);}
     }
 
     private static async Task<IResult> Products(HttpContext context, QuoteProducts service)
@@ -47,7 +63,7 @@ public static class QuoteEndpoints
             var key = QuoteHttpInput.Key(context.Request);
             var input = await QuoteHttpInput.CreateAsync(context.Request, context.RequestAborted);
             var outcome = await service.CreateAsync(LocalIdentityService.Actor(context.User), input.RelationshipId,
-                input.ProductVersionId, input.Proposal, key, Guid.NewGuid(), context.RequestAborted, input.MatchSubmissionId);
+                input.ProductVersionId, input.Proposal, key, Guid.NewGuid(), context.RequestAborted, input.MatchSubmissionId,input.BrokerContactKey);
             return Outcome(context, outcome);
         }
         catch (Exception error) when (Known(error)) { return Failure(context, error); }
@@ -61,7 +77,7 @@ public static class QuoteEndpoints
             var key = QuoteHttpInput.Key(context.Request); var version = QuoteHttpInput.Version(context.Request);
             var input = await QuoteHttpInput.SaveAsync(context.Request, context.RequestAborted);
             return Outcome(context, await service.SaveAsync(LocalIdentityService.Actor(context.User), quoteId, version,
-                input.Proposal, input.Reason, key, Guid.NewGuid(), context.RequestAborted));
+                input.Proposal, input.Reason, key, Guid.NewGuid(), context.RequestAborted,input.FunnelStateJson));
         }
         catch (Exception error) when (Known(error)) { return Failure(context, error); }
     }
@@ -85,6 +101,7 @@ public static class QuoteEndpoints
                 stored.ClientName, stored.AgencyName, stored.ProductCode, stored.Quote.State, stored.Quote.BoundPolicyId,
                 revisionId = stored.Revision.Id, revisionNumber = stored.Revision.Number, stored.Quote.UpdatedAt,
                 stored.Revision.ProductVersionId, proposal = proposal.RootElement.Clone(),
+                funnelStateJson = stored.Revision.FunnelStateJson, brokerContactJson = stored.Quote.BrokerContactJson,
                 captureVersions = new { stored.VersionPins.SchemaVersion, stored.VersionPins.QuestionSetVersion, referenceDataVersion = stored.VersionPins.ReferenceVersion },
                 captureClosed = stored.Quote.CaptureClosedAt is not null,
                 stored.Quote.CaptureClosedAt, stored.Quote.CaptureClosedReason, stored.MatchReviewId,

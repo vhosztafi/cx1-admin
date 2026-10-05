@@ -7,13 +7,17 @@ import type { Client, ClientSummary, Page, Relationship } from '../../lib/client
 import { createQuoteCommand, quoteFetch, QuoteError, sendQuoteCommand, uncertainQuoteFailure, type PendingQuoteCommand, type QuoteProduct } from '../../lib/quotes';
 import { EmptyState, Panel } from '../primitives';
 import { LoadFeedback, Paging, useQuoteResource } from './shared';
-import { emptyCommercialProposal } from '../../lib/commercial-capture';
+import { IdentityForm } from '../clients/identity-form';
+import { AddRelationship } from '../clients/add-relationship';
 
 export function QuoteCreate({ actorId, initialClient, initialRelationship, matchSubmissionId }: { actorId: string; initialClient?: Client; initialRelationship?: Relationship; matchSubmissionId?: string }) {
   const router = useRouter();
   const [client, setClient] = useState<Client | ClientSummary | undefined>(initialClient); const [relationship, setRelationship] = useState<Relationship | undefined>(initialRelationship);
   const [productId, setProductId] = useState(''); const [busy, setBusy] = useState(false); const [uncertain, setUncertain] = useState(false);
   const [error, setError] = useState(''); const [savedId, setSavedId] = useState('');
+  const [creatingClient,setCreatingClient]=useState(false);const [brokerContactKey,setBrokerContactKey]=useState('');
+  const [linkingAgency,setLinkingAgency]=useState(false);const [relationshipGeneration,setRelationshipGeneration]=useState(0);
+  const contacts=useQuoteResource<{items:{key:string;name:string;email?:string}[]}>(relationship ? `/api/v1/quote-broker-contacts?relationshipId=${relationship.id}` : null);
   const lock = useRef(false); const recovery = useRef(false); const receipt = useRef<PendingQuoteCommand | null>(null);
   const products = useQuoteResource<{ items: QuoteProduct[] }>(relationship ? `/api/v1/quote-products?relationshipId=${relationship.id}` : null);
   const product = products.data?.items.find(item => item.productVersionId === productId);
@@ -44,9 +48,9 @@ export function QuoteCreate({ actorId, initialClient, initialRelationship, match
     if (lock.current || savedId) return;
     const recovering = recovery.current;
     if (!recovering) {
-      if (!client || !relationship || relationship.state !== 'active' || !product?.captureEligible) return;
+      if (!client || !relationship || relationship.state !== 'active' || !product?.captureEligible || product.productCode === 'commercial-combined' || !contacts.data?.items.some(contact=>contact.key===brokerContactKey)) return;
       receipt.current = createQuoteCommand(relationship.id, product.productVersionId,
-        product.productCode === 'commercial-combined' ? emptyCommercialProposal() : { schemaVersion: '1.0', productCode: product.productCode }, undefined, matchSubmissionId);
+        { schemaVersion: '1.0', productCode: product.productCode, insured:{legalName:client.legalName,entityType:client.entityType, address:{postcode:client.address.postcode,street:client.address.line1,town:client.address.town,...(client.address.county?{county:client.address.county}:{})}} }, undefined, matchSubmissionId, brokerContactKey);
     }
     if (!receipt.current) return;
     lock.current = true; setBusy(true); setError(''); let attempted = false;
@@ -59,7 +63,7 @@ export function QuoteCreate({ actorId, initialClient, initialRelationship, match
       const result = await sendQuoteCommand(receipt.current, csrf);
       recovery.current = false; lock.current = false; receipt.current = null;
       setUncertain(false); setSavedId(result.id);
-      router.replace(`/quotes/${result.id}`);
+      router.replace(`/quotes/${result.id}/funnel`);
     } catch (failure) {
       const pending = recovering || (attempted && uncertainQuoteFailure(failure));
       recovery.current = pending; setUncertain(pending);
@@ -73,20 +77,20 @@ export function QuoteCreate({ actorId, initialClient, initialRelationship, match
       <Panel title="Client" note="Select an existing business identity">
         <fieldset disabled={frozen} className="quote-selection"><legend className="sr-only">Client selection</legend>
           {client ? <div className="quote-selected"><div><strong>{client.legalName}</strong><p>{client.reference}</p></div><button className="button" type="button" disabled={Boolean(matchSubmissionId)} onClick={() => { setClient(undefined); setRelationship(undefined); setProductId(''); }}>Change client</button></div>
-            : <ClientChoice onSelect={value => { setClient(value); setRelationship(undefined); setProductId(''); }} />}
+            : creatingClient ? <IdentityForm onSaved={value=>{setClient(value);setCreatingClient(false);setLinkingAgency(true);}} onCancel={()=>setCreatingClient(false)}/> : <><ClientChoice onSelect={value => { setClient(value); setRelationship(undefined); setProductId('');setBrokerContactKey('');setLinkingAgency(false); }} /><button className="button" type="button" onClick={()=>setCreatingClient(true)}>Create new client</button></>}
         </fieldset>
       </Panel>
       {client && <Panel title="Agency relationship" note="The quote stays with this client and agency">
         <fieldset disabled={frozen} className="quote-selection"><legend className="sr-only">Agency relationship selection</legend>
-          <RelationshipChoice key={client.id} locked={Boolean(matchSubmissionId)} clientId={client.id} selected={relationship?.id} onSelect={value => { setRelationship(value); setProductId(''); }} />
+          {linkingAgency ? <QuoteRelationshipCreator key={client.id} clientId={client.id} close={()=>setLinkingAgency(false)} saved={value=>{setRelationship(value);setLinkingAgency(false);setRelationshipGeneration(count=>count+1);setProductId('');setBrokerContactKey('');}}/> : <><RelationshipChoice key={`${client.id}:${relationshipGeneration}`} locked={Boolean(matchSubmissionId)} clientId={client.id} selected={relationship?.id} onSelect={value => { setRelationship(value); setProductId('');setBrokerContactKey(''); }} />{!matchSubmissionId&&<button className="button" type="button" onClick={()=>setLinkingAgency(true)}>Link agency to client</button>}</>}
         </fieldset>
       </Panel>}
+      {relationship&&<Panel title="Broker contact" note="Choose the agency contact for this quote">{!contacts.data ? <LoadFeedback error={contacts.error} retry={contacts.refresh}/> : <fieldset disabled={frozen} className="quote-selection"><legend className="sr-only">Broker contact</legend><label htmlFor="quote-broker-contact">Agency contact</label><select id="quote-broker-contact" value={brokerContactKey} onChange={event=>setBrokerContactKey(event.target.value)}><option value="">Choose a contact</option>{contacts.data.items.map(contact=><option key={contact.key} value={contact.key}>{contact.name}{contact.email?` · ${contact.email}`:''}</option>)}</select>{!contacts.data.items.length&&<p>Add an agency main contact or active broker user before starting this quote.</p>}</fieldset>}</Panel>}
       {relationship && <Panel title="Product" note="Availability is checked for the selected relationship">
         {!products.data ? <LoadFeedback error={products.error} retry={products.refresh} /> : <fieldset disabled={frozen} className="quote-selection"><legend className="sr-only">Quote product</legend>
-          <div className="quote-products">{products.data.items.map(item => <label className={`quote-product ${productId === item.productVersionId ? 'quote-product-selected' : ''}`} key={item.productVersionId}>
+          <div className="quote-products">{products.data.items.filter(item=>['motor-trade-road-risks','motor-trade-combined'].includes(item.productCode)).map(item => <label className={`quote-product ${productId === item.productVersionId ? 'quote-product-selected' : ''}`} key={item.productVersionId}>
             <input type="radio" name="product" value={item.productVersionId} checked={productId === item.productVersionId} disabled={!item.captureEligible} onChange={() => setProductId(item.productVersionId)} />
             <span><strong>{item.displayName}</strong><small>{item.versionLabel} · {item.captureEligible ? 'Available' : item.unavailableReason ?? 'Unavailable for this relationship'}</small></span></label>)}
-            {['Commercial Combined', 'Fleet'].map(name => <div className="quote-product quote-product-unavailable" key={name}><span aria-hidden="true">○</span><span><strong>{name}</strong><small>Not available yet</small></span></div>)}
           </div>{products.data.items.length === 0 && <p className="client-help">No capture products are available for this relationship.</p>}
         </fieldset>}
       </Panel>}
@@ -97,9 +101,14 @@ export function QuoteCreate({ actorId, initialClient, initialRelationship, match
         <p className="client-help">After creating the draft, capture proposer details and initial business information. Continue through the risk sections, evidence and readiness checks.</p>
         {error && <div className="error-message" role="alert">{error}</div>}
         {uncertain && <p className="quote-pending" role="status">The result is unconfirmed. Your original selection is locked; retry the same creation to confirm it.</p>}
-        {savedId ? <p role="status">Draft saved. <Link href={`/quotes/${savedId}`}>Open saved quote</Link></p> : <button className="button button-primary" type="button" disabled={busy || (!uncertain && (!client || !relationship || !product?.captureEligible))} onClick={() => void create()}>{busy ? 'Creating draft…' : uncertain ? 'Retry same creation' : 'Create quote draft'}</button>}
+        {savedId ? <p role="status">Draft saved. <Link href={`/quotes/${savedId}/funnel`}>Continue Motor Trade capture</Link></p> : <button className="button button-primary" type="button" disabled={busy || (!uncertain && (!client || !relationship || !product?.captureEligible || !brokerContactKey))} onClick={() => void create()}>{busy ? 'Creating draft…' : uncertain ? 'Retry same creation' : 'Start Motor Trade quote'}</button>}
       </div>
     </Panel></aside></div></>;
+}
+function QuoteRelationshipCreator({clientId,saved,close}:{clientId:string;saved:(relationship:Relationship)=>void;close:()=>void}){
+  const current=useQuoteResource<Client>(`/api/v1/clients/${clientId}`);
+  if(!current.data||!current.etag)return <LoadFeedback error={current.error} retry={current.refresh}/>;
+  return <AddRelationship key={current.etag} clientId={clientId} etag={current.etag} onSaved={saved} onReload={current.refresh} onClose={close}/>;
 }
 
 export function ClientChoice({ onSelect }: { onSelect: (client: ClientSummary) => void }) {

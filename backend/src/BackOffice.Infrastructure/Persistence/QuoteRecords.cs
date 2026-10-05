@@ -9,6 +9,7 @@ public sealed class Quote : MutableRecord
     public Guid RelationshipId { get; set; }
     public Guid ProductId { get; set; }
     public string State { get; set; } = "draft";
+    public string? BrokerContactJson { get; set; }
     // Nullable only for the initial in-transaction insert. Commands must set it
     // before commit; privileged unfinished rows are detected by integrity checks.
     public Guid? CurrentRevisionId { get; set; }
@@ -35,6 +36,7 @@ public sealed class QuoteRevision : StoredRecord
     public string QuestionSetVersion { get; set; } = "";
     public string ReferenceVersionsJson { get; set; } = "{}";
     public string ProposalJson { get; set; } = "{}";
+    public string? FunnelStateJson { get; set; }
     public string TermIntentJson { get; set; } = "{}";
     public byte[] ContentHash { get; set; } = [];
     public string? Reason { get; set; }

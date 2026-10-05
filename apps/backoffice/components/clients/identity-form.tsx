@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { csrfToken } from '../../lib/auth';
 import { ClientError, clientFetch, entityTypes, identityPayload, uncertainFailure, type Client, type ClientWrite } from '../../lib/clients';
 
-export function IdentityForm({ client, etag, onSaved, onCancel, onReload }: { client?: Client; etag?: string | null; onSaved?: () => void; onCancel?: () => void; onReload?: () => void }) {
+export function IdentityForm({ client, etag, onSaved, onCancel, onReload }: { client?: Client; etag?: string | null; onSaved?: (client: Client) => void; onCancel?: () => void; onReload?: () => void }) {
   const router = useRouter(); const [busy, setBusy] = useState(false); const lock = useRef(false);
   const [error, setError] = useState(''); const [uncertain, setUncertain] = useState(false); const [stale, setStale] = useState(false);
   const receipt = useRef<{ body: ClientWrite; intent: string; key: string } | null>(null);
@@ -20,7 +20,7 @@ export function IdentityForm({ client, etag, onSaved, onCancel, onReload }: { cl
         method: client ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': await csrfToken(), 'Idempotency-Key': receipt.current.key, ...(etag && { 'If-Match': etag }) }, body: JSON.stringify(body),
       });
       receipt.current = null; setUncertain(false);
-      if (onSaved) onSaved(); else router.push(`/clients/${data.id}`);
+      if (onSaved) onSaved(data); else router.push(`/clients/${data.id}`);
     } catch (failure) {
       setError(failure instanceof Error ? failure.message : 'The save could not be confirmed. Retry the same action.');
       setUncertain(uncertainFailure(failure)); setStale(failure instanceof ClientError && [412, 428].includes(failure.status));
