@@ -1,7 +1,9 @@
 node_modules/
 .next/
 .next-*/
+.idea/
 out/
+output/
 coverage/
 test-results/
 playwright-report/
@@ -18,3 +20,5 @@ apps/backoffice/.local-next-*/
 
 .open-next/
 artifacts/
+output/pdf/cx1-business-handover.pdf
+output/pdf/cx1-business-handover.pdf
