@@ -34,6 +34,8 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 11.19.0
+      - name: Configure the cached pnpm store
+        run: pnpm config set store-dir "$GITHUB_WORKSPACE/.pnpm-store" --global
       - uses: actions/setup-node@v7
         with:
           node-version: '24'
