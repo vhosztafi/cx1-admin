@@ -29,6 +29,8 @@ export const quoteFormCatalogue: QuoteFormCatalogue = {
   },
 };
 
+export const quoteReviewCatalogue:QuoteFormCatalogue={...quoteFormCatalogue,businessQuestions:sourceBusinessQuestions(questions.mappings.map(row=>row.questionId?.startsWith('prototype.')&&row.canonicalPath==='risk.business.responses.answers[]'&&!quoteFormCatalogue.businessQuestions.some(question=>question.id===row.questionId)?{...row,stages:['Motor Trade Road Risks:step-3'],...(row.questionId==='prototype.quote-value.2d662a3ec81d'?{label:'Vehicle details for any Yes answers'}:{})}:row),source.bindings,source.collections)};
+
 export const quoteQuestionLabels: Record<string, string> = Object.fromEntries([
   ...fieldLabels.mappings.map(item => [item.owner, item.label]),
   ...[...quoteFormCatalogue.businessQuestions, ...(quoteFormCatalogue.driverFields ?? []), ...(quoteFormCatalogue.vehicleFields ?? []), ...(quoteFormCatalogue.sectionFields ?? [])]

@@ -21,9 +21,9 @@ See PROJECT.md and MILESTONES.md; complete v1.0 requirements and roadmap are in 
 
 ## Current position
 
-Phase: 18
+Phase: 19
 Plan: 01
-Status: Quote record alignment and lifecycle verification; phases 15/16 final read-model verification remains
+Status: Implementing MTA funnel and review; phases 15/16/18 final verification remains
 Last activity: 2026-10-05
 
 ## Deferred Items

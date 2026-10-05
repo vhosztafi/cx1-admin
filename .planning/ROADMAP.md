@@ -175,7 +175,7 @@
 | 15. Clients contacts and matching | v1.1 | 1/1 | Verification follow-up in 18/20/24 | — |
 | 16. Agency records and onboarding | v1.1 | 1/1 | Verification follow-up in 23/24 | — |
 | 17. Motor Trade quote entry and funnel | v1.1 | 1/1 | Complete | 2026-10-05 |
-| 18. Quote records underwriting and issue | v1.1 | 0/TBD | Pending | — |
+| 18. Quote records underwriting and issue | v1.1 | 1/1 | Lifecycle verification follow-up in 24 | — |
 | 19. Motor Trade MTA funnel and review | v1.1 | 0/TBD | Pending | — |
 | 20. Motor Trade policy records and history | v1.1 | 0/TBD | Pending | — |
 | 21. Renewal cancellation and issued confirmation | v1.1 | 0/TBD | Pending | — |

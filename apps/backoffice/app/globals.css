@@ -115,8 +115,8 @@ h1, h2, p { margin: 0; }
 .client-record-facts dd { margin: 3px 0 0; font-size: 13.5px; font-weight: 500; overflow-wrap: anywhere; }
 .client-record-top > .button { background: white; color: #2f49cc; margin-top: 8px; }
 .client-record-tabs { display: flex; gap: 2px; margin-top: 16px; overflow-x: auto; }
-.client-record-tabs a { padding: 10px 15px; border-radius: 8px 8px 0 0; font-size: 13px; white-space: nowrap; background: #ffffff21; color: #eaeefe; }
-.client-record-tabs a[aria-current='page'] { background: #f6f7f9; color: #22252e; font-weight: 600; }
+.client-record-tabs a,.client-record-tabs .quote-tab { padding: 10px 15px; border: 0; border-radius: 8px 8px 0 0; font: inherit; font-size: 13px; white-space: nowrap; background: #ffffff21; color: #eaeefe; cursor: pointer; }
+.client-record-tabs a[aria-current='page'],.client-record-tabs .quote-tab[aria-current='page'] { background: #f6f7f9; color: #22252e; font-weight: 600; }
 .client-record-header :focus-visible { outline-color: white; }
 .client-record-facts a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .record-header-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding-top: 8px; }

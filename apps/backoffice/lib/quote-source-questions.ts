@@ -1,6 +1,6 @@
 import type { ReferenceChoice } from './quote-form';
 
-export type SourceQuestion = { id: string; label: string; kind: 'boolean' | 'text' | 'reference'; stage: 1 | 2; products: string[]; collection?: string; choices: ReferenceChoice[] };
+export type SourceQuestion = { id: string; label: string; kind: 'boolean' | 'text' | 'reference' | 'count'; stage: 1 | 2; products: string[]; collection?: string; choices: ReferenceChoice[] };
 type Mapping = { questionId?: string; label?: string; answerKind?: string; canonicalPath: string; stages?: string[]; products: string[] };
 type Binding = { questionId?: string; canonicalPath: string; selectionRule: string; collections: string[] };
 
@@ -11,7 +11,7 @@ export function sourceBusinessQuestions(mappings: Mapping[], bindings: Binding[]
     (row.questionId === 'MTS-02-Q01' || row.stages?.some(stage => /^Motor Trade (Road Risks|Combined):step-[23]$/.test(stage))))
     .map(row => {
       const kind = row.answerKind;
-      if (kind !== 'boolean' && kind !== 'text' && kind !== 'reference') throw new Error('Unsupported business question control.');
+      if (kind !== 'boolean' && kind !== 'text' && kind !== 'reference' && kind !== 'count') throw new Error('Unsupported business question control.');
       const binding = bindings.find(item => item.questionId === row.questionId && item.canonicalPath === row.canonicalPath);
       const collection = binding?.collections[0];
       if (kind === 'reference' && (!collection || binding?.selectionRule !== 'fixed' || binding.collections.length !== 1 || !collections[collection])) throw new Error('Business question reference binding is missing.');
