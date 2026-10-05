@@ -5,6 +5,7 @@ public static class ReportEndpoints
 {
  public static void MapReports(this WebApplication app)
  {
+        app.MapGet("/api/v1/agencies/{id:guid}/operational-summary", (Guid id,HttpContext c,ReportService service)=>AdministrationEndpoints.Work(c,async()=>Results.Json(await service.AgencySummaryAsync(LocalIdentityService.Actor(c.User),id,c.RequestAborted)))).RequireAuthorization();
         app.MapGet("/api/v1/reports/preferences",(HttpContext c,SavedReportService service)=>AdministrationEndpoints.Work(c,async()=>Results.Json(await service.ReadAsync(LocalIdentityService.Actor(c.User),c.RequestAborted)))).RequireAuthorization();
         app.MapPost("/api/v1/reports/favourites",(SaveReportInput input,HttpContext c,SavedReportService service)=>AdministrationEndpoints.Work(c,async()=>Results.Json(await service.SaveAsync(LocalIdentityService.Actor(c.User),null,input,c.RequestAborted)))).RequireAuthorization();
         app.MapPut("/api/v1/reports/favourites/{id:guid}",(Guid id,SaveReportInput input,HttpContext c,SavedReportService service)=>AdministrationEndpoints.Work(c,async()=>Results.Json(await service.SaveAsync(LocalIdentityService.Actor(c.User),id,input,c.RequestAborted)))).RequireAuthorization();

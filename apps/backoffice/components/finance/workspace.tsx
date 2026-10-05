@@ -11,6 +11,7 @@ import {FinanceTransactions} from './transactions';
 import {FinanceReconciliation} from './reconciliation';
 import {FinanceBordereaux} from './bordereaux';
 import {FinanceRefunds} from './refunds';
+import {useAgencyResource} from '../agencies/shared';
 
 const validId=(value:string)=>/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
 const tabs=[['overview','Overview'],['transactions','Transactions'],['accounts','Broker accounts'],
@@ -19,6 +20,8 @@ export function FinanceWorkspace({agencyId,tab,receiptId,statementId,reconciliat
  periodId,transactionId}: {agencyId?:string;tab:string;receiptId?:string;statementId?:string;
  reconciliationId?:string;batchId?:string;refundId?:string;periodId?:string;transactionId?:string}){
  const router=useRouter();const [agencyInput,setAgencyInput]=useState(agencyId??'');const [error,setError]=useState('');
+ const [agencySearch,setAgencySearch]=useState('');
+ const agencies=useAgencyResource<{agencies:{id:string;name:string}[]}>('/api/v1/reports/12000000-0000-4000-8000-000000000005/options');
  const selected=tabs.some(([key])=>key===tab)?tab:'overview';
  const items=tabs.map(([key,label])=>({key,label,href:routeForFinanceTab(key,{agencyId})}));
  return <><div className="page-heading"><div><h1>Accounting</h1>
@@ -28,10 +31,10 @@ export function FinanceWorkspace({agencyId,tab,receiptId,statementId,reconciliat
   <Panel title="Selected agency" note="Current finance permissions are checked on every read and command"><form className="finance-agency-picker" onSubmit={event=>{
    event.preventDefault();const id=agencyInput.trim();if(!validId(id)){setError('Enter a saved agency ID.');return;}
    setError('');router.push(routeForFinanceTab(selected,{agencyId:id}));}}>
-   <label>Agency ID<input value={agencyInput} onChange={event=>setAgencyInput(event.target.value)} placeholder="Agency record ID"/></label>
+   <label>Find agency<input type="search" value={agencySearch} onChange={event=>setAgencySearch(event.target.value)} placeholder="Agency name"/></label><label>Agency<select aria-label="Agency" value={agencyInput} onChange={event=>setAgencyInput(event.target.value)}><option value="">Select an agency</option>{agencyId&&!agencies.data?.agencies.some(item=>item.id===agencyId)&&<option value={agencyId}>Selected agency</option>}{agencies.data?.agencies.filter(item=>item.id===agencyInput||item.name.toLowerCase().includes(agencySearch.toLowerCase())).map(item=><option value={item.id} key={item.id}>{item.name}</option>)}</select></label>
    <button className="button" type="submit">Open agency account</button></form>
    {error&&<p role="alert" className="finance-alert">{error}</p>}
-   <p className="finance-pad client-help">Open from an agency record or enter its saved ID. Every selected record remains in the URL.</p>
+   {agencies.error&&<p role="alert" className="finance-alert">{agencies.error}</p>}<p className="finance-pad client-help">Select an agency by name or open from its record. The selected account remains in the URL.</p>
   </Panel>
   {selected==='overview'?<FinanceOverview agencyId={agencyId} initialPeriodId={periodId}/>
    :selected==='bordereaux'?<FinanceBordereaux agencyId={agencyId} initialBatchId={batchId} periodId={periodId}/>

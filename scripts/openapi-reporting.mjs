@@ -20,6 +20,8 @@ export function addReportingContracts({schemas:s,ref,operation:op,paths,id,insta
 export function addReportExecutionContracts({schemas:s,ref:r,operation:op,paths,id,instant,text:t,object:o,array:a}){
  const nil=x=>({anyOf:[x,{type:'null'}]}),number={type:'integer'},date={type:'string',format:'date'};
  s.ReportMeasure=o({code:t(60),label:t(200),definition:t(2000),unit:{enum:['count','GBP','percent','hours']},numerator:nil(t(60)),denominator:nil(t(60))});
+ s.AgencyOperationalSummary=o({agencyId:id,asOf:instant,from:date,to:date,current:a(o({code:t(60),value:nil(t(100)),denominator:nil(t(100))})),previous:a(o({code:t(60),value:nil(t(100)),denominator:nil(t(100))})),definition:t(2000)});
+ op('get','/agencies/{agencyId}/operational-summary','getAgencyOperationalSummary','quote-read',{output:r('AgencyOperationalSummary')});
  s.ReportDefinition=o({id,code:t(60),category:{enum:['underwriting','portfolio','renewal','finance','agency','compliance-exceptions']},title:t(200),description:t(2000),capability:t(100),defaultBasis:{enum:['effective','processed']},bases:a({enum:['effective','processed']}),filters:a({enum:['agencyId','providerId','productCode','underwriterId']}),measures:a(r('ReportMeasure'))});
  s.ReportFilters=o({from:date,to:date,basis:{enum:['effective','processed']},agencyId:nil(id),providerId:nil(id),productCode:nil(t(60)),underwriterId:nil(id),offset:{type:'integer',minimum:0,maximum:10000}},['from','to','basis']);
  s.ReportValue=o({code:t(60),value:nil(t(100)),denominator:nil(t(100))});

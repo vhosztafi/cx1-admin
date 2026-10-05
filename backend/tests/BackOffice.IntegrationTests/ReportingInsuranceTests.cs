@@ -20,6 +20,13 @@ public sealed partial class UnderwritingRuntimeTests
    Assert.Contains(report.Rows,x=>x.RecordId==f.QuoteId);Assert.Equal("1",report.Measures.Single(x=>x.Code=="bound").Value);Assert.Equal("100",report.Measures.Single(x=>x.Code=="conversion").Value);
    var premium=await db.Set<QuoteRatingResult>().Where(r=>db.Set<PolicyTransaction>().Any(t=>t.PolicyId==issued.ResourceId&&t.RatingId==r.Id)).Select(x=>x.TermPremium).SingleAsync();Assert.Equal(premium,decimal.Parse(report.Measures.Single(x=>x.Code=="premium").Value!,CultureInfo.InvariantCulture));
    var empty=await service.RunAsync(f.Servicing,report.ReportId,filters with{AgencyId=Guid.NewGuid()});Assert.Empty(empty.Rows);Assert.Null(empty.Measures.Single(x=>x.Code=="conversion").Value);
+   var savedReports=new SavedReportService(f.Factory,f.Clock);
+   var preferencesBefore=System.Text.Json.JsonSerializer.Serialize(await savedReports.ReadAsync(f.Servicing));
+   var agencyId=await db.Set<Quote>().Where(x=>x.Id==f.QuoteId).Select(x=>x.AgencyId).SingleAsync();
+   var summary=System.Text.Json.JsonSerializer.SerializeToElement(await service.AgencySummaryAsync(f.Servicing,agencyId));
+   Assert.Equal("1",summary.GetProperty("current").EnumerateArray().Single(x=>x.GetProperty("Code").GetString()=="bound").GetProperty("Value").GetString());
+   Assert.Equal(preferencesBefore,System.Text.Json.JsonSerializer.Serialize(await savedReports.ReadAsync(f.Servicing)));
+   Assert.Equal(404,(await Assert.ThrowsAsync<QuoteOperationException>(()=>service.AgencySummaryAsync(f.Servicing,Guid.NewGuid()))).Status);
    var portfolio=await service.RunAsync(f.Servicing,ReportCatalogue.All.Single(x=>x.Code=="portfolio").Id,filters with{Basis="processed"});Assert.Contains(portfolio.Rows,x=>x.RecordId==issued.ResourceId);Assert.Equal("1",portfolio.Measures.Single(x=>x.Code=="newBusiness").Value);
    var active=await service.RunAsync(f.Servicing,ReportCatalogue.All.Single(x=>x.Code=="active-portfolio").Id,filters with{Basis="effective"});Assert.Single(active.Rows);
    await DemoDatabase.SeedAsync(db,password,includeQuoteCapture:true,includeUnderwriting:true,includeRenewalLifecycle:true);

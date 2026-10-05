@@ -67,8 +67,8 @@
 ### Accounting reporting dashboard and search
 
 - [ ] **FIN-09**: Staff use prototype accounting tabs, ledger detail and receipt/allocation/refund actions.
-- [ ] **RPT-06**: Staff use prototype reports, filters, saved favourites and exports on authorized persisted data.
-- [ ] **RPT-07**: Staff use prototype dashboard cards, queues and global search with working source links.
+- [x] **RPT-06**: Staff use prototype reports, filters, saved favourites and exports on authorized persisted data.
+- [x] **RPT-07**: Staff use prototype dashboard cards, queues and global search with working source links.
 
 ### Administration account and milestone verification
 
@@ -119,8 +119,8 @@
 | OPS-11 | Phase 22 | Pending |
 | OPS-12 | Phase 22 | Pending |
 | FIN-09 | Phase 23 | Pending |
-| RPT-06 | Phase 23 | Pending |
-| RPT-07 | Phase 23 | Pending |
+| RPT-06 | Phase 23 | Complete |
+| RPT-07 | Phase 23 | Complete |
 | ADM-09 | Phase 24 | Pending |
 | ADM-10 | Phase 24 | Pending |
 | ACC-07 | Phase 24 | Pending |
