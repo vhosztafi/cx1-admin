@@ -59,7 +59,7 @@
 
 ### Tasks documents communications and incidents
 
-- [ ] **OPS-09**: Staff use prototype task queues, task records, assignment and completion actions.
+- [x] **OPS-09**: Staff use prototype task queues, task records, assignment and completion actions.
 - [ ] **OPS-10**: Staff manage policy/quote documents and communications with visible delivery and retry status.
 - [ ] **OPS-11**: Staff log Motor Trade incidents and review claims-provider handoff summaries.
 - [ ] **OPS-12**: Staff review and record capacity-provider escalation threads and outcomes.
@@ -114,7 +114,7 @@
 | POL-18 | Phase 21 | Pending |
 | POL-19 | Phase 21 | Pending |
 | POL-20 | Phase 21 | Pending |
-| OPS-09 | Phase 22 | Pending |
+| OPS-09 | Phase 22 | Complete |
 | OPS-10 | Phase 22 | Pending |
 | OPS-11 | Phase 22 | Pending |
 | OPS-12 | Phase 22 | Pending |

@@ -179,6 +179,6 @@
 | 19. Motor Trade MTA funnel and review | v1.1 | 1/1 | Lifecycle verification follow-up in 24 | — |
 | 20. Motor Trade policy records and history | v1.1 | 1/1 | Complete | 2026-10-05 |
 | 21. Renewal cancellation and issued confirmation | v1.1 | 1/1 | Issue verification follow-up in 24 | — |
-| 22. Tasks documents communications and incidents | v1.1 | 0/TBD | Pending | — |
+| 22. Tasks documents communications and incidents | v1.1 | 1/1 | Provider/delivery verification follow-up in 24 | — |
 | 23. Accounting reporting dashboard and search | v1.1 | 0/TBD | Pending | — |
 | 24. Administration account and milestone verification | v1.1 | 0/TBD | Pending | — |

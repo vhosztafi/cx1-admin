@@ -17,6 +17,7 @@ export function IncidentEditor({initial,initialEtag,policyId,productCode,cancel,
   const [record,setRecord]=useState(initial),[etag,setEtag]=useState(initialEtag),[pending,setPending]=useState<IncidentCommand>(),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState(''),[stale,setStale]=useState(false);
   const [day,setDay]=useState(draft.occurrence?.occurredOn??''),[precision,setPrecision]=useState(draft.occurrence?.precision??'date'),[approximate,setApproximate]=useState(draft.occurrence?.precision==='approximate'?draft.occurrence.approximateLocalTime:''),[exact,setExact]=useState(draft.occurrence?.precision==='exact'?draft.occurrence.occurredAt:''),[reason,setReason]=useState('');
   const [versionChoice,setVersionChoice]=useState(''),[claimsBlocked,setClaimsBlocked]=useState(false);
+  const [tab,setTab]=useState<'detail'|'summary'>('detail');
   useEffect(()=>{
     if(!pending)return;
     const warn=()=>setError('Retry the same action to confirm its result before leaving.');
@@ -60,11 +61,13 @@ export function IncidentEditor({initial,initialEtag,policyId,productCode,cancel,
     if(!record)return;setBusy(true);try{const current=await incidentFetch<OpsIncident>(`/api/v1/incidents/${record.id}`);setRecord(current.data);setEtag(current.etag??undefined);setStale(false);setError('');setNotice('Latest saved version loaded below. Your form edits are retained; review them before saving.');}catch(caught){setError(caught instanceof Error?caught.message:'Unable to load the latest version.');}finally{setBusy(false);}
   }
   return <Panel title={record?`${record.reference} · ${record.state==='logged'?'Logged, unsent':incidentLabel(record.state)}`:'Log an incident'} note="Capture the report before sending to the claims administrator."><div className="quote-rail-body incident-editor">
+    <nav className="client-record-tabs" aria-label="Incident sections"><button className="quote-tab" aria-current={tab==='detail'?'page':undefined} disabled={busy||!!pending||claimsBlocked} onClick={()=>setTab('detail')}>Logged detail</button><button className="quote-tab" aria-current={tab==='summary'?'page':undefined} disabled={!record||busy||!!pending||claimsBlocked||dirty} onClick={()=>setTab('summary')}>Summary from administrator</button></nav>
+    {dirty&&record&&<p className="client-help">Save the logged detail before reviewing the administrator summary.</p>}
     {error&&<p role="alert" className="form-error">{error}</p>}{notice&&<p role="status">{notice}</p>}
     {unresolvedFailure&&<p role="status">This submission has no definitive rejection. Keep its saved facts and retry the existing claims request below.</p>}
     {stale&&<button className="button" disabled={busy} onClick={()=>void review()}>Review latest saved version</button>}
     {pending&&!busy&&<button className="button" onClick={()=>void act(pending.action,pending)}>Retry unconfirmed action</button>}
-    <fieldset disabled={busy||!!pending||claimsBlocked||stale||unresolvedFailure||record?.state==='queued'||record?.state==='handed-off'}>
+    <div hidden={tab!=='detail'}><fieldset disabled={busy||!!pending||claimsBlocked||stale||unresolvedFailure||record?.state==='queued'||record?.state==='handed-off'}>
       <fieldset className="quote-reference-fields"><legend>When did it happen?</legend>
         <label>Occurrence date<input aria-label="Occurrence date" type="date" value={day} onChange={event=>setDay(event.target.value)}/></label>
         <label>Time precision<select aria-label="Time precision" value={precision} onChange={event=>setPrecision(event.target.value as typeof precision)}><option value="date">Date only</option><option value="approximate">Approximate time</option><option value="exact">Confirmed exact time</option></select></label>
@@ -84,7 +87,7 @@ export function IncidentEditor({initial,initialEtag,policyId,productCode,cancel,
         {source&&(options.data?.revisionId===record.revisionId&&options.data.versionId===source?<section aria-label="Historical policy context"><h3>Policy at the reported occurrence</h3><p><Link href={options.data.policyContext.href}>Open historical policy · {options.data.policyContext.reference}</Link></p><p>Insured: {options.data.policyContext.insuredName}</p><dl>{options.data.policyContext.sections.map(section=><div key={section.code}><dt>{incidentLabel(section.code)}</dt><dd>{section.coverLevel?incidentLabel(section.coverLevel):'Declared cover section'} · Limit: {section.limit==null?'Not stated in this section':`GBP ${section.limit}`} · Excess: {section.excess==null?'Not stated in this section':`GBP ${section.excess}`}</dd></div>)}</dl><p className="client-help">This is the selected saved policy version, not confirmation that this incident is covered. The administrator determines the claim outcome and any applied excess.</p><IncidentUnderwriting record={record} context={options.data.policyContext}/></section>:<LoadFeedback error={options.error} retry={options.refresh}/>)}
       </>}
       <details><summary>Latest saved report</summary><p>{record.draft.description??'No description recorded'}</p><p>Updated {new Date(record.updatedAt).toLocaleString('en-GB')}</p></details></>}
-    {record&&etag&&<ClaimsSummaryPanel record={record} etag={etag} disabled={busy||!!pending||dirty||stale} blocked={setClaimsBlocked} updated={(value,nextEtag)=>{setRecord(value);setEtag(nextEtag);saved();}}/>}
+    </div>{record&&etag&&<ClaimsSummaryPanel view={tab} record={record} etag={etag} disabled={busy||!!pending||dirty||stale} blocked={setClaimsBlocked} updated={(value,nextEtag)=>{setRecord(value);setEtag(nextEtag);saved();}}/>}
     <button className="button" disabled={busy||!!pending||claimsBlocked} onClick={cancel}>Cancel / back to claims</button>
   </div></Panel>;
 }

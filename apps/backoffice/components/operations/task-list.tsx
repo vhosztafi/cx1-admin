@@ -8,7 +8,7 @@ import { TaskCommand, type TaskConfirmation } from './task-command';
 import { TaskCreate } from './task-create';
 import { TaskAssignmentField } from './task-assignment';
 
-const views = [['my-open', 'My open tasks'], ['team', 'Team queue'], ['created-by-me', 'Created by me'], ['completed', 'Completed']] as const;
+const views = [['my-open', 'My open'], ['team', 'Team queue'], ['created-by-me', 'Created by me'], ['completed', 'Completed']] as const;
 type TaskSummary = { mine:{open:number;dueToday:number;overdue:number;awaitingOthers:number};teamCompletedSevenDays:number|null;asOf:string };
 export function TaskList({ actorId, roles }: { actorId: string; roles: string[] }) {
   const [view, setView] = useState('my-open'), [input, setInput] = useState(''), [search, setSearch] = useState(''), [priority, setPriority] = useState(''), [type, setType] = useState(''), [dueWindow, setDueWindow] = useState('');
@@ -25,9 +25,9 @@ export function TaskList({ actorId, roles }: { actorId: string; roles: string[] 
   function refresh() { reset(); result.refresh(); summary.refresh(); }
   function toggle(row: TaskView) { setSelection(current => current.some(x => x.id === row.id) ? current.filter(x => x.id !== row.id) : current.length < 100 ? [...current, row] : current); }
   return <>
-    <div className="page-heading"><div><h1>Tasks</h1><p>Ownership, due dates and follow-up across your accessible records</p></div><button className="button button-primary" onClick={() => setCreating(true)}>Create task</button></div>
+    <div className="page-heading"><div><h1>My tasks</h1><p>Ownership, due dates and follow-up across your accessible records</p></div><button className="button button-primary" onClick={() => setCreating(true)}>Create task</button></div>
     {!summary.data ? <LoadFeedback error={summary.error} retry={summary.refresh} /> : <section className="kpi-grid" aria-label="My tasks and team completions"><article className="kpi"><p>My open</p><strong>{summary.data.mine.open}</strong></article><article className="kpi"><p>My due today</p><strong>{summary.data.mine.dueToday}</strong></article><article className="kpi"><p>My overdue</p><strong>{summary.data.mine.overdue}</strong></article><article className="kpi"><p>My awaiting others</p><strong>{summary.data.mine.awaitingOthers}</strong></article><article className="kpi"><p>Team completed in 7 days</p><strong>{summary.data.teamCompletedSevenDays??'No team'}</strong></article></section>}
-    <nav className="section-tabs" aria-label="Task queues">{views.map(([key, label]) => <button className="button" key={key} aria-pressed={view === key} onClick={() => { setView(key); reset(); }}>{label}</button>)}</nav>
+    <nav className="section-tabs prototype-queue-tabs" aria-label="Task queues">{views.map(([key, label]) => <button className="quote-tab" key={key} aria-pressed={view === key} onClick={() => { setView(key); reset(); }}>{label}</button>)}</nav>
     <Panel title="Task queue">
       <form className="task-filters" onSubmit={event => { event.preventDefault(); setSearch(input); reset(); }}>
         <label>Search<input type="search" value={input} maxLength={300} onChange={event => setInput(event.target.value)} placeholder="Task reference or title" /></label>
